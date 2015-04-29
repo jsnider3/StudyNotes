@@ -1,0 +1,47 @@
+\documentclass{scrartcl}
+\begin{document}
+\title{CS 555 Final Exam Study Notes}
+\author{Josh Snider}
+\maketitle
+\section*{Slide 7 Notes}
+\begin{itemize}
+\item What are the seven layers? (This was a midterm question, possibly also on the final)
+\begin{itemize}
+\item Application
+\item Presentation
+\item Session
+\item Transport
+\item Network
+\item DLC
+\item Physical
+\end{itemize}
+\item Types of switching
+\begin{enumerate}
+\item Message switching - entire message is sent as one giant block, sent from host to host to host. Kind of stupid.
+\item Packet switching - each packet in the message is sent individually, real-time, reliable, prioritization
+\item Circuit switching - dedicated circuit is created between beginning and end, phones.
+\item Leased lines - permanently dedicated circuit, heavy constant traffic. See Spread Networks.
+\end{enumerate}
+\item Network functions
+\begin{itemize}
+\item Addressing - mapping names to addresses. translation done by nameservers.
+\item Routing - selecting path for messages to take.
+\item Congestion control
+\end{itemize}
+\item Types of Routing
+\begin{enumerate}
+\item Connection-oriented - establish a virtual circuit and send all data over it. Guarantees packets arrive in-order.
+\item Connectionless - Like IP, each packet is routed seperately as datagrams. Has some issues that need to be handled.
+\item Source routing - done as homework, not practical because it assumes everyone knows everything
+\end{enumerate}
+\item Ways to control congestion
+\begin{enumerate}
+\item Tell hosts to shut up.
+\item Allocate more buffers.
+\item Drop packets (connectionless only)
+\item Require use of sliding window (connection-oriented only)
+\item Reroute packets around congestion as if they were cars in traffic (connectionless only)
+\end{enumerate}
+\item Internetworking
+\end{itemize}
+\end{document}

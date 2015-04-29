@@ -42,6 +42,55 @@
 \item Require use of sliding window (connection-oriented only)
 \item Reroute packets around congestion as if they were cars in traffic (connectionless only)
 \end{enumerate}
-\item Internetworking
+\end{itemize}
+\subsection*{Internetworking}
+\begin{itemize}
+\item Definition: routing among networks as opposed to within them, can be either connection-oriented or connectionless
+\item Open Systems Interconnect - An open standard for connection-oriented internetworking. Expensive, supplanted by TCP/IP. Relies on X.25.
+\item What is X.25?
+\begin{itemize}
+\item connection-oriented
+\item requires X.21 bis and LAPB as layer 1/2 standards
+\item Either over switched virtual circuit (SVC) or permanent virtual circuit (PVC).
+\item Specifies interface between host and network switch. Interfaces between switches are left up to carrier.
+\item X.25 Virtual Call: DTE sends CALL REQUEST packet, Receiver either replies with CALL ACCEPTED or CALL REJECTED. If accepted, communication begins. There's a sliding window which is usually 2 packets wide with packets of 256 bytes.
+\item X.25 Fast Select: For short transmissions, can send 128 bytes with CALL ACCEPT/REJECT.
+\item Connection Oriented Networking with X.75. X.75 defines interface between two X.25 networks. Makes bigger virtual network.
+\end{itemize}
+\item What is Asynchronous Transfer Mode?
+\begin{itemize}
+\item Connection-oriented packet-switched network
+\item Sends cells of fixed 53 bytes, 5 bytes header, 48 bytes data.
+\item Underlying technology for "Broadband Integrated Services Digital Network", which has its own stupid reference model.
+\item Has associated hardware AND software. (sounds expensive!)
+\item Viewpoints: Integrated access for users, network infrastructure for computers, backbone for lesser networks.
+\item Reasons for small cell size
+\begin{enumerate}
+\item Reduced queueing delay
+\item Minimize head-of-line blocking
+\item Error correction for small cells and headers
+\item Minimize jitter
+\item Fixed format switching inefficiencies
+\end{enumerate}
+\item Routing is connection-oriented.
+\item Basic element of routing is virtual channel. These are grouped into virtual paths.
+\item Like X.25 we have PVCs and SVCs.
+\item Connection setup is done with SETUP, CALL\_PROCEEDING, CONNECT, CONNECT\_ACK, RELEASE, and RELEASE\_COMPLETE messages.
+\end{itemize}
+\item SONET (Review)
+\item Definition: Synchronous Optical NETwork, OC-1 is 51.84 Mbit/s, faster signals are made by multiplexing links.
+\item Proprietary network protocols: Largely irrelevant, but Systes Network Architecture (SNA) was a popular IBM one and Internetwork Packet Exchange (IPX) was a Novell one.
+\end{itemize}
+\subsection*{The Routing Problem}
+\begin{itemize}
+\item Can either be done with shortest-path or "optimal" routing, based on whether you weight the links.
+\item Primitive routing techniques include:
+\begin{enumerate}
+\item Source routing: Message contains list of nodes that must be visited on path to dest.
+\item Static routing: predetermined paths that do not change.
+\item Flooding: Spam everyone, then everyone spams everyone else. Horribly inefficient.
+\end{enumerate}
+\item Adaptive routing is the good alternative to static routing. Based on measuring network in action.
+\item Shortest path spanning tree routing, either using Bellman-Ford or Dijkstra to compute the shortest path to each other node.
 \end{itemize}
 \end{document}

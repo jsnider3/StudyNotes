@@ -1,0 +1,485 @@
+\documentclass{book}%scrartcl}
+\usepackage{titlesec}
+\usepackage[]{units}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titlespacing{\section}{-3em}{1em}{1em}
+\title{CS 571 Practice Exercises}
+%\subtitle{Practice Exericses}
+\author{Josh Snider}
+\date{12/29/2013}
+\begin{document}
+\maketitle
+\setcounter{tocdepth}{0}
+\tableofcontents
+\chapter{Introduction}
+\section{What are the three main purposes of an operating system?}
+\begin{enumerate}
+\item To allocate resources in a fair and efficient manner.
+\item To schedule programs and interface with hardware.
+\item To supervise programs and handle errors and attempted improper use.
+\end{enumerate}
+\section{When is it appropriate for the OS to forsake efficiency and "waste" resources? Why is such a system not really wasteful?}
+When efficiency would inconvenience the user or when it would trade off efficiency between different areas. In the second case, it's prioritizing different kinds of efficiency in the first case it's actually being a good OS by helping the user.
+\section{What is the main difficulty that a programmer must overcome in writing an operating system for a real-time environment?}
+The programmer needs to be able to guarantee that it will execute instructions within a strict schedule. This implies that operations need to have consistent actual running times and not just good amortized times.
+\section{Consider whether web browsers and mail programs should be included as part of the operating system. Argue both sides.}
+%This misunderstood the question.
+%Coming from the viewpoint that everything that comes prepackaged with the computer when you buy it is a part of the operating system, it's trivial to argue that internet functionality is part of the OS due to the Firefox, Chrome, Opera, and Explorer browsers that are universally packaged as part of computers nowadays. From the kernel perspective, it is apparent that there is no need to include such things as part of the OS because there is no need for them to constantly be running. From the perspective of controlling hardware, it's debatable whether they should be included since they do control the I/O but they do so much more than the bare minimum requires.
+By including web browsers and mail programs as part of the operating system, we can optimize them on a lower-level by taking advantage of features in the OS kernel. On the other hand, we know that these are really just system programs and that including them as part of the operating system adds bloat, increases security risks, and is unnecessary. 
+\section{How does the distinction between kernel mode and user mode function as a rudimentary form of security?}
+It allows us to distinguish between tasks the operating system is performing and tasks users are performing and thus reserve certain powers for the operating system.
+\section{Which of the following instructions should be privileged?}
+Set value of timer, clear memory, turn off interrupts, modify entries in device-status table, and access I/O device should be privileged. Read the clock and issue a trap instruction should be unprivileged.
+\section{Some early computers protected the OS by placing it in a memory partition that could not be modified by either the user of the OS. Describe two difficulties that might arise with such a scheme.}
+\begin{enumerate}
+\item It makes it impossible to update the OS.
+\item It requires the computer to have special ROM memory large enough for the OS.
+\item You would still have to store the operating system's data in unprotected space while it was running.
+\end{enumerate}
+\section{Some CPUs provide for more than two modes of operation. What are two possible uses of these multiple modes?}
+\begin{enumerate}
+\item To provide an "administrator" mode that runs with greater powers than a normal user process but not as much as the operating system.
+\item To provide a mode to run in for bootstrapping.
+\item To provide a virtual machine mode.
+\end{enumerate}
+\section{Timers could be used to compute the current time. Provide a short description of how this could be accomplished.}
+Get the current time at the beginning. Repeatedly set a timer and whenever it times out, increment the current timer with the time the timer takes.
+\section{Give two reasons why caches are useful. What problems do they solve? What problems do they cause? If a cache can be made as large as the deivce for which it is caching (for instance, a cache as large as a disk), why not make it that large and eliminate the device?}
+Caches are useful because they decrease the time it takes to fetch things from memory and allow the CPU to flow faster without having to stall for data dependencies to be resolved. Caches need to be coordinated so that they stay in sync with the backing medium regardless of what changes happen in the system. The reason we don't get rid of hard drives and replace them with giant caches is that cache performance declines as size increases, many caches are volatile mediums, and many forms of cache get their increased performance at the cost of money and size.
+\section{Distinguish between the client-server and peer-to-peer models of distributed systems.}
+In peer-to-peer models, each node is equal  in role and authority. In client-server models, certain nodes have specialized roles and authority and serve as central hubs.
+\chapter{Operating-System Structures}
+\section{What is the purpose of system calls?}
+To give programs the power to interface with the operating system.
+\section{What are the five major activities of an operating system with regard to process management?}
+\begin{enumerate}
+\item To create and destroy processes.
+\item To schedule the running of processes. 
+\item To handle the coordination of concurrent processes.
+\item To synchronize concurrent processes.
+\item To manage deadlock %This wasn't mentioned in the chapter at all.
+\end{enumerate}
+\section{What are the three major activities of an operating system with regard to memory management?}%This wasn't discussed in the chapter.
+\begin{enumerate}
+\item To keep track of how the memory is currently allocated to processes.
+\item Decide which processes to load into memory when space is available.
+\item Allocate memory space as needed and deallocate memory space as possible.
+\end{enumerate}
+\section{What are the three major activities of an operating system with regard to secondary-storage management?}%This wasn't discussed in the chapter.
+\begin{enumerate}
+\item To manage free-space in order to prevent disk fragmentation.
+\item To schedule the sequence of reads and writes to the disk in the most optimal matter.
+\item To allocate space on the disk for people to write to (first-fit, best-fit, worst-fit etc.).
+\end{enumerate}
+\section{What is the purpose of the command interpreter? Why is it usually separate from the kernel?}
+To let the user interact with the operating system through a command line interface like Windows cmd or a *nix terminal. By seperating it from the kernel you can make it more flexible to changes and also more powerful while allowing it to have multiple command interpreters or even a competing GUI. 
+\section{What system calls have to be executed by a command interpreter or shell in order to start a new process?}%OS DEPENDENT!!!!!!!!
+It has to use a system call to read input, then once it processes it and finds the program to run, it needs syscalls to start that program and pass parameters to it. \\
+In Unix, you need to fork a new process and then run exec in that process to spawn an arbitrary process.
+\section{What is the purpose of system programs?}
+Like operating system APIs, they provide resources that programs on the system can use.
+\section{What is the main advantage of the layered approach to system design? What are the disadvantages of the layered approach?}
+The main advantage of the layered approach to OS design is that the abstraction it provides makes it easy to construct and debug, just like how encapsulation makes it easy to construct and debug programs in object-oriented languages. The problems with it include defining the layers to use in the approach, circular dependencies that may exist between the layer, and the inefficiency of passing things through multiple layers.
+\section{List five services provided by an operating system and explain how each creates convenience for users. In which cases would it be impossible for user-level programs to provide these services? Explain your answer.}
+\begin{enumerate}
+\item Communicating with device drivers: This could be done by each program on its own, but why would you want to do it on your own when you could use someone else's API?
+\item Managing a file system: This could be done by each program if they knew the system, but is also an inconvenience.
+\item Scheduling programs: This couldn't be done by each program because it requires one decision to be made and there's nothing stopping individual programs from trying to give themselves an advantage.
+\item Creating and spawning processes: This would be impossible for user-level programs to do, because in order for  program to be started it would need to have been spawned by something else. Eventually you'd have to be spawned by the kernel.
+\item Managing a translation-lookaside buffer: If this could be done by user-level programs it would be a massive security risk.
+\end{enumerate}
+\section{Why do some systems store the operating system in firmware, while others store it on disk?}
+%By storing it in firmware you can make it easier and faster to load. By storing it on disk you can make it easier to update. 
+Some devices like phones and embedded systems don't have a disk with  file system, therefore it must be stored in firmware.
+\section{How could a system be designed to allow a choice of operating systems from which to boot? What would the bootstrap program need to do?}
+In that case you would have a bootloader which loads a screen showing which operating systems are installed on the system and lets the user choose one. From there it would have to jump to the bootloader for that operating system.
+\chapter{Processes}
+\section{Using the program shown in Figure 3.30, explain what the output will be at LINE A.}
+It will be "PARENT: value = 5" because the child will have it's own value of value which it increments.
+\section{Including the initial parent process, how many processes are created by the program shown in Figure 3.31.}
+There will be eight processes total since you are doubling the number of processes three times and $2^3$=8. The book says there will be 16 but if you copy the given program into a text file and add "printf("\%d\\n", getpid());" at the end, you will see eight things printed. 
+\section{Discuss three major complications that concurrent processing adds to an operating system.}
+\begin{enumerate}
+\item Ensuring that programs don't mess up each other's data. Both by having separate spaces and by waiting for locks.
+\item Saving, switching, and restoring contexts correctly.
+\item Passing messages between processes.
+\end{enumerate}
+\section{The Sun UltraSPARC processor has multiple register sets. Describe what happens when a context switch occurs if the new context is already loaded into one of the register sets. What happens if the new context is in memory rather than in a register set and all the register sets are in use?}
+In the first case we change the active register set to the previously loaded one. In the second case we save the state of an arbitrarily chosen context and then restore the new context into the register set we just backed up.
+\section{When a process creates a new process using the fork() operation, which of the following states is shared between the parent process and the child process?}
+The stack is explicitly not shared between the two and we use a copy-on-write mechanism to create separate versions for the two. The heap is surprisingly not shared and I went so far as to write a simple C program to prove that to myself. Shared memory segments is in fact shared.
+\section{Consider the "exactly once" semantic with respect to the RPC mechanism. Does the algorithm for implementing this semantic execute correctly even if the ACK message sent back to the client is lost due to a network problem? Describe the sequence of messages, and discuss whether "exactly once" is still preserved.} 
+If the ACK message is lost then the caller will resend its RPC again until it actually receives the ACK and answer. The server will be able to tell that it's being told to do something it's already done and won't do it again, instead it will just send another ACK until the client shuts up.
+\section{Assume that a distributed system is susceptible to server failure. What mechanisms would be required to guarantee the "exactly once" semantic for execution of RPCs?}
+%I misunderstood this question. I thought it meant distributed as in peer-to-peer.
+The server has a log of all of the RPCs it's received. It records it's responses to RPCs and thus can read in this log when it's fixed in order to know not to repeat work.
+\chapter{Threads}
+\section{Provide two programming examples in which multi-threading provides better performance than a single-threaded solution.}
+\begin{enumerate}
+\item Online sorting where it takes more time to get an additional element than to do one iteration of an insertion sort.
+\item Downloading parts of a torrent file while simultaneously uploading the parts you've already downloaded.
+\end{enumerate}
+\section{What are two differences between user-level threads and kernel-level threads? Under what circumstances is one better than the other?}
+\begin{enumerate}
+\item User-level threads are scheduled by user processes, while kernel threads are scheduled by the kernel.
+\item User-level threads are mapped to kernel-level threads.
+%\item According the book, user threads are always associated with a process and kernel threads may or may not be part of a process.
+%\item According to the book, kernel threads are more expensive.  
+\end{enumerate}
+Since they are entirely separate things I fail to see how they can be compared in the way the question is asking.
+\section{Describe the actions taken by a kernel to context-switch between kernel-level threads.}
+On Unix-like systems, this is the same as swapping between processes. The registers are saved and then the new thread's registers are restored.
+\section{What resources are used when a thread is created? How do they differ from those used when a process is created?}
+The new threads are given their own stacks. Unlike with processes, they share the heap and thus do not need shared memory regions. Very importantly, threads don't require an entirely new set of virtual memory.
+\section{Assume that an operating system maps user-level threads to the kernel using the many-to-many model and that the mapping is done through LWPs. Furthermore, the system allows developers to create real-time threads for use in real-time systems. Is it necessary to bind a real-time thread to an LWP? Explain.}
+%Yes, it could be done without binding a real-time thread to an LWP, but that would introduce inconsistencies and special-cases into the operating system that would drag down performance.
+Yes, without permanently associating a lightweight process with each real-time thread, those threads would have to wait for an LWP to become available which would drag down their performance and prevent them from keeping their strict schedule.
+\chapter{Process Synchronization}
+\section{In Section 5.4, we mentioned that disabling interrupts frequently can affect the system's clock. Explain why this can occur and how such effects can be minimized.}
+If we use a timer interrupt to keep the clock updated, then any delays in the execution of this interrupt become missing time that the clock isn't aware happened.
+\section{Explain why Windows, Linux, and Solaris implement multiple locking mechanisms. Describe the circumstances under which they use spin-locks, mutex locks, semaphores, adaptive mutex locks, and condition variables. In each case, explain why the mechanism is needed.}
+\begin{enumerate}
+\item Spin locks and mutex locks are used when we want a simple way to manage concurrency and don't mind if we do busy waiting, for example if we're on a multicore processor.
+\item Semaphores are used if we want to prevent busy waiting from happening.
+\item Adaptive mutex locks only spin if the thread with the lock is currently running on another CPU and block if it isn't. On multiprocessor systems, this makes it efficient if the critical region is short.
+\item Condition variables are a more abstract form that is designed to work with monitors in order to eliminate the possibility of programmer error. It consists of a set of conditions each containing a queue of threads that depend on that condition and each of which awakens the next thread in its list when done. It allows us to set arbitrary conditions to wait for instead of just waiting for resources to be free.
+\end{enumerate}
+\section{What is the meaning of the term busy waiting? What other kinds of waiting are there in an operating system? Can busy waiting be avoided altogether? Explain your answer.}
+Busy waiting means that a thread is using its CPU time and other resources in order to repeatedly check if resources are available and will do nothing productive until that happens. The alternative is to sleep in a queue until someone wakes you up. We can greatly reduce busy waiting by using semaphores, but can't eliminate it entirely because semaphores use spinlocks internally.
+\section{Explain why spinlocks are not appropriate for single-processor systems yet are often used in multiprocessor systems.}
+If we use spinlocks on a single-processor system, that implies that some threads will their allocated time in order to do nothing but busy wait. This time would be much better used if allocated to the person holding the lock or literally anyone else who isn't going to waste it with busy waiting. On a multiprocessor system, we can have the process with the lock perform its critical section on one CPU and have others spin on other CPUs, thus reducing the amount of time that is wasted.
+\section{Show that, if the wait() and signal() semaphore operations are not executed automatically, then mutual exclusion may be violated.}
+If the semaphore's value is initially zero and one signal() increments the semaphore value by 1 at the same time that wait() decrements the semaphore value by 1, then the waiting process will procede immediately at the same time that signal is waking someone up.
+\section{Illustrate how a binary semaphore can be used to implement mutual exclusion among n processes.}
+Use the semaphore's value to keep track of whether the list of blocked processes is empty or not. Only have a thread sleep if the list isn't empty.
+\chapter{CPU Scheduling}
+\section{A CPU-scheduling algorithm determines an order for the exectution of its scheduled processes. Given $n$ processes to be scheduled on one processor, how many different schedules are possible? Give a formula in terms of $n$.}
+There are n! permutations of n items.
+\section{Explain the difference between preemptive and nonpreemptive scheduling.}
+In nonpreemptive scheduling, the OS only changes the running process on the CPU when there is no opportunity for the currently running process to immediately keep running. In preemptive scheduling, the OS feels free to context switch to a different proces while it's possible for the current process to continue.
+\section{Given the running times and arrival times of the processes listed in the books. Answer the following questions using nonpreemptive scheduling.}
+\begin{enumerate}[(a)]
+\item The average turnaround time for these processes with the FCFS scheduling algorithm is 10.5$\bar{3}$ milliseconds.
+%(8+(12-.4)+(13-1))/3
+\item The average turnaround time for these processes with the SJF scheduling algorithm is 9.5$\bar{3}$ milliseconds?
+%(8+(9-1)+(13-.4))/3
+\item The SJF algorithm is supposed to improve performance, but notice that we chose to run process $P_1$ at time 0 because we did not know that two shorter processes would arrive soon. Compute what the average turnaround time will be if the CPU is left idle for the first 1 unit and then SJF scheduling is used. Remember that processes $P_1$ and $P_2$ are waiting during this idle time, so their waiting time may increase. This algorithm could be called future-knowledge scheduling. This gives us an average turnaround time of 6.8$\bar{6}$ milliseconds.
+%((2-1)+(6-.4)+(14))/3
+\end{enumerate}
+\section{What advantage is there in having different time-quantum sizes at different levels of a multilevel queuing system?}
+If we separate processes into levels in a way that correlates with their CPU burst time then we can calibrate the time quanta we use in order to try to reduce the number of context switches we have, presumably by trying to make as many threads use less time than the quantum while not letting anyone monopolize the CPU.
+\section{Many CPU-scheduling algorithms are parameterized. For example, the RR algorithm requires a parameter to indicate the time slice. Multilevel feedback queues require parameters to define the number of queues, the scheduling algorithm for each queue, the criteria used to move processes between queues, and so on. These algorithms are thus really sets of algorithms (for example, the set of RR algorithms for all time slices, and so on). One set of algorithm with an infinite time quantum). What (if any) relation holds between the following pairs of algorithm sets?}
+\begin{enumerate}[(a)]
+\item Priority and SJF: SJF is a form of priority-scheduling where the priority is how long the process will occupy the CPU for.
+\item Multilevel feedback queues and FCFS: In the multilevel feedback queue processes are separated into multiple priority queues which use their own algorithm to decide which goes first when the head of their queue is called upon. It's pretty conceivable that a number of these queues might use FCFS to prioritize themselves.
+\item Priority and FCFS: FCFS is a form of priority-scheduling where the priority is when the process arrived. In addition priority-scheduling breaks times with FCFS.
+\item RR and SJF: These are almost completely unrelated. Round-robin parcels out units of time one by one to processes in a circular fashion, while SJF goes through each process in a priority queue until they finish.
+\end{enumerate}
+\section{Suppose that a scheduling algorithm (at the level of short-term CPU scheduling) favors those processes that have used the least processor time in the recent past. Why will this algorithm favor I/O-bound programs and yet not permanently starve CPU-bound programs?}
+As the OS works through the I/O-bound programs they will use all of the CPU-time and increase the priority of the CPU-bound programs while at the same time waiting for their I/O to arrive and removing themselves from the threads that are ready to run.
+\section{Distinguish between PCS and SCS scheduling.}
+In PCS scheduling, a user library allocates lightweight processes to threads within a process. In SCS scheduling, the OS assigns kernel threads to CPUs.
+\section{Assume that an operating system maps user-level threads to the kernel using the many-to-many model and that the mapping is done through the use of LWPs. Furthermore, the system allows program developers to create real-time threads. Is it necessary to bind a real-time thread to an LWP.}
+This was a repeat question from a previous chapter and the answer is still the same. Without binding a real-time thread to an LWP, it might waste time waiting for an LWP which might make it miss its deadline.
+\section{The traditional UNIX scheduler enforces an inverse relationship between priority numbers and priorities: the higher the number, the lower the priority. The scheduler recalculates process priorities once per second using the following function: Priority=(recent CPU usage/2)+base where base=60 and recent CPU usage refers to a value indicating how often a process has used the CPU since priorities were last recalculated. Assume that recent CPU usage is 40 for process $P_1$, 18 for process $P_2$, and 10 for process $P_3$. What will be the new priorities for these three processes when priorities are recalculated? Based on this information, does the traditional UNIX scheduler raise or lower the relative priority of a CPU-bound process?}
+The new priorities for $P_1$, $P_2$, and $P_3$ will then be 80, 69, and 65 respectively. This shows that the traditional UNIX scheduler prioritizes CPU-bound processes.
+\chapter{Deadlocks}
+\section{List three examples of deadlocks that are not related to a computer-system environment.}
+\begin{enumerate}
+\item A hostage negotiation where the FBI won't give the hostage-takers money until they release the hostages and the hostage-takers won't release the hostages until they have the money.
+\item A Settlers of Catan game where two people have the resources to build a settlement split between them and the current player refuses to end their turn until they can get everything they need to build a settlement.
+\item A key which is being held by a locked box that can only be unlocked by someone with the game and someone actually wants to open it.
+\end{enumerate}
+\section{Suppose that a system is in an unsafe state. Show that it is possible for the processes to complete their execution without entering a deadlocked state.}
+We know that there are some processes that are capable of causing a deadlock if they were allowed to acquire all of the resources available and then wait for more, but there's no reason we can't run the processes that are safe and then have them free enough resources for the rest to run.
+\section{Using the given snapshot and the banker's algorithm, answer the following questions. What is the content of the matrix Need? Is the system in a safe state? If a request from process $P_1$ arrives for (0,4,2,0), can the request be granted immediately?}
+$\begin{array}{ccccc}
+&A&B&C&D\\
+P_0&0&0&0&0\\
+P_1&0&7&5&0\\
+P_2&1&0&0&2\\
+P_3&0&0&2&0\\
+P_4&0&6&4&2\\
+\end{array}
+$ \\
+%(1,5,2,0)+(0,0,1,2)=(1,5,3,2)+(1,0,0,0)=(2,5,3,2)+(0,0,1,4)=(2,5,4,6)
+%(1,0,0,0)+(0,0,1,2)=(1,0,1,2)+(1,3,5,4)=(2,3,6,6)+(0,6,3,2)=(2,9,9,8) and then we can grant whatever.
+The system is in a safe state. We can grant that request and then run $P_0$, $P_2$, $P_3$ followed by the other two in any order.
+\section{A possible method for preventing deadlocks is to have a single, higher-order resource that must be requested before any other resource. For example, if multiple threads attempt to access the synchronization objects A \dots E, deadlock is possible. (Such synchronization objects may include mutexes, semaphores, condition variables, and the like.) WE can prevent the deadlock by adding a sixth object F. Whenever a thread wants to acquire the synchronization lock for any object A \dots E, it must first acquire the lock for object F. This solution is known as containment: the locks for objects A \dots E are contained within the lock for object F. Compare this scheme with the circular-wait of Section 7.4.4.}
+Like circular wait, it uses an ordering within the resources to ensure that no process will request resources in a way that can lead to deadlock. Unlike circular wait, it doesn't allow for multiple people to request resources simultaneously since there is only one F.
+\section{Prove that the safety algorithm presented in Section 7.5.3 is O($m\times n^2$)}
+Worst case the loop in step 2 will run for each element in finish which is O($n$), the loop in step 2 itself takes O($n$) to find the element, and each run of the loop requires m additions to update work. QED O($m\times n^2$).
+\section{Consider a computer system that runs 5,000 jobs per month and has no deadlock-prevention or deadlock-avoidance scheme. Deadlocks occur about twice per month, and the operator must terminate and rerun about ten jobs per deadlock. Each job is worth about two dollars (in CPU time), and the jobs terminated tend to be half done when they are aborted. A systems programmer has estimated that a deadlock-avoidance algorithm (like the banker's algorithm) could be installed in the system with an increase of about 10 percent in the average execution time per job. Since the machine currently has 30 percent idle time, all 5,000 jobs per month could still be run, although turnaround time would increase by about 20 percent on average. Give arguments for and against installing the deadlock-avoidance algorithm.}
+The arguments for it are that it might improve performance by 1 or 2 \% by not rerunning 20 jobs per month, however it would be a very bad idea to implement this system. If we decrease the idle time in order to do the same amount of work, we are increasing CPU usage and therefore electricity costs. Furthermore, it would cost money to install a system which doesn't affect productivity much and it reduces our ability to run time-critical jobs.
+\section{Can a system detect that some of its processes are starving? If you answer "yes", explain how it can. If you answer "no", explain how the system can deal with the starvation problem.}
+Yes, it can keep a list of how long its been since each process did something besides wait and have a threshold to detect if people have been waiting for too long.
+\section{Consider the following resource-allocation policy. Requests for and releases of resources are allowed at any time. If a request for resources cannot be satisfied because the resources are not available, then we check any processes that are blocked waiting for resources. If a blocked process has the desired resources, then these resources are taken away from it and are given to the requesting process. The vector of resources for which the blocked process is waiting is increased to include the resources that were taken away. Answer these questions: Can deadlock occur? If you answer "yes", give an example. If you answer "no", specify which necessary condition cannot occur. Can indefinite blocking occur? Explain your answer.}
+No deadlock can occur because preemption means there can't be any circular waiting. Indefinite blocking can occur if the system doesn't have enough resources for any process. 
+\section{Suppose that you have coded the deadlock-avoidance safety algorithm and now have been asked to implement the deadlock-detection algorithm. Can you do so by simply using the safety algorithm code and redefining $ Max_i = Waiting_i + Allocation_i$, where $Waiting_i$ is a vector specifying the resources for which process i is waiting and $Allocation_i$ is as defined in Section 7.5? Explain your answer.}
+Yes, in this case the $Waiting_i$ vector is the same as the $Request_i$ listed in the algorithm.
+\section{Is it possible to have a deadlock involving only one single-threaded process? Explain your answer.}
+%I was going to say that if the kernel was running on one CPU and a process was running on another they could deadlock, but that's not correct.
+No, because there are no other processes that could possibly hold resources and the kernel doesn't actually count.
+\chapter{Main Memory}
+\section{Name two differences between logical and physical addresses.}
+\begin{enumerate}
+\item Logical addresses are mapped to physical addresses before actually being used.
+\item Logical addresses are a construct of the OS. Physical addresses are hardware.
+\end{enumerate}
+\section{Consider a system in which a program can be separated into two parts: code and data. The CPU knows whether it wants an instruction (instruction fetch) or data (data fetch or store). Therefore, two base-limit register pairs are provided: one for instructions and one for data. The instruction base-limit register pair is automatically read-only, so programs can be shared among different users. Discuss the advantages and disadvantages of this scheme.}
+Advantages
+\begin{enumerate}
+\item Like mentioned it allows programs to be shared among processes. 
+\item Prevents viruses from modifying your code
+\end{enumerate}
+Disadvantages
+\begin{enumerate}
+\item Requires flags to differentiate between instruction and data fetches.
+\item Wastes a pair of registers.
+\item Prohibits self-modifying programs.
+\item Unnecessary, programs can be done as dynamically linked libraries if that's what's wanted.
+\end{enumerate}
+\section{Why are page sizes always powers of 2?}
+You must have an integer number of bits to address within the page, so that gives you $2^n$ possible offsets , if not all of them are valid you are wasting space and introducing a source of error. It would also make the virtual memory abstraction leaky since you wouldn't be able to just keeping increment the address.
+\section{Consider a logical address space of 64 pages of 1,024 words each, mapped onto a physical memory of 32 frames. How many bits are there in the logical address and physical address?}
+The logical address takes up $\log_2(64\times1024)=\unit[16]{bits}$. Physical is $\log_2(32\times1024)=\unit[15]{bits}$.
+\section{What is the effect of allowing two entries in a page table to point to the same page frame in memory? Explain how this effect could be used to decrease the amount of time needed to copy a large amount of memory from one place to another. What effect would updating some byte on the one page have on the other page.}
+In this case we have two completely identical pages. This doesn't make it easier to actually copy data to a different physical memory, but it does "copy" code and data to make it available for multiple processes. Changes to one page would show up on the other page so in this case the OS would make sure to either mark it as read-only or to synchronize the changes.
+\section{Describe a mechanism by which one segment could belong to the address space of two different processes.}
+%Segments and page frame are separate processes entirely. This answer is just wrong.
+%Use the answer to the previous question where two processes have the same page in memory and that page contains a segment.
+Give the segment identical entries in the segment tables of each process that needs it.
+\section{Sharing segments among processes without requiring that they have the same segment number is possible in a dynamically linked segmentation system.}
+\begin{enumerate}[(a)]
+\item Define a system that allows static linking and sharing of segments without requiring that the segment numbers be the same.
+Memory addresses to things in the segment are replaced in static linking with an offset from the address of the beginning of the segment. Presumably, the program can know what its address is at run-time.
+\item Describe a paging scheme that allows pages to be shared without requiring that the page numbers be the same. 
+Same system as above but replace "beginning of the segment" with "beginning of the page".
+\end{enumerate}
+\section{Which of the following memory-management schemes could be used successfully with the given IBM/370 hardware}
+You could use bare machine with it definitely just leave the CPU key as 0. Single-user system is the same but only make the CPU key 0 when the kernel is running. For pages and segmentation, you'd have to use 2 KB pages and segments but you can store the key in the page/segment. My gut instinct was to say that you couldn't do either of the multiprogramming, but I changed my mind when I saw the book's answer that you just allocate blocks of memory in 2KB regions store the memory keys in them and make the CPU key 0 when the OS is running.
+\section{Given six memory partitions of 300 KB, 600 KB, 350 KB, 200 KB, 750 KB, and 125 KB (in order), how would the first-fit, best-fit, and worst-fit algorithms place processes of size 115 KB, 500 KB, 358 KB, 200 KB, and 375 KB (in order)? Rank the algorithms in terms of how efficiently they use memory.}
+\begin{itemize}
+\item First-fit: 115 goes in 300, 500 goes in 600, 358 goes in 750, 200 goes in 350, 375 goes in 750.
+\item Best-fit: 115 goes in 125, 500 goes in 600, 358 goes in 750, 200 goes in 200, 375 goes in 750.
+\item Worst-fit: 115  goes in 750, 500 goes in 750, 358 goes in 600, 200 goes in 350, 375 goes in nowhere. 
+\end{itemize}
+Worst-fit is worst since it couldn't place all of them and best fit in best because the remaining space is more concentrated.
+\chapter{Virtual Memory}
+\section{Under what circumstances do page faults occur? Describe the actions taken by the operating system when a page fault occurs.}
+Page faults occur when a page is neither located in a translation-lookaside buffer or in the page table, that is the page is located on the physical disk. In this case the operating system validates the memory access, loads the page into main memory, adds it to the page table, adds it to the translation-lookaside buffer, bumps another page from the TLB if necessary, and restarts the instruction.
+\section{Give upper and lower bounds on the number of page faults given $m$ frames a page-reference string of length $p$ and $n$ distinct page numbers.}
+The lower bound if $n$ since each page has to be loaded into memory once and the upper bound is $p$ if we have a limited number of frames and the input is not ordered to make life easy for our page-replacement algorithm.
+\section{Using the given page table, convert the following virtual address to their equivalent physical addresses.}
+\begin{itemize}
+\item 9EF: 0EF
+\item 111: 211
+\item 700: D00
+\item 0FF: EFF
+\end{itemize}
+\section{Rank these algorithms on a five-point scale according to their page-fault rate. Say which suffer from Belady's anomaly and which don't}
+\begin{enumerate}[(a)]
+%The book's five point scale was 1 best 5 worst, mine is the other way around.
+%I'm glad I realized second-chance wasn't a stack algorithm before looking at the answer.
+\item LRU replacement: 4, doesn't suffer
+\item FIFO Replacement: 2, suffers.
+\item Optimal Replacement: 5, doesn't suffer.
+\item Second-chance replacement: 3, occassionally suffers. 
+\end{enumerate}
+\section{Discuss the hardware support required to support demand paging.}
+We should have a page table with reference bits that are checked by hardware and a TLB, we should also have page faults and preferably a fast hard drive.
+\section{Calculate the effective instruction time on the given system, assuming the system is running one process only and that the processor is idle during drum transfers.}
+%Cycle time+Page access time+Time to spin, read a page, and possible write one
+$1+.01\times1+.002\times(15000+1500)=\unit[34.01]{microseconds}$
+\section{For the given array-initialization loops and three page frames, how many page faults are generated.}
+\begin{enumerate}[a.]
+\item 5000
+\item 50
+\end{enumerate}
+\section{With the given page reference string, how many page faults would occur for the following replacement algorithms assuming one, two, three, four, five, six, and seven frames?}
+This is just busy work, so I'm skipping it.
+%$\begin{array}{c|c|c|c|c|c|c|c}
+%&1&2&3&4&5&6&7\\
+%$LRU$&&&&&&&\\
+%$FIFO$&&&&&&&\\
+%$Optimal$&&&&&&&\\
+%\end{array}$
+\section{Sketch how you could simulate a reference bit even if one were not provided one by the hardware, or explain why it is not possible to do so. If it is possible, calculate what the cost would be.}
+If you have less than 32 or 64 pages per process, you could reserve a register to store a bit for each page of virtual memory. Updating this would be a maybe a half dozen bitwise operations which could be done quickly.
+%Books solution is to coopt the page's valid bit, but if they won't give you a reference bit why do you assume they'll give you a valid bit?
+\section{Is it possible for a page-replacement algorithm that sometimes experiences Belady's anomaly to be optimal? Explain your answer.}
+No, we know that the optimal page-replacement algorithm does not experience Belady's anomaly. \textsc{QED}
+\section{Segments are variable-sized "pages" Define segment-replacement algorithms based on FIFO and LRU. Remember that segments chosen for replacement may not be big enough to leave room for the replacing segment. Consider systems where segments can and cannot be relocated.}
+When we first allocate space for a segment we put it in a space perfectly suited for it. When we run out of room for new segments we start replacing segments. If we can relocate them, then we can just do what FIFO and LRU say and if the space isn't big enough we relocate the neighboring space with lower priority until we have room. If we can't relocate them, then we search for the one with lowest priority that would give us enough room to add our segment or we combine the one with the lowest priority and its neighbors and replace them all with a single segment.
+\section{Consider a demand-paged computer system where the degree of multiprogramming is fixed at four. Three measurements of the CPU and paging disk utilization are given below. Explain what is happening in each case. Would increasing the degree of multiprogramming help CPU utilization? Is the paging helping?}
+\begin{enumerate}[a.]
+\item CPU Utilization 13 percent; disk utilization 97 percent: In this case the program is thrashing, we have too many programs running simultaneously and its swapping between them too much. The paging isn't really helping.
+\item CPU Utilization 87 percent; disk utilization 3 percent In this case the program is working well, we could probably add more processes and the paging is doing its job.
+\item CPU Utilization 13 percent; disk utilization 3 percent: In this case I suspect we have a bunch of programs waiting on I/O, increasing the degree of multiprogramming would help and the paging is good.
+\end{enumerate}
+\section{Can we use page tables to simulate base and limit registers? How can they be, or why can't they be?}
+They can't be. Pages aren't of flexible size.
+%Book disagrees.
+\chapter{Mass-Storage Structure}
+\section{Is disk scheduling, other than FCFS, useful in a single-user environment? Explain.}
+Yes, single-user doesn't preclude multiprogramming and it is useful for multiple threads accessing the hard drive simultaneously.
+\section{Explain why SSTF tends to favor middle cylinders over the innermost and outermost cylinders.}
+Starting at a random position we are on average 1/4 of the disks radius from the middle cylinder, while we are on average 1/2 a radius away from the inner and outermost cylinders.
+\section{Why is rotational latency not considered in disk scheduling? Modify SSTF, SCAN, and C-SCAN to include latency optimization.}
+%It's usually dominated by the seek time and we can do it simultaneously with the seeking. For SSTF, add the extra time to rotate in place to the seek time, for SCAN and C-SCAN do nothing since they don't consider seek time.
+Disks don't often tell the OS where the head is in its rotation and the time it would take to factor this in would be a waste of time due to inaccuracy in the OS' real-time knowledge of the head position and the imprecise mapping between sector's address and location.
+\section{Why is it important to balance file-system I/O among the disks and controllers on a system in a multitasking environment?}
+Disks and controllers are a mutually exclusive resource, they can only be contributing to one process at a time, only by spreading the load out among the disks and controllers can we maximize the productive work they are doing. 
+\paragraph{} From a different perspective, if we don't balance access to disks and controllers among different processes then we are starving some programs of the resources they need to do work.
+\section{What are the tradeoffs involved in rereading code pages from the file system versus using swap space to store them?}
+%This is a really good question.
+Since we know that code pages are read-only we know its safe to store them in swap-space which may be faster to access and don't need to read them again. However since we know they're read-only we can leave our swap-space open for data and reread the file in confidence that it is the same as what it used to be.
+\section{Is there any way to implement truly stable storage? Explain your answer.}
+No, drive failure is an independent event and so we can not place an upper bound on the number of simultaneous drive failures that doesn't result in data loss.
+\section{Using the computer system given in the book, answer the questions given in the book.}
+%I'm being brief because I'm trying to study not give myself carpal tunnel.
+$\begin{array}{|c|c|c|c|c|}\hline
+&\unit[512]{bytes}&\unit[8]{kilobytes}&\unit[1]{megabyte}&\unit[16]{megabytes}\\\hline
+%.015+512/(5*2^20) |.015+8*2^10/(5*2^20)|.015+1/5|.015+16/5
+$Effective Transfer  Rate (seconds)$&0.01509765625&0.0165625&0.215&3.215\\\hline
+$Utilization (ratio)$&0.0064683053&0.09433962264&0.93023255814&0.99533437014\\\hline
+\end{array}$
+\\\par
+A disk is a random-access device for transfers larger than a disk block and is a sequential-access device for smaller transfers. A tape is a random-access device when you are reading individual things from an archive and is a sequential-access device when you are reading or writing an entire section of an archive.
+\\\par
+$\begin{array}{|c|c|c|c|c|}\hline
+%The equation .25=(transfer)/(transfer+access)
+%.25*(transfer+access)=transfer
+%.25*access=.75*transfer
+%.33*access=transfer
+%.33*access*speed=threshold
+$Device$&$cache$&$memory$&$disk$&$tape$\\\hline
+$Acceptable utilization threshold$&\unit[2.23696213] {bytes}&\unit[1.6777216]{bytes}&\unit[25.6]{kilobytes}&\unit[40]{ megabytes}\\\hline
+\end{array}$
+\section{Could a RAID 1 organization achieve better read performance than a RAID 0 with non-redundant striping of data? If so, how?}
+% I actually heard how to do this before I started reading this book. Computer science/gamer friends are the best.
+Yes, you can do the same trick as with RAID 0 where you read parts from each disk and put them together yourself, but you can optimize which disk to read from and get the lowest seek time possible.
+\chapter{File-System Interface}
+\section{Discuss the relative merits of automatically deleting user files when the user's done versus preserving them until the user explicitly deletes them.}
+If most users are just logging in to run one or two jobs before leaving, then it would be a waste of resources to preserve files that are attached to a user who will probably never return. In other scenarios with much more users than resources it would free up scarce resources for other users. If you're a home computer then it would be a severe inconvenience for the owner to have to specify which files are needed and it would be unlikely that we'd need to start deleting his files to free memory.
+\section{Why do some systems track file types, others leave it to the user, and others don't implement multiple file types? Compare advantages and disadvantages.}
+Having the OS track file types allows it to associate each file type with a certain program and in the case of executables enhance security by preventing execution of non-executables. On the other hand, it disallows aliasing and is inflexible. Having the user track file types still lets the OS associate each file type with a program, but is more flexible and allows new file types to be created at will. On the other hand, we have no way of knowing that the user hasn't changed the type of file to be something inaccurate. The simplest scenario is to not track file types at all and is also the most flexible in that we can use any file as input to any program. On the other hand, this lets people sneak viruses onto our system in a myriad number of ways and doesn't allow us to know at a glance which program should be used for each file type.
+\section{What are the advantages and disadvantages of supporting many types of structures for a file's data while others just support a stream of bytes? }
+If you just have a stream of bytes, you can emulate a structured file easily, but if you have a structured file it can be nontrivial to emulate a stream of bytes. Its much easier to append to a stream of bytes than to possibly edit a structure, similar arguments hold for reading and writing. One advantage that a structured file has it that you can separate a file into parts that the user can and cannot get to which can make things easier for the OS.
+\section{Could you simulate a multilevel directory structure with a single-level directory structure in which arbitrarily long names can be used? If yes, explain how, and contrast your scheme with a multilevel directory scheme. If no, explain why not. How would your answer change if file names were limited to seven chars?}
+Yes, pick a char to serve as a file separator, whenever it shows up in a file name replace it with of itself. Then you can use this char to give things names like "stuff/bin/a.out". This is different from a multilevel directory scheme in that all of the files would be listed in the same directory, it's just the nature of alphabetization that they would all grouped together in the same way they would if they were part of a multilevel directory scheme. If we were limited to seven chars we would not be able to do this.
+\section{Explain the purpose of the open() and close() operations.}
+The open() operation checks a file name for existence and also whether the user has permission to access the file in that way. Together the open() and close() operations maintain a table of open files which the OS checks against when the user wants to perform operations that can only be done to closed files such as deletion, movement, renaming, etc.
+\section{Describe the protection problems that could arise if an authorized user can read and write subdirectories as if they were ordinary files. Suggest a scheme for dealing with them.}
+%If we let people read subdirectories then they might be able to get information about files or sub-subdirectories they don't have permission for. If we let people write subdirectories then they might put the system in an inconsistent state. We can deal with this but not giving read/write permission to anyone who doesn't have read/write permission for every file in the folder.
+The directory contains a file address, which if modified would let the user access files without permission. We can deal with this by giving the user system operations to modify directories instead.
+\section{In a system with 5,000 users we want to allow 4,990 of them to be able to access one file. Specify this protection scheme in UNIX. Suggest another protection scheme that would be more effective than the one UNIX one.}
+In UNIX,we would either put all 4990 in an access-control list or create a group containing the 4,990 people who need access and give that group access. We could alternatively create a list of the ten people who don't have permission and give everyone else permission.
+\section{Compare the merits of an access list being associated with each file with a user control list being associated with each user.}
+We expect user control lists to be much longer and therefore to take longer to search and maintain, however they would also be more convenient than trying to search through directories in order to get to the file so you can check your permissions. The number of users and therefore access list is of a (mostly) fixed size, while the number of files and therefore user control list is expected to change routinely. When I first started writing this paragraph I was convinced that access lists were superior but now I think I'm unsure.
+\chapter{File-System Implementation}
+\section{Create a table showing the number of I/O operations required when the X axis is one of six possible operations and the y axis is allocation strategy.}
+$\begin{array}{|c|c|c|c|c|c|c|}\hline
+&$Add at Start$&$Add at Mid$&$Add at End$&$Remove at Start$&$Removed at Mid$&$Removed at End$\\\hline
+$Contiguous$&201&101&1&198&98&0\\\hline
+$Linked$&1&52&3&1&51&100\\\hline
+$Indexed$&1&1&1&0&0&0\\\hline
+\end{array}$
+\section{What problems could occur if a system allowed a file system to be mounted simultaneously at more than one location?}
+We would have multiple paths to the same file and it would be unclear to the user how many identical copies to the file are being changed when they change a file.
+\section{Why must the bit map for file allocation be kept on mass storage, rather than in main memory?}
+It's extremely large and if loaded into main memory would displace more useful things. Also, we would lose the list of free files if it was updated in RAM but wasn't written out to memory.
+\section{Consider a system that supports the strategies of contiguous, linked, and indexed allocation. What criteria should be used in deciding which strategy is best utilized for a particular file?}
+Files which are unlikely to grow once written and which we want to access in a random manner should be contiguous. Files which are unlikely to grow much and are only going to be used sequentially should be sequential. Otherwise indexed should be used.
+\section{Compare implementing a file as a linked list of contiguous areas with the standard contiguous and linked implementations.}
+%The book gives a super lazy answer. I'm proud to at least once have put in my effort than the authors.
+I think it would be an improvement. The initial request for space as well as requests for more space can be allocated contiguously to minimize the number of requests that would need to be made. At the beginning of each list node there would have to be a parameter saying the number of blocks which wouldn't be needed in a normal linked implementation and of course the next pointer. As long list nodes were on average at least 2 blocks, the pointers we wouldn't need would balance out with the extra int saying size.
+\section{How do caches help improve performance? Why do systems not use more or larger caches if they are so useful?}
+%This is one of those questions that you will have to answer repeatedly, if you do anything involving computer science.
+Caching takes data then we access most often and places it in a segment of memory that is faster to access than the backing medium. Caches are expensive and increasing their size decreases their performance.
+\section{Why is it advantageous to the user for an operating system to dynamically allocate its internal tables? What are the penalties to the operating system for doing so?}
+Then it can support arbitrarily many process, open files, users, etc. On the other hand it means they can't be guaranteed to stay in one space, may suffer from fragmentation, and various other things.
+\section{Explain how the VFS layer allows an operating system to support multiple types of file systems easily.}
+Just like Java interfaces, it provides a common set of methods which are implemented by the different file systems on the computer and provide a common framework.
+\chapter{I/O Systems}
+\section{State three advantages of placing functionality in a device controller, rather than in the kernel. State three disadvantages.}
+Advantages
+\begin{enumerate}
+\item Devices can do it with an ASIC or something more optimized than a CPU.
+\item Can run in parallel with things on the CPU.
+\item Can handle complicated protocols natively without having to load that into the system.
+\end{enumerate}
+Disadvantages
+\begin{enumerate}
+\item Different devices may not have the same functionality.
+\item Takes power away from the OS.
+\item Not transparent.
+\end{enumerate}
+\section{Is it possible to implement the handshaking protocol from Section 13.2 with one bit? If it is, describe the protocol. If it is not, explain why one bit is insufficient.}
+Yes, the device changes the bit from 1 to 0 when its ready, the host changes the bit back when it's giving orders.
+\section{Why might a system use interrupt-driven I/O to manage a single serial port and polling I/O to manage a front-end processsor, such as a terminal concentrator?}
+Polling I/O is optimal if we don't plan on having to wait long, for example high-speed monitors or cameras. While interrupts are much more useful if we plan on waiting a while.
+\section{Describe a hybrid strategy that combines polling, sleeping, and interrupts for I/O device service. For each of these three strategies (pure polling, pure interrupts, hybrid), describe a computing environment in which that strategy is more efficient than is either of the others.}
+Poll a couple times, sleep some time, poll once and then interrupt if necessary.
+Pure polling is more efficient if the system is fast like a monitor or camera.
+Pure interrupt are  best for slow long communication like printers.
+Hybrids would presumably work best for both slow and fast systems.
+\section{How does DMA increase system concurrency? How does it complicate hardware design?} 
+The DMA is essentially an ASIC which can play with hardware while the CPU is doing other things and then retake control when its ready. It complicates hardware design because it needs access to RAM which means the main memory needs to be able to service requests from two people concurrently and the DMA needs to be wired to connect to devices regardless of which place they are connected to.
+\section{Why is it important to scale up system-bus and device speeds as CPU speed increases?}
+This follows from Amdahl's law, you can speed up the CPU infinitely but you still would be bottlenecked by the system-bus and device speeds.
+\section{Distinguish between a STREAMS driver and a STREAMS module.}
+A STREAMS driver is on the end of a series of STREAMS modules that process the data it gets from the device.
+\chapter{Protection}
+\section{What are the main differences between capability lists and access lists?}
+Access lists are associated with the resource. Capability lists are associated with the process.
+\section{For what purpose would it be useful to overwrite deleted files with random bits?}
+Cleaning up after the temporary files of a secure system.
+\section{In a ring-protection system, what is the relationship between the capabilities of a domain at level j and a domain at level i to an object (for j$>$i)?}
+Equal to or lesser.
+\section{For the given system, what is the relationship between A(x,y) and A(z,y) for an arbitrary object y and x a descendant of y?}
+It is a subset.
+\section{What protection problems may arise if a shared stack is used for parameter passing?}
+If the stack is shared with thinks of lesser privileges they might be able to change the parameters in order to attack the system.
+\section{Consider a scheme where a process with unique number n can only access an object with unique number m if n<m. What kind of protection structure is this?}
+A very esoteric ring-protection system.
+\section{Consider a computing environment where a process is given the privilege of accessing an object only n times. Suggest a scheme for implementing this policy.}
+Associate a counter with the capability list.
+\section{Suggest an efficient implementation of an algorithm that frees an object as soon as noone has access rights to it.}
+Just like garbage collection in high-level languages. Associate each object with a number saying how many access rights to it, modify it whenever someone gains or loses rights, when it's zero delete it.
+\section{Why is it difficult to protect a system in which users are allowed to do their own I/O?}
+I/O requires accessing hardware and if someone other than the OS does that, the OS has no guarantees that the hardware hasn't been put in an incorrect state.
+%I/O can be used to get code on the system and execute an attack.
+\section{How does the system ensure that the user cannot modify the contents of a capability list stored in its address space?}
+I say make it read-only, book says make it a "protected object" and only let it indirectly reference the list.
+\chapter{Security}
+I entered "penis" as a password once. The computer rejected it with "password error, not long enough". I then tried to use 'biggerpenis' and computer rejected that with HTTP: 413 Request Entity Too Large
+\chapter{Virtual Machines}
+Inception was right. If you run a virtual machine inside a virtual machine, it's slower. Then if you run a virtual machine inside THAT virtual machine, it's even slower than the rest.
+\chapter{Distributed Systems}
+\section{Why would it be a bad idea for gateways to pass broadcast packets between networks? What would be the advantages of doing so?}
+This would cripple the Internet with large amounts of data that doesn't need to be sent to everyone. If you had critical information to broadcast and didn't abuse the power to spam everyone it would be useful.
+\section{Discuss the advantages and disadvantages of caching name translations for computers located in remote domains.}
+It saves us a costly call to a DNS server, but we have no guarantees that that translation will stay valid.
+\section{What are the advantages and disadvantages of circuit switching? For what kinds of applications is circuit switching a viable strategy?}
+The advantages are that you know you will never have to waste time finding a path, your data will arrive in order, and in a timely fashion. The disadvantage is that you prevent everyone else from using those connections and you don't adjust in order to find faster connections at any point.  Circuit switching is a viable strategy for live feeds of every kind.
+\section{What are two formidable problems that designers must solve to implement a network system that has the quality of transparency?}
+\begin{enumerate}
+\item Handling the difference between big and little endian systems and other data formatting things.
+\item Integrating remote files into the file system cleanly.
+\end{enumerate}
+\section{Describe a method for process migration across different architectures running the same and different operating systems.}
+If the OS is the same we can copy the process's memory space, code, data, and registers and just run it that way. If the OS is different, we can transmit the desired process as code in an interpreted language and have an interpreter execute it.
+\section{List three possible types of failure in a distributed system. Specify which of the entries in your list also are applicable to a centralized system.}
+\begin{enumerate}
+\item Node failure: Happens in centralized systems.
+\item Network failure: Doesn't happen in centralized systems.
+\item Data corruption: Happens in centralized systems.
+\end{enumerate}
+\section{Is it always crucial to know that the message you have sent has arrived at its destination safely? If your answer is "yes", explain why. If your answer is "no", give examples.}
+No, if you're a node in a bitTorrent swarm and you decide to stop sharing something protocol requires you to announce that, but if people don't get the message and try to talk to you anyway you can just say no to their requests.
+\section{In a distributed system with nodes A and B is it possible for A to distinguish between the following: B goes down. The link between A and B goes down. B's response time is 100 times longer than normal. What implications does your answer have for recovery in distributed systems?}
+All three can be distinguished. The first and second can be distinguished by trying alternate routes to get to B. The third only happens if you're getting replies from B on the main link at all. Since you can perfectly tell these three apart it implies you don't have to worry about ambiguity when you're deciding how to respond.
+\end{document}

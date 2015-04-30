@@ -5,7 +5,8 @@
 \maketitle
 \section*{Slide 7 Notes}
 \begin{itemize}
-\item What are the seven layers? (This was a midterm question, possibly also on the final)
+\item What are the seven layers? (This was a midterm question, possibly also on
+ the final)
 \begin{itemize}
 \item Application
 \item Presentation
@@ -17,10 +18,14 @@
 \end{itemize}
 \item Types of switching
 \begin{enumerate}
-\item Message switching - entire message is sent as one giant block, sent from host to host to host. Kind of stupid.
-\item Packet switching - each packet in the message is sent individually, real-time, reliable, prioritization
-\item Circuit switching - dedicated circuit is created between beginning and end, phones.
-\item Leased lines - permanently dedicated circuit, heavy constant traffic. See Spread Networks.
+\item Message switching - entire message is sent as one giant block, sent from 
+host to host to host. Kind of stupid.
+\item Packet switching - each packet in the message is sent individually, 
+real-time, reliable, prioritization
+\item Circuit switching - dedicated circuit is created between beginning and 
+end, phones.
+\item Leased lines - permanently dedicated circuit, heavy constant traffic. 
+See Spread Networks.
 \end{enumerate}
 \item Network functions
 \begin{itemize}
@@ -30,9 +35,12 @@
 \end{itemize}
 \item Types of Routing
 \begin{enumerate}
-\item Connection-oriented - establish a virtual circuit and send all data over it. Guarantees packets arrive in-order.
-\item Connectionless - Like IP, each packet is routed seperately as datagrams. Has some issues that need to be handled.
-\item Source routing - done as homework, not practical because it assumes everyone knows everything
+\item Connection-oriented - establish a virtual circuit and send all data over 
+it. Guarantees packets arrive in-order.
+\item Connectionless - Like IP, each packet is routed seperately as datagrams.
+ Has some issues that need to be handled.
+\item Source routing - done as homework, not practical because it assumes 
+everyone knows everything
 \end{enumerate}
 \item Ways to control congestion
 \begin{enumerate}
@@ -40,30 +48,42 @@
 \item Allocate more buffers.
 \item Drop packets (connectionless only)
 \item Require use of sliding window (connection-oriented only)
-\item Reroute packets around congestion as if they were cars in traffic (connectionless only)
+\item Reroute packets around congestion as if they were cars in traffic 
+(connectionless only)
 \end{enumerate}
 \end{itemize}
 \subsection*{Internetworking}
 \begin{itemize}
-\item Definition: routing among networks as opposed to within them, can be either connection-oriented or connectionless
-\item Open Systems Interconnect - An open standard for connection-oriented internetworking. Expensive, supplanted by TCP/IP. Relies on X.25.
+\item Definition: routing among networks as opposed to within them, can be 
+either connection-oriented or connectionless
+\item Open Systems Interconnect - An open standard for connection-oriented 
+internetworking. Expensive, supplanted by TCP/IP. Relies on X.25.
 \item What is X.25?
 \begin{itemize}
 \item connection-oriented
 \item requires X.21 bis and LAPB as layer 1/2 standards
-\item Either over switched virtual circuit (SVC) or permanent virtual circuit (PVC).
-\item Specifies interface between host and network switch. Interfaces between switches are left up to carrier.
-\item X.25 Virtual Call: DTE sends CALL REQUEST packet, Receiver either replies with CALL ACCEPTED or CALL REJECTED. If accepted, communication begins. There's a sliding window which is usually 2 packets wide with packets of 256 bytes.
-\item X.25 Fast Select: For short transmissions, can send 128 bytes with CALL ACCEPT/REJECT.
-\item Connection Oriented Networking with X.75. X.75 defines interface between two X.25 networks. Makes bigger virtual network.
+\item Either over switched virtual circuit (SVC) or permanent virtual circuit 
+(PVC).
+\item Specifies interface between host and network switch. Interfaces between 
+switches are left up to carrier.
+\item X.25 Virtual Call: DTE sends CALL REQUEST packet, Receiver either replies
+ with CALL ACCEPTED or CALL REJECTED. If accepted, communication begins. 
+ There's a sliding window which is usually 2 packets wide with packets of 256 
+ bytes.
+\item X.25 Fast Select: For short transmissions, can send 128 bytes with CALL
+ ACCEPT/REJECT.
+\item Connection Oriented Networking with X.75. X.75 defines interface between
+ two X.25 networks. Makes bigger virtual network.
 \end{itemize}
 \item What is Asynchronous Transfer Mode?
 \begin{itemize}
 \item Connection-oriented packet-switched network
 \item Sends cells of fixed 53 bytes, 5 bytes header, 48 bytes data.
-\item Underlying technology for "Broadband Integrated Services Digital Network", which has its own stupid reference model.
+\item Underlying technology for "Broadband Integrated Services Digital Network",
+ which has its own stupid reference model.
 \item Has associated hardware AND software. (sounds expensive!)
-\item Viewpoints: Integrated access for users, network infrastructure for computers, backbone for lesser networks.
+\item Viewpoints: Integrated access for users, network infrastructure for
+ computers, backbone for lesser networks.
 \item Reasons for small cell size
 \begin{enumerate}
 \item Reduced queueing delay
@@ -73,24 +93,89 @@
 \item Fixed format switching inefficiencies
 \end{enumerate}
 \item Routing is connection-oriented.
-\item Basic element of routing is virtual channel. These are grouped into virtual paths.
+\item Basic element of routing is virtual channel. These are grouped into 
+virtual paths.
 \item Like X.25 we have PVCs and SVCs.
-\item Connection setup is done with SETUP, CALL\_PROCEEDING, CONNECT, CONNECT\_ACK, RELEASE, and RELEASE\_COMPLETE messages.
+\item Connection setup is done with SETUP, CALL\_PROCEEDING, CONNECT, 
+CONNECT\_ACK, RELEASE, and RELEASE\_COMPLETE messages.
 \end{itemize}
 \item SONET (Review)
-\item Definition: Synchronous Optical NETwork, OC-1 is 51.84 Mbit/s, faster signals are made by multiplexing links.
-\item Proprietary network protocols: Largely irrelevant, but Systes Network Architecture (SNA) was a popular IBM one and Internetwork Packet Exchange (IPX) was a Novell one.
+\item Definition: Synchronous Optical NETwork, OC-1 is 51.84 Mbit/s, faster 
+signals are made by multiplexing links.
+\item Proprietary network protocols: Largely irrelevant, but 
+System Network Architecture (SNA) was a popular IBM one and 
+Internetwork Packet Exchange (IPX) was a Novell one.
 \end{itemize}
 \subsection*{The Routing Problem}
 \begin{itemize}
-\item Can either be done with shortest-path or "optimal" routing, based on whether you weight the links.
+\item Can either be done with shortest-path or "optimal" routing, 
+based on whether you weight the links.
 \item Primitive routing techniques include:
 \begin{enumerate}
-\item Source routing: Message contains list of nodes that must be visited on path to dest.
+\item Source routing: Message contains list of nodes that must be visited
+ on path to dest.
 \item Static routing: predetermined paths that do not change.
-\item Flooding: Spam everyone, then everyone spams everyone else. Horribly inefficient.
+\item Flooding: Spam everyone, then everyone spams everyone else. Horribly 
+inefficient.
 \end{enumerate}
-\item Adaptive routing is the good alternative to static routing. Based on measuring network in action.
-\item Shortest path spanning tree routing, either using Bellman-Ford or Dijkstra to compute the shortest path to each other node.
+\item Adaptive routing is the good alternative to static routing. Based on
+ measuring network in action.
+\item Shortest path spanning tree routing, either using Bellman-Ford or 
+Dijkstra to compute the shortest path to each other node.
+\end{itemize}
+\section*{Slides 8 Notes}
+\begin{itemize}
+\item Metcalfe's Law: Value of a network to a user is proportional to $n^2$,
+ where n is number of users.
+\item Others argue that it's actually $n\log(n)$, these people have better
+ evidence.
+\item DARPA created ARPANET in 1968, which introduced RFC's.
+\item In the 70's TCP/IP was developed as the protocol suite for ARPANET.
+\item IETF now supports dozens of open protocols that make up the Internet
+ Protocol Suite (IPS).
+\item TCP/IP inventors were Vinton Cerf and Robert Kahn.
+\item internets are made out of subnetworks.
+\item A subnet contains bridges to relay frames within and routers to forward
+ packets to other subnets.
+\item MTU - Maximum Transfer Unit: Absolute maximum set by protocol, subnets
+ can always make it smaller.
+\end{itemize}
+\subsection*{Internet Protocol (IP)}
+\begin{itemize}
+\item Connectionless, uses datagrams.
+\item Delivers packets on a "best effort" basis with no guarantee of order.
+\item Grown in popularity as a directly run protocol.
+\item IPv4 uses 32-bit addresses. There were originally 4 classes, but that's
+ historic now.
+\item Uses a hierarchical domain name system.
+\item Classless InterDomain Routing (CIDR) is a modern way of making blocks
+ for the internet. I'm not entirely sure what it actually does?
+\item Prefix notation, write blocks as 123.456/16, or 123.456.789/24.
+\item IP Header contains a TIME TO LIVE (TTL) field which limits how many 
+ routers it can go through.
+\item Address Resolution Protocol (ARP) - convert network address -> physical
+ address.
+\item Dynamic Host Configuration Protocol (DHCP) - runtime assignment of IP
+ addresses.
+\item IP Control Message Protocol (ICMP) - Passes control data between routers.
+ Sends error statistics, pings, congestion control, klok times, routings loops
+ etc.
+\item ping and traceroute are ICMP utilities.
+\item Fragmentation - algorithm for breaking up packets in cas MTU is smaller.
+\begin{enumerate}
+\item Divide data based on MTU.
+\item Copy original IP header to IP header of each fragment.
+\item Mark fragments specially.
+\item Reassembled at destination using header flags.
+\end{enumerate}
+\item IPv6 (You should use it, IPv4 users are short-sighted fools)
+\item Uses MTU discovery instead of IPv4 fragmentation
+\item Has mandatory security (explain)
+\item Slow adoption, even though IPv4 has run out of room.
+\item INTERNET OF ALL TEH THINGZ!
+\item IOT = embedded computers connected to internet (GENIUS!)
+\item IPv4 doesn't have enough addresses, security is concerning.
+\item Software defined networks is a research topic.
+\item Gateway: Router that serves a subnet.
 \end{itemize}
 \end{document}

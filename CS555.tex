@@ -1,4 +1,5 @@
 \documentclass{scrartcl}
+\usepackage{enumitem}
 \begin{document}
 \title{CS 555 Final Exam Study Notes}
 \author{Josh Snider}
@@ -177,5 +178,64 @@ Dijkstra to compute the shortest path to each other node.
 \item IPv4 doesn't have enough addresses, security is concerning.
 \item Software defined networks is a research topic.
 \item Gateway: Router that serves a subnet.
+\end{itemize}
+\subsection*{Security}
+\begin{itemize}
+\item Layer 2 link encryption, nodes using shared keys sending ciphertext 
+between them.
+\item Layer 3 end-to-end encryption, body encrypted header not. Communities can share keys apparently?
+\item IP Security Protocol (IPSEC). Layer 3 protocol.
+\item IPSEC has three primary mechanisms
+\begin{enumerate}
+\item IP Authentication Header for authentication/integrity.
+\item IP Encapsulating Security Payload (ESP) for confidentially using symmetric
+key encryption.
+\item Manual or automated key distribution - Internet key management protocols
+(IKMP) being developed.
+\end{enumerate}
+\item AH and ESP have two modes:
+\begin{enumerate}
+\item Transport mode: host to host
+\item Tunneling mode: firewall to firewall
+\end{enumerate}
+\item Firewall is another Layer 3 thing. It either filters things based on application logic or based on packet headers.
+\item Routing v forwarding: Routing determines where to send things. Forwarding is the process of sending packets to where routing says it should go.
+\item Routing either done by shortest-path (in hops) or collecting data and 
+trying to find an optimal solution.
+\item Routing Information Protocol (RIP) uses a distance vector and UDP,
+Unix builtin, messages exchange routing tables.
+\item Open Shortest Path First (OSPF) use link state and IP, load balancing,
+router exchange info with Link State Advertisement (LSA) messages.
+\item OSPF design considerations
+\begin{enumerate}
+\item "Open"
+\item Must support a variety of distance metrics.
+\item Needs to respond dynamically to changes.
+\item Should allow TOS (def?) routing
+\item Should do load balancing
+\item Security of routing updates
+\end{enumerate}
+\item OSPF supports three kinds of topologies (word choice?)
+\begin{enumerate}
+\item Point-to-point between two routers.
+\item Multi-access network with broadcasting.
+\item Multi-access networks without broadcasting.
+\end{enumerate}
+\item OSPF Protocols
+\begin{enumerate}
+\item Hello Protocol: Sends heartbeats.
+\item Exchange Protocol: To synchronize routing databases.
+\item Flooding Protocol: Distribute updates and ACK them.
+\end{enumerate}
+\item Border gateway Protocol
+\begin{enumerate}
+\item Internet gateways exchange routing info among admin domains.
+\item gateway "advertises" that it can reach certain IP networks and its 
+distance to them.
+\item Distance metrics not standardized
+\item Exterior routing through autonomous systems (see below)
+\item Uses TCP
+\end{enumerate}
+\item Autonomous systems: A region of the Internet under the control of a single entity.
 \end{itemize}
 \end{document}

@@ -3,6 +3,7 @@
 \begin{document}
 \title{CS 555 Final Exam Study Notes}
 \author{Josh Snider}
+\date{2015/05/11}
 \maketitle
 \section*{Slide 7 Notes}
 \begin{itemize}
@@ -236,6 +237,101 @@ distance to them.
 \item Exterior routing through autonomous systems (see below)
 \item Uses TCP
 \end{enumerate}
-\item Autonomous systems: A region of the Internet under the control of a single entity.
+\item Autonomous systems: A region of the Internet under the control of a
+single entity.
+\end{itemize}
+\section*{Slides 9 Notes}
+\subsection*{Queueing theory}
+\begin{itemize}
+\item Definition: the mathematical foundation for
+understanding/predicting the behavior of packet-switched networks.
+\item One Model is a Single Server M/M/1 $\lambda$ is mean arrival rate and
+$\mu$ is the mean service rate where $\lambda < \mu$.
+\item Next slide confuses me. (Look at again.)
+\item Exponential Distribution: PDF $\lambda e^{-\lambda t}$. CDF 
+$e^{-\lambda t}$
+\item Formulas
+\begin{itemize}
+\item Utilization factor $\rho = \lambda/\mu$
+\item Number in system $N = \rho / (1-\rho)$
+\item Time in system (Little's formula) $T=N/\lambda$
+\item Waiting time in queue $W=T-1/\lambda$
+\item Number in queue $N_q = \lambda W$
+\end{itemize}
+\item Pollaczek-Khinchin Formula Total time in queueing node $T = \bar{x} +
+\frac{\lambda * \bar{x}^2}{2(1-\rho)}$, where $\bar{x}$ = average service time,
+$\lambda$ = average arrival rate, $\rho$ = utilization, and $x^2$ = second
+moment of service (?).
+\item WORK SOME EXAMPLES YOU LAZY FUCK!
+\end{itemize}
+\subsection*{Transport Protocols}
+\begin{itemize}
+\item Transport is the fourth layer of the seven layer model. It handles
+end-to-end error and flow control, sometimes congestion as well.
+\item Transport layers must provide reliable/consistent service in the face of:
+\begin{enumerate}
+\item Connectionless Networking
+\item Circuit failures
+\item Packet reordering
+\end{enumerate}
+\item Elements of transport protocols
+\begin{enumerate}
+\item Connection Management
+\item Segment and reassemble application data
+\item Recover from network failures
+\item Error control and flow control
+\item Multiplex multiple transport connections to one network connections.
+\item Splitting and recombining: map one transport connection to multiple
+network connections.
+\end{enumerate}
+\item There are two main internet transport protocols, User Datagram Protocol
+(UDP) and Transmission Control Protocol (TCP). UDP is unreliable, TCP is the
+opposite.
+\end{itemize}
+\subsubsection*{Stuff about TCP}
+\begin{itemize}
+\item Provides connection for connectionless IP.
+\item Reliable and ordered.
+\item Flow control via sliding windows
+\item Uses Ports: In Berkeley socket = IP address + port.
+\item Full-duplex transmission (Sends ACKs with responses)
+\item Unique ID = (Sending IP/port, Receiving IP/port)
+\item Delayed Duplicate Sequence Numbers: Very old packets from previous
+connections may show up as if to appear in sequence for new connections.
+How to prevent this? Either prevent sequence number reuse or purge old
+packets from the network.
+\item TCP uses a three-way handshake to setup connections and to release
+connections.
+\item TCP Startup, meet on pre-agreed port and then usually negotiate a 
+switch to a different one.
+\item Uses slow-start to avoid congestion, start with minimum window size
+of 1 MTU/64KB and every round trip we double the window size (unless
+we see congestion). When we reach a threshold, we then start increasing
+one MTU at a time instead of doubling. If we experience congestion, cut 
+the threshold in half and begin slow-start again.
+\item TCP keeps a couple timers around, one for retransmission, one for
+persistence, one for keep alive, and one for TIMED WAIT.
+\item Retransmission timer needs to be dynamically adjusted due to 
+network differences. To do this we maintain an RTT variable to estimate the
+round trip time. Each time we receive a non-timed out segment in time M,
+we set $RTT \leftarrow \alpha RTT + (1+\alpha)M$, where $\alpha < 1$. 
+We also track a deviation estimator $D$ and update it as $D \leftarrow 
+\alpha D + (1 - \alpha)|RTT - M|$. We set the timeout to RTT + 4D.
+\item What if we retransmit a segment and then get an ACK for it? Using
+Karn's algorithm we don't update the RTT, but we double the timeout.
+\item What if we need to send data without a full segment? Use the "push"
+feature. This might be inefficient, so Nagle's algorithm accumulates data
+in a buffer while waiting for an ACK and then sends whatever it has when
+we get ACK'd.
+\item TCP kinda sucks for high-performance networks due to knee-jerk
+congestion control which cuts performance in half whenever it loses
+something.
+\item Network Address Translation: Use an IPv4 address to "front" for
+many hosts and provide them private IPs from reserved space.
+Then use TCP port multiplexing to identify who the thing is actually
+intended for. Doesn't work for peer-to-peer. Since these hosts don't 
+have public IPs, it's slightly more secure since outsiders can't just
+randomly call them up and give them some viruses.
+\item TODO Work Examples
 \end{itemize}
 \end{document}

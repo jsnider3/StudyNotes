@@ -81,8 +81,7 @@ switches are left up to carrier.
 \begin{itemize}
 \item Connection-oriented packet-switched network
 \item Sends cells of fixed 53 bytes, 5 bytes header, 48 bytes data.
-\item Underlying technology for "Broadband Integrated Services Digital Network",
- which has its own stupid reference model.
+\item Underlying technology for "Broadband Integrated Services Digital Network",which has its own stupid reference model.
 \item Has associated hardware AND software. (sounds expensive!)
 \item Viewpoints: Integrated access for users, network infrastructure for
  computers, backbone for lesser networks.
@@ -184,13 +183,14 @@ Dijkstra to compute the shortest path to each other node.
 \begin{itemize}
 \item Layer 2 link encryption, nodes using shared keys sending ciphertext 
 between them.
-\item Layer 3 end-to-end encryption, body encrypted header not. Communities can share keys apparently?
+\item Layer 3 end-to-end encryption, body encrypted header not. Communities can
+share keys apparently?
 \item IP Security Protocol (IPSEC). Layer 3 protocol.
 \item IPSEC has three primary mechanisms
 \begin{enumerate}
 \item IP Authentication Header for authentication/integrity.
-\item IP Encapsulating Security Payload (ESP) for confidentially using symmetric
-key encryption.
+\item IP Encapsulating Security Payload (ESP) for confidentially using
+symmetrickey encryption.
 \item Manual or automated key distribution - Internet key management protocols
 (IKMP) being developed.
 \end{enumerate}
@@ -199,8 +199,10 @@ key encryption.
 \item Transport mode: host to host
 \item Tunneling mode: firewall to firewall
 \end{enumerate}
-\item Firewall is another Layer 3 thing. It either filters things based on application logic or based on packet headers.
-\item Routing v forwarding: Routing determines where to send things. Forwarding is the process of sending packets to where routing says it should go.
+\item Firewall is another Layer 3 thing. It either filters things based on
+application logic or based on packet headers.
+\item Routing v forwarding: Routing determines where to send things. Forwarding
+is the process of sending packets to where routing says it should go.
 \item Routing either done by shortest-path (in hops) or collecting data and 
 trying to find an optimal solution.
 \item Routing Information Protocol (RIP) uses a distance vector and UDP,
@@ -333,5 +335,149 @@ intended for. Doesn't work for peer-to-peer. Since these hosts don't
 have public IPs, it's slightly more secure since outsiders can't just
 randomly call them up and give them some viruses.
 \item TODO Work Examples
+\end{itemize}
+\section*{Slides 10 Notes}
+\subsection*{Multimedia networking}
+\begin{itemize}
+\item IP can be used for voice (VOIP), video, graphics etc.
+\item Multipurpose Internet Mail Extensions (MIME) does not require real time
+support, some others do.
+\item Lack of resource reservation can prevent IP from providing good
+Quality of Service
+\item Two approaches to ensure QoS: Integrated Services and Differentiated
+Services. Also ATM networks with Multiprotocol Label Switching (MPLS).
+\item Asynchronous Multimedia email
+\begin{itemize}
+\item Using MIME.
+\item Text, hyperlinks, audio, graphic image format (GIF), jpeg, and mpeg
+stuff.\end{itemize}
+\item JPEG = joint photographic experts group
+\item MPEG = motion pictures experts group
+\item CERN created the WORLD WIDE WEB (WWW)!!!
+\item HTTP = Hypertext Transfer Protocol
+\item HTML = Hypertext Markup Language
+\item Those two above do asynchronous multimedia.
+\item Streaming can be used for pseudo-synchronous multimedia. Download
+enough data that you can start playing it while the rest downloads without
+worrying about interruptions.
+\item Synchronous Multimedia is also possible with high-bandwidth connections. 
+Internet Multicast is capable of delivering real-time multimedia to multimedia
+clients simultaneously. MBone also developed tools for multicast multimedia.
+The main use case for synchronous multimedia is Skype and online lectures.
+\item There are two important protocols for synchronous multimedia
+\begin{enumerate}
+\item Real-time transport protocol (RTP) - end-to-end networking for
+real-time multimedia.
+\item Session Initiation Protocol (SIP) - application-level protocol for
+creating, modifying, and terminating sessions (i.e. skype calls)
+\end{enumerate}
+\item VOIP is usually cheaper than long-distance calls. Corporate customers
+love it because they usually have excess internet and don't need to worry
+about QoS issues. Can be done all-internet or mix internet and phone lines.
+\end{itemize}
+\subsection*{Multicasting}
+\begin{itemize}
+\item My wizard has a feat that allows multicasting as a full action.
+\item Definition: sending a packet to a group of addresses in a network.
+\item IPmc lets you send packets to a group address.
+\item These "group" addresses are all in "class D" >= 224.0.0.0.
+\item LANs can do this inherently.
+\item WANs do a fancy tree.
+\item Routers usually have to duplicate packets to get them to everyone.
+Commercial routers can do this automatically.
+\item Multicast needs its own routing protocol. Unicast is weak and for
+cowards.
+\item IPmc uses a many-to-many model of packet delivery
+\begin{itemize}
+\item Equivalent to full duplex
+\item Anyone can send to anyone.
+\item Useful for collaboration.
+\item Appealing, but complex.
+\end{itemize}
+\item IPmc can also do Source Specific Multicast (SSM) which is one-to-many
+\begin{itemize}
+\item Equivalent to half-duplex
+\item Only one host can spam everyone.
+\item Useful for presentations.
+\end{itemize}
+\item IP Multicast Routing
+\begin{itemize} 
+\item Internet Group Management Protocol (IGMP) runs on IP,
+like "ARP for Multicast".
+\item Distance Vector Multicast Routing Protocol (DVMRP): multicast
+version of distance vector.
+\item Multicast Open Shortest Path First (MOSPF): multicast version
+of link state.
+\item Multicast Border Gateway Protocol (MGBP): multicast version
+of border gateway for interdomain routing.
+\item (new) Protocol Independent Multicast (PIM) routing adds "relay points" formulticast-sparse portions of the internet. Also
+available in sparse (PIM-SM), dense (PIM-DM), and SSM (PIM-SSM) flavors.
+\item (proposed) Quality-of-Serivce Path First (QOSPF) would consider
+availability along multicast paths.
+\end{itemize}
+\end{itemize}
+\subsection*{QoS}
+\begin{itemize}
+\item Service parameters: data rate, delay, jitter, packet loss rate.
+\item Quality-of-Service: best-effort, predictive, guaranteed performance.
+\item QoS needs to be defined in context of capacity requirement.
+\item Current internet is entirely is entirely best effort.
+\item Integrated Services and Differentiated Services are trying to
+change this. Still waiting on adoption by ISPs.
+\item Internet Integrated Services: Group of proposed standards.
+Controlled Load is supposed to offer service as if in lightly-loaded
+best-effort situation. Guaranteed QoS guarantees a specific delay
+and jitter provided a guarantee of traffic's peak rate.
+\item Token Bucket: Improvement on "leaky bucket" rate control,
+results in "rate-controlled" transmission.
+\begin{enumerate}
+\item Bucket starts with $b$ permits.
+\item Permits arrive at rate per second $r$.
+\item Every packet sent decrements bucket count.
+\item No permit, no transmission.
+\end{enumerate}
+\item Bursty traffic: Applications may require periodic transmission
+of large chunks of data. This correlation can destroy statistical models.
+\item Bursty traffic is why TCP congestion is so important.
+\item RSVP Messages (RFC 2205) - setup protocol for QoS to implement
+IntServ Token Bucket.
+\item Differentiated Services - Attempt to work around overhead of RSVP,
+by making two classes of traffic one best-effort and large and one small and 
+QoS-sensitive. QoS is processed first and better. This is part of the net
+neutrality controversy.
+\end{itemize}
+\subsection*{ATM Multicast}
+\begin{itemize}
+\item Reminder: ATM = Asynchronous Transfer Mode (what chapter is this from?
+I should probably review it.)
+\item ATM has built-in QoS
+\item Services Categories: Constant Bit Rate (CBR), Variable bit rate:
+real-time(RT-VBR), variable bit-rate: non real-time, (NRT-VBR), Available Bit
+Rate (ABR)
+Unspecified Bit Rate (UBR). Usage examples are VOIP, skype, email, web-surfing,
+and ftp.
+\item How to provide LAN service over ATM? Provide a central server and provide
+VCs between all hosts using a LAN emulation server. This is called LAN
+Emulation(LANE).
+\item IETF does it using a server called ATM-ARP.
+\item This isn't particularly common.
+\item MPLS (defined above) can get ATM and IP to work together to make
+good networks. Routers use ATM "pipes" for IP flows. These pipes have "labels"
+that can be used for ATM switching. This is a "traffic engineering" thing.
+\end{itemize}
+\subsection*{Multicasting Research}
+\begin{itemize}
+\item NO OFF-THE-SHELF SOLUTIONS!
+\item Distributed Virtual Simulation (DVS) (??)
+\item Selectively Reliable Multicast Protocol (SRMP) - Reliable Multicast for
+DVS. Combined RM of rarely-changing data with best-effort transmission of 
+frequently changing data. Has it's own stack. IETF is currently looking on a
+TCP-friendly SRMP.
+\end{itemize}
+\subsection*{TCP Throughput Equation}
+\begin{itemize}
+\item $B = \frac{S}{RTT \times [\sqrt{\frac{2p}{3}} +
+(12\sqrt{\frac{3p}{8}})p(1+32p^2)]}$,
+where $S = $Mean packet size, $p =$ packet loss event rate.
 \end{itemize}
 \end{document}

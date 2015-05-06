@@ -480,4 +480,50 @@ TCP-friendly SRMP.
 (12\sqrt{\frac{3p}{8}})p(1+32p^2)]}$,
 where $S = $Mean packet size, $p =$ packet loss event rate.
 \end{itemize}
+\section*{Security Slides}
+\begin{itemize}
+\item Basics of network security (review)
+\begin{itemize}
+\item Confidentiality (encryption/decryption)
+\item Integrity (message authenticatication codes / message hashes)
+\item Authentication (public/private keys with web of trust)
+\item Access Control 
+\item Nonrepudiation (message hashes using private keys)
+\item Key Distribution (using key exchange algorithms)
+\end{itemize}
+\item Secure Hash Functions, need to be hard to make a message given a hash
+and to find a message with the same hash as a given message. These things
+commonly turn out to be weaker than originally thought.
+\item Three ways to try breaking an encryption scheme: Ciphertext only, 
+known plaintext, chosen plaintext (where Malory can encrypt message at will).
+\item The hardness of breaking an encryption standard is proportional
+to how likely it is to be used for important things.
+\item Data Encryption Standard (DES) - Uses iterations to take a 64-bit
+plaintext and 56-bit key and encrypt it (WEAK). Modified versions include
+Advanced Encryption Standard (AES) and International Data Encryption
+Algorithm (IDEA).
+\item Public Key Cryptography uses seperate keys for encryption and decryption.
+It's more secure and lets you identify people.
+\item Public Key algorithms are based on problems which are much harder to
+invert
+\begin{itemize}
+\item RSA algorithm is based on factoring the product of two large primes.
+\item Diffie-Hellman is based on computing x given $y=a^{x}\%p$.
+\end{itemize}
+\item Public Key Infrastructure (PKI) - distributing web of trust basically, if
+the internet had integrated PKI spam could always be traced back to its source
+and we could then claim the skulls of spammers for Khorne.
+\item Secure SHell (SSH) - is used to create secure terminal sessions over TCP,
+it works well (depending on connectivity issues). Uses Diffie-Hellman key
+agreement.
+\item Secure Sockets Layer (SSL) - used to secure client-server sessions (https)
+only occasionally has game-breaking Heartbleed bugs.
+\item Message-Digest 5 (MD5) - fancy pants checksum
+\item Simple Network Management Protocol (SNMP) - protocol to make
+network management easy/consistent. Each managed object (that is network
+attached device) has an SNMP agent and a Management Information Base (MIB).
+MIB is basically a database of settings that can be edited. SNMP is mostly used
+by telecom employees to monitor the network and then react (in)appropriately
+as needed.
+\end{itemize}
 \end{document}

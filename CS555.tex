@@ -1,7 +1,7 @@
 \documentclass{scrartcl}
 \usepackage{enumitem}
 \begin{document}
-\title{CS 555 Final Exam Study Notes}
+\title{CS 555 Study Notes}
 \author{Josh Snider}
 \date{2015/05/11}
 \maketitle
@@ -20,13 +20,13 @@
 \end{itemize}
 \item Types of switching
 \begin{enumerate}
-\item Message switching - entire message is sent as one giant block, sent from 
+\item Message switching - entire message is sent as one giant block, sent from
 host to host to host. Kind of stupid.
-\item Packet switching - each packet in the message is sent individually, 
+\item Packet switching - each packet in the message is sent individually,
 real-time, reliable, prioritization
-\item Circuit switching - dedicated circuit is created between beginning and 
+\item Circuit switching - dedicated circuit is created between beginning and
 end, phones.
-\item Leased lines - permanently dedicated circuit, heavy constant traffic. 
+\item Leased lines - permanently dedicated circuit, heavy constant traffic.
 See Spread Networks.
 \end{enumerate}
 \item Network functions
@@ -37,11 +37,11 @@ See Spread Networks.
 \end{itemize}
 \item Types of Routing
 \begin{enumerate}
-\item Connection-oriented - establish a virtual circuit and send all data over 
+\item Connection-oriented - establish a virtual circuit and send all data over
 it. Guarantees packets arrive in-order.
 \item Connectionless - Like IP, each packet is routed seperately as datagrams.
  Has some issues that need to be handled.
-\item Source routing - done as homework, not practical because it assumes 
+\item Source routing - done as homework, not practical because it assumes
 everyone knows everything
 \end{enumerate}
 \item Ways to control congestion
@@ -50,27 +50,27 @@ everyone knows everything
 \item Allocate more buffers.
 \item Drop packets (connectionless only)
 \item Require use of sliding window (connection-oriented only)
-\item Reroute packets around congestion as if they were cars in traffic 
+\item Reroute packets around congestion as if they were cars in traffic
 (connectionless only)
 \end{enumerate}
 \end{itemize}
 \subsection*{Internetworking}
 \begin{itemize}
-\item Definition: routing among networks as opposed to within them, can be 
+\item Definition: routing among networks as opposed to within them, can be
 either connection-oriented or connectionless
-\item Open Systems Interconnect - An open standard for connection-oriented 
+\item Open Systems Interconnect - An open standard for connection-oriented
 internetworking. Expensive, supplanted by TCP/IP. Relies on X.25.
 \item What is X.25?
 \begin{itemize}
 \item connection-oriented
 \item requires X.21 bis and LAPB as layer 1/2 standards
-\item Either over switched virtual circuit (SVC) or permanent virtual circuit 
+\item Either over switched virtual circuit (SVC) or permanent virtual circuit
 (PVC).
-\item Specifies interface between host and network switch. Interfaces between 
+\item Specifies interface between host and network switch. Interfaces between
 switches are left up to carrier.
 \item X.25 Virtual Call: DTE sends CALL REQUEST packet, Receiver either replies
- with CALL ACCEPTED or CALL REJECTED. If accepted, communication begins. 
- There's a sliding window which is usually 2 packets wide with packets of 256 
+ with CALL ACCEPTED or CALL REJECTED. If accepted, communication begins.
+ There's a sliding window which is usually 2 packets wide with packets of 256
  bytes.
 \item X.25 Fast Select: For short transmissions, can send 128 bytes with CALL
  ACCEPT/REJECT.
@@ -94,34 +94,34 @@ switches are left up to carrier.
 \item Fixed format switching inefficiencies
 \end{enumerate}
 \item Routing is connection-oriented.
-\item Basic element of routing is virtual channel. These are grouped into 
+\item Basic element of routing is virtual channel. These are grouped into
 virtual paths.
 \item Like X.25 we have PVCs and SVCs.
-\item Connection setup is done with SETUP, CALL\_PROCEEDING, CONNECT, 
+\item Connection setup is done with SETUP, CALL\_PROCEEDING, CONNECT,
 CONNECT\_ACK, RELEASE, and RELEASE\_COMPLETE messages.
 \end{itemize}
 \item SONET (Review)
-\item Definition: Synchronous Optical NETwork, OC-1 is 51.84 Mbit/s, faster 
+\item Definition: Synchronous Optical NETwork, OC-1 is 51.84 Mbit/s, faster
 signals are made by multiplexing links.
-\item Proprietary network protocols: Largely irrelevant, but 
-System Network Architecture (SNA) was a popular IBM one and 
+\item Proprietary network protocols: Largely irrelevant, but
+System Network Architecture (SNA) was a popular IBM one and
 Internetwork Packet Exchange (IPX) was a Novell one.
 \end{itemize}
 \subsection*{The Routing Problem}
 \begin{itemize}
-\item Can either be done with shortest-path or "optimal" routing, 
+\item Can either be done with shortest-path or "optimal" routing,
 based on whether you weight the links.
 \item Primitive routing techniques include:
 \begin{enumerate}
 \item Source routing: Message contains list of nodes that must be visited
  on path to dest.
 \item Static routing: predetermined paths that do not change.
-\item Flooding: Spam everyone, then everyone spams everyone else. Horribly 
+\item Flooding: Spam everyone, then everyone spams everyone else. Horribly
 inefficient.
 \end{enumerate}
 \item Adaptive routing is the good alternative to static routing. Based on
  measuring network in action.
-\item Shortest path spanning tree routing, either using Bellman-Ford or 
+\item Shortest path spanning tree routing, either using Bellman-Ford or
 Dijkstra to compute the shortest path to each other node.
 \end{itemize}
 \section*{Slides 8 Notes}
@@ -152,7 +152,7 @@ Dijkstra to compute the shortest path to each other node.
 \item Classless InterDomain Routing (CIDR) is a modern way of making blocks
  for the internet. I'm not entirely sure what it actually does?
 \item Prefix notation, write blocks as 123.456/16, or 123.456.789/24.
-\item IP Header contains a TIME TO LIVE (TTL) field which limits how many 
+\item IP Header contains a TIME TO LIVE (TTL) field which limits how many
  routers it can go through.
 \item Address Resolution Protocol (ARP) - convert network address -> physical
  address.
@@ -181,7 +181,7 @@ Dijkstra to compute the shortest path to each other node.
 \end{itemize}
 \subsection*{Security}
 \begin{itemize}
-\item Layer 2 link encryption, nodes using shared keys sending ciphertext 
+\item Layer 2 link encryption, nodes using shared keys sending ciphertext
 between them.
 \item Layer 3 end-to-end encryption, body encrypted header not. Communities can
 share keys apparently?
@@ -203,7 +203,7 @@ symmetrickey encryption.
 application logic or based on packet headers.
 \item Routing v forwarding: Routing determines where to send things. Forwarding
 is the process of sending packets to where routing says it should go.
-\item Routing either done by shortest-path (in hops) or collecting data and 
+\item Routing either done by shortest-path (in hops) or collecting data and
 trying to find an optimal solution.
 \item Routing Information Protocol (RIP) uses a distance vector and UDP,
 Unix builtin, messages exchange routing tables.
@@ -233,7 +233,7 @@ router exchange info with Link State Advertisement (LSA) messages.
 \item Border gateway Protocol
 \begin{enumerate}
 \item Internet gateways exchange routing info among admin domains.
-\item gateway "advertises" that it can reach certain IP networks and its 
+\item gateway "advertises" that it can reach certain IP networks and its
 distance to them.
 \item Distance metrics not standardized
 \item Exterior routing through autonomous systems (see below)
@@ -250,7 +250,7 @@ understanding/predicting the behavior of packet-switched networks.
 \item One Model is a Single Server M/M/1 $\lambda$ is mean arrival rate and
 $\mu$ is the mean service rate where $\lambda < \mu$.
 \item Next slide confuses me. (Look at again.)
-\item Exponential Distribution: PDF $\lambda e^{-\lambda t}$. CDF 
+\item Exponential Distribution: PDF $\lambda e^{-\lambda t}$. CDF
 $e^{-\lambda t}$
 \item Formulas
 \begin{itemize}
@@ -304,20 +304,20 @@ How to prevent this? Either prevent sequence number reuse or purge old
 packets from the network.
 \item TCP uses a three-way handshake to setup connections and to release
 connections.
-\item TCP Startup, meet on pre-agreed port and then usually negotiate a 
+\item TCP Startup, meet on pre-agreed port and then usually negotiate a
 switch to a different one.
 \item Uses slow-start to avoid congestion, start with minimum window size
 of 1 MTU/64KB and every round trip we double the window size (unless
 we see congestion). When we reach a threshold, we then start increasing
-one MTU at a time instead of doubling. If we experience congestion, cut 
+one MTU at a time instead of doubling. If we experience congestion, cut
 the threshold in half and begin slow-start again.
 \item TCP keeps a couple timers around, one for retransmission, one for
 persistence, one for keep alive, and one for TIMED WAIT.
-\item Retransmission timer needs to be dynamically adjusted due to 
+\item Retransmission timer needs to be dynamically adjusted due to
 network differences. To do this we maintain an RTT variable to estimate the
 round trip time. Each time we receive a non-timed out segment in time M,
-we set $RTT \leftarrow \alpha RTT + (1+\alpha)M$, where $\alpha < 1$. 
-We also track a deviation estimator $D$ and update it as $D \leftarrow 
+we set $RTT \leftarrow \alpha RTT + (1+\alpha)M$, where $\alpha < 1$.
+We also track a deviation estimator $D$ and update it as $D \leftarrow
 \alpha D + (1 - \alpha)|RTT - M|$. We set the timeout to RTT + 4D.
 \item What if we retransmit a segment and then get an ACK for it? Using
 Karn's algorithm we don't update the RTT, but we double the timeout.
@@ -331,7 +331,7 @@ something.
 \item Network Address Translation: Use an IPv4 address to "front" for
 many hosts and provide them private IPs from reserved space.
 Then use TCP port multiplexing to identify who the thing is actually
-intended for. Doesn't work for peer-to-peer. Since these hosts don't 
+intended for. Doesn't work for peer-to-peer. Since these hosts don't
 have public IPs, it's slightly more secure since outsiders can't just
 randomly call them up and give them some viruses.
 \item TODO Work Examples
@@ -360,7 +360,7 @@ stuff.\end{itemize}
 \item Streaming can be used for pseudo-synchronous multimedia. Download
 enough data that you can start playing it while the rest downloads without
 worrying about interruptions.
-\item Synchronous Multimedia is also possible with high-bandwidth connections. 
+\item Synchronous Multimedia is also possible with high-bandwidth connections.
 Internet Multicast is capable of delivering real-time multimedia to multimedia
 clients simultaneously. MBone also developed tools for multicast multimedia.
 The main use case for synchronous multimedia is Skype and online lectures.
@@ -401,7 +401,7 @@ cowards.
 \item Useful for presentations.
 \end{itemize}
 \item IP Multicast Routing
-\begin{itemize} 
+\begin{itemize}
 \item Internet Group Management Protocol (IGMP) runs on IP,
 like "ARP for Multicast".
 \item Distance Vector Multicast Routing Protocol (DVMRP): multicast
@@ -442,7 +442,7 @@ of large chunks of data. This correlation can destroy statistical models.
 \item RSVP Messages (RFC 2205) - setup protocol for QoS to implement
 IntServ Token Bucket.
 \item Differentiated Services - Attempt to work around overhead of RSVP,
-by making two classes of traffic one best-effort and large and one small and 
+by making two classes of traffic one best-effort and large and one small and
 QoS-sensitive. QoS is processed first and better. This is part of the net
 neutrality controversy.
 \end{itemize}
@@ -470,7 +470,7 @@ that can be used for ATM switching. This is a "traffic engineering" thing.
 \item NO OFF-THE-SHELF SOLUTIONS!
 \item Distributed Virtual Simulation (DVS) (??)
 \item Selectively Reliable Multicast Protocol (SRMP) - Reliable Multicast for
-DVS. Combined RM of rarely-changing data with best-effort transmission of 
+DVS. Combined RM of rarely-changing data with best-effort transmission of
 frequently changing data. Has it's own stack. IETF is currently looking on a
 TCP-friendly SRMP.
 \end{itemize}
@@ -478,7 +478,7 @@ TCP-friendly SRMP.
 \begin{itemize}
 \item $B = \frac{S}{RTT \times [\sqrt{\frac{2p}{3}} +
 (12\sqrt{\frac{3p}{8}})p(1+32p^2)]}$,
-where $S = $Mean packet size, $p =$ packet loss event rate.
+where $S =$ Mean packet size, $p =$ packet loss event rate.
 \end{itemize}
 \section*{Security Slides}
 \begin{itemize}
@@ -487,14 +487,14 @@ where $S = $Mean packet size, $p =$ packet loss event rate.
 \item Confidentiality (encryption/decryption)
 \item Integrity (message authenticatication codes / message hashes)
 \item Authentication (public/private keys with web of trust)
-\item Access Control 
+\item Access Control
 \item Nonrepudiation (message hashes using private keys)
 \item Key Distribution (using key exchange algorithms)
 \end{itemize}
 \item Secure Hash Functions, need to be hard to make a message given a hash
 and to find a message with the same hash as a given message. These things
 commonly turn out to be weaker than originally thought.
-\item Three ways to try breaking an encryption scheme: Ciphertext only, 
+\item Three ways to try breaking an encryption scheme: Ciphertext only,
 known plaintext, chosen plaintext (where Malory can encrypt message at will).
 \item The hardness of breaking an encryption standard is proportional
 to how likely it is to be used for important things.
@@ -525,5 +525,62 @@ attached device) has an SNMP agent and a Management Information Base (MIB).
 MIB is basically a database of settings that can be edited. SNMP is mostly used
 by telecom employees to monitor the network and then react (in)appropriately
 as needed.
+\end{itemize}
+\section*{Formulas to know}
+\subsection*{Comms}
+\begin{itemize}
+\item Bandwidth is the range of frequencies $W = f_h - f_l$ that can be sent
+along an analog channel. Using it as jargon for digital capacity will be marked
+wrong in this class.
+\item K and M mean kilo and mega, in computers they are $2^{10}$ and $2^{20}$ in
+communications they mean $10^3$ and $10^6$.
+\item The Decibel is a measure of signal gain/loss it is equal to
+$10\log_{10}(P_{meas}/P_{ref})$.
+\item Bits per baud
+\item Bytes, bits, and samples/sec
+\item Shannon's law gives the theoretical max capacity (in bits per seconds)
+of a channel. It is calculated as $C=B\log_2(1+\frac{S}{N})$, where $C$ is
+capacity, $B$ is bandwidth, and $\frac{S}{N}$ is signal-to-noise ratio.
+\item For a message of $b$ bits on a connection of $m$ bits / second, the
+transmission time if $b/m$ seconds. If this message travels a distance $d$
+meters at a velocity of $v$ m/s it will arrive with a propagation delay of $d/v$
+seconds.
+\item The Nyquist rate of an analog channel is equal to twice the highest
+frequency in the signal. Analog signals need to be sampled at this rate in order
+to minimize noise. The traditional way to represent analog signals as digital is
+with N-bit pulse code modulation. N-bit PCM has a "noise of quantization"
+$(S/N)_{PCM} = 2^{2N}$.
+\item Common channels: switched voice (B channel) is 64 kbit/s, D channel is
+16 kbit/s, T1 is 1.544 Mbit/s, SONET OC-1 is 51.84 Mbits/s, and OC-X is OC-1
+* X.
+\item With an n-bit divisor, CRC can detect all but $1/2^{n-1}$ errors, all
+single-bit errors, all double-bit errors (with good divisor), all burst errors
+up to (n-1) bits and most larger ones.
+\end{itemize}
+\subsection*{Networking}
+\begin{itemize}
+\item Efficiency and utilization
+\item Timeout (S) - For TCP, $Timeout = RTT + 4D$, where $RTT$ and $D$ are
+recalculated every time we receive a packet in time $M$ with the formulas
+$RTT=\alpha RTT + (1-\alpha)M$ and $D=\alpha D+(1-\alpha)|RTT-M|$ with
+$\alpha \in (0,1)$. It's related to the TCP window because increases in the $RTT$
+trigger the slow-start procedure described a couple bullet points down to
+restart.
+\item Dijkstra routing - I've done this in 10 different classes by this point.
+Algorithm is to work through the nodes in order of which are cheapest to get to
+from the beginning, see if those open up faster routes to anywhere, and then
+move on to the next node. When you're done, you have the fastest routes from
+the source to everywhere.
+\item Bellman-Ford routing - $O(n^3)$ breadth-first alternative to Dijkstra.
+Given max number of hops $h$, we iterate over $x$ in $[1..h]$ setting $C[n][x]
+\leftarrow min([C[j][x-1] + D[n][j]$ for $j$ in $G])$.
+\item In a M/M/1 queue, with mean arrival rate $\lambda$ and mean service rate
+$\mu$, the utilization factor $\rho =\lambda/\mu$, the number in the system
+$N =\rho/(1-\rho)$, and the mean time in system (aka Little's Formula)
+$T=N/\lambda$.
+\item TCP window starts at 1 MTU (64 kb) and doubles as long as the RTT doesn't
+go up, if it does we cut the threshold size in half and restart. If we get to
+the threshold without experiencing congestion we start increasing the MTU by
+one at a time until we reach the receiver max.
 \end{itemize}
 \end{document}

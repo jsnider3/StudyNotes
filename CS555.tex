@@ -5,19 +5,18 @@
 \author{Josh Snider}
 \date{2015/05/11}
 \maketitle
+\section*{Seven layer model (top-to-bottom)}
+\begin{itemize}
+\item Application - getting shit done
+\item Presentation - translating app data $\leftrightarrow$ network data  
+\item Session - managing data connection
+\item Transport - end-to-end connections and flow control
+\item Network - routing and packet sending.
+\item Data Link Control - framing and low-level error correction 
+\item Physical - shooting photons and electrons at people!
+\end{itemize}
 \section*{Slide 7 Notes}
 \begin{itemize}
-\item What are the seven layers? (This was a midterm question, possibly also on
- the final)
-\begin{itemize}
-\item Application
-\item Presentation
-\item Session
-\item Transport
-\item Network
-\item DLC
-\item Physical
-\end{itemize}
 \item Types of switching
 \begin{enumerate}
 \item Message switching - entire message is sent as one giant block, sent from
@@ -81,7 +80,8 @@ switches are left up to carrier.
 \begin{itemize}
 \item Connection-oriented packet-switched network
 \item Sends cells of fixed 53 bytes, 5 bytes header, 48 bytes data.
-\item Underlying technology for "Broadband Integrated Services Digital Network",which has its own stupid reference model.
+\item Underlying technology for "Broadband Integrated Services Digital Network",
+which has its own stupid reference model.
 \item Has associated hardware AND software. (sounds expensive!)
 \item Viewpoints: Integrated access for users, network infrastructure for
  computers, backbone for lesser networks.
@@ -526,6 +526,46 @@ MIB is basically a database of settings that can be edited. SNMP is mostly used
 by telecom employees to monitor the network and then react (in)appropriately
 as needed.
 \end{itemize}
+\section*{High-level protocols}
+\begin{itemize}
+\item Client-Server Model - server provides services and a number of clients
+connect to it to take advantage of them by sending messages back and forth.
+\item Some small things that use a client-server model are telnet, ssh, ftp, and
+sftp. Two of these are security vulnerabilities and should not be used.
+\item Simple Mail Transfer Protocol (SMTP) - transmit email as text,
+mailservers talk to each other using TCP. Can either use Post Office Protocol
+(POP3) or IMAP4 for clint/server. IMAP4 lets user scan headers for emails
+before downloadingeth them.
+\item X, list servs, and network news are other things that be.
+\item Network Time Protocol (NTP) is a moderately important thing. It's used
+to synchronize clocks on slave computers to a master's.
+\item Social media loves Client-Server stuff. Facebook, twitter, youtube,
+second life. These things drain your soul and poison the mind.
+\item Remote Procedure Calls (RPC) are a legacyish way of distributed
+communication that usually need reliable connections.
+\item Network File Systems are also cool. NFS is the Unixy way, Google and
+others have proprietary versions they made themselves.
+\end{itemize}
+\subsection*{World Wide Web protocols}
+\begin{itemize}
+\item Uniform Resource Locators (URLs) - they are what they is.
+\item HyperText Transfer Protocol (HTTP), also in secure!
+\item HyperText Markup Language (HTML)
+\item Common Gateway Interface (CGI) - Generating webpages on the fly basically
+nothing too interesting.
+\item PHP - Programming language for server side ooga-booga.
+\item Java Applets - Java for the client.
+\item HTML5 - turing-complete modern alternative to the two above.
+\item JavaScript - One more way to do client-side stuff.
+\item XML - lesser version of JSON (DO NOT USE!)
+\item Web Services - abuse a transaction-based web paradigm, also try to be
+stateless. This has five required functions: self-description, publishing the
+service descriptions, locating the service, establishing communications,
+requesting initialization data, and exchange data with other web services.
+\end{itemize}
+\subsection*{Peer-to-peer Applications}
+An increasingly interesting research avenue. Most likely going to be used for
+things like Skype and whiteboard apps.
 \section*{Formulas to know}
 \subsection*{Comms}
 \begin{itemize}
@@ -583,4 +623,48 @@ go up, if it does we cut the threshold size in half and restart. If we get to
 the threshold without experiencing congestion we start increasing the MTU by
 one at a time until we reach the receiver max.
 \end{itemize}
+\section*{Vocab with definitions}
+\begin{itemize}
+\item Message switching - entire message is sent node-to-node until it reaches
+the destination.
+\item Packet switching - message is broken down into packets which are sent
+independently and reassembled (or not) at the destination.
+\item Circuit switching - single connection is made and used for all time.
+\item Routing - Selecting a path for each packet to take through network.
+\item Virtual Circuit - circuit simulated on a connectionless system
+\item Virtual channel - see virtual circuit
+\item shortest-path routing - routing using the shortest path in number of links
+from source to destination.
+\item Optimal routing - routing based on gathering global data and calculating
+an optimal route from it (which is inherently inaccurate)
+\item source routing - source gives list of nodes to go through which can't
+be deviated from. (primitive)
+\item Static routing - routes predetermined and unchanging. (also primitive)
+\item Flooding - routing through no routing, just spam EVERYONE!
+\item IETF - Internet Engineering Task Force, not superheroes, just the group 
+that standardized TCP/IP and a couple related things.
+\item RFC - request for comment, how IETF asked for comments on a standard.
+\item IPS - internet protocol suite; TCP, IP, and some related things.
+\item Subnet - Physical network nodes can directly communicate over.
+\item Bridge - Connects nodes on same subnet.
+\item Router - Connects nodes to different subnets.
+\item MTU - Max transfer unit - largest packet/frame/etc. that layer can handle.
+\item TTL - Time to live - max number of routers through which datagram can be
+forwarded.
+\item ARP - Address Resolution Protocol - Used to map IP to physical addresses
+on LAN.
+\item DHCP - Dynamic Host Configuration Protocol - Way to have server assign IP
+addresses.
+\item ICMP - IP Control Message Protocol - passes data between routers.
+\item Fragmentation - Breaking a packet into smaller ones when the network can't
+handle how big it is.
+\item distance vector - uses hop count and UDP. Used by RIP routers.
+\item link state - multiple metrics, used by Open Shortest Path First (OSPF).
+\item BGP - Border Gateway Protocol - Lets ISPs trade routing info.
+\item AS - Autonomous Systems - A region of the Internet controlled by a single
+entity (i.e. an ISP). Have 1 bit identifier (ASN) and let internet scale.
+\item inverse DNS - takes addresses and checks if they are valid.
+\item NTP - Network Time Protocol
+\end{itemize}
+\textbf{ALL GLORY TO THE OMNISSIAH!}
 \end{document}

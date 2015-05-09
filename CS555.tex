@@ -1,0 +1,670 @@
+\documentclass{scrartcl}
+\usepackage{enumitem}
+\begin{document}
+\title{CS 555 Study Notes}
+\author{Josh Snider}
+\date{2015/05/11}
+\maketitle
+\section*{Seven layer model (top-to-bottom)}
+\begin{itemize}
+\item Application - getting shit done
+\item Presentation - translating app data $\leftrightarrow$ network data  
+\item Session - managing data connection
+\item Transport - end-to-end connections and flow control
+\item Network - routing and packet sending.
+\item Data Link Control - framing and low-level error correction 
+\item Physical - shooting photons and electrons at people!
+\end{itemize}
+\section*{Slide 7 Notes}
+\begin{itemize}
+\item Types of switching
+\begin{enumerate}
+\item Message switching - entire message is sent as one giant block, sent from
+host to host to host. Kind of stupid.
+\item Packet switching - each packet in the message is sent individually,
+real-time, reliable, prioritization
+\item Circuit switching - dedicated circuit is created between beginning and
+end, phones.
+\item Leased lines - permanently dedicated circuit, heavy constant traffic.
+See Spread Networks.
+\end{enumerate}
+\item Network functions
+\begin{itemize}
+\item Addressing - mapping names to addresses. translation done by nameservers.
+\item Routing - selecting path for messages to take.
+\item Congestion control
+\end{itemize}
+\item Types of Routing
+\begin{enumerate}
+\item Connection-oriented - establish a virtual circuit and send all data over
+it. Guarantees packets arrive in-order.
+\item Connectionless - Like IP, each packet is routed seperately as datagrams.
+ Has some issues that need to be handled.
+\item Source routing - done as homework, not practical because it assumes
+everyone knows everything
+\end{enumerate}
+\item Ways to control congestion
+\begin{enumerate}
+\item Tell hosts to shut up.
+\item Allocate more buffers.
+\item Drop packets (connectionless only)
+\item Require use of sliding window (connection-oriented only)
+\item Reroute packets around congestion as if they were cars in traffic
+(connectionless only)
+\end{enumerate}
+\end{itemize}
+\subsection*{Internetworking}
+\begin{itemize}
+\item Definition: routing among networks as opposed to within them, can be
+either connection-oriented or connectionless
+\item Open Systems Interconnect - An open standard for connection-oriented
+internetworking. Expensive, supplanted by TCP/IP. Relies on X.25.
+\item What is X.25?
+\begin{itemize}
+\item connection-oriented
+\item requires X.21 bis and LAPB as layer 1/2 standards
+\item Either over switched virtual circuit (SVC) or permanent virtual circuit
+(PVC).
+\item Specifies interface between host and network switch. Interfaces between
+switches are left up to carrier.
+\item X.25 Virtual Call: DTE sends CALL REQUEST packet, Receiver either replies
+ with CALL ACCEPTED or CALL REJECTED. If accepted, communication begins.
+ There's a sliding window which is usually 2 packets wide with packets of 256
+ bytes.
+\item X.25 Fast Select: For short transmissions, can send 128 bytes with CALL
+ ACCEPT/REJECT.
+\item Connection Oriented Networking with X.75. X.75 defines interface between
+ two X.25 networks. Makes bigger virtual network.
+\end{itemize}
+\item What is Asynchronous Transfer Mode?
+\begin{itemize}
+\item Connection-oriented packet-switched network
+\item Sends cells of fixed 53 bytes, 5 bytes header, 48 bytes data.
+\item Underlying technology for "Broadband Integrated Services Digital Network",
+which has its own stupid reference model.
+\item Has associated hardware AND software. (sounds expensive!)
+\item Viewpoints: Integrated access for users, network infrastructure for
+ computers, backbone for lesser networks.
+\item Reasons for small cell size
+\begin{enumerate}
+\item Reduced queueing delay
+\item Minimize head-of-line blocking
+\item Error correction for small cells and headers
+\item Minimize jitter
+\item Fixed format switching inefficiencies
+\end{enumerate}
+\item Routing is connection-oriented.
+\item Basic element of routing is virtual channel. These are grouped into
+virtual paths.
+\item Like X.25 we have PVCs and SVCs.
+\item Connection setup is done with SETUP, CALL\_PROCEEDING, CONNECT,
+CONNECT\_ACK, RELEASE, and RELEASE\_COMPLETE messages.
+\end{itemize}
+\item SONET (Review)
+\item Definition: Synchronous Optical NETwork, OC-1 is 51.84 Mbit/s, faster
+signals are made by multiplexing links.
+\item Proprietary network protocols: Largely irrelevant, but
+System Network Architecture (SNA) was a popular IBM one and
+Internetwork Packet Exchange (IPX) was a Novell one.
+\end{itemize}
+\subsection*{The Routing Problem}
+\begin{itemize}
+\item Can either be done with shortest-path or "optimal" routing,
+based on whether you weight the links.
+\item Primitive routing techniques include:
+\begin{enumerate}
+\item Source routing: Message contains list of nodes that must be visited
+ on path to dest.
+\item Static routing: predetermined paths that do not change.
+\item Flooding: Spam everyone, then everyone spams everyone else. Horribly
+inefficient.
+\end{enumerate}
+\item Adaptive routing is the good alternative to static routing. Based on
+ measuring network in action.
+\item Shortest path spanning tree routing, either using Bellman-Ford or
+Dijkstra to compute the shortest path to each other node.
+\end{itemize}
+\section*{Slides 8 Notes}
+\begin{itemize}
+\item Metcalfe's Law: Value of a network to a user is proportional to $n^2$,
+ where n is number of users.
+\item Others argue that it's actually $n\log(n)$, these people have better
+ evidence.
+\item DARPA created ARPANET in 1968, which introduced RFC's.
+\item In the 70's TCP/IP was developed as the protocol suite for ARPANET.
+\item IETF now supports dozens of open protocols that make up the Internet
+ Protocol Suite (IPS).
+\item TCP/IP inventors were Vinton Cerf and Robert Kahn.
+\item internets are made out of subnetworks.
+\item A subnet contains bridges to relay frames within and routers to forward
+ packets to other subnets.
+\item MTU - Maximum Transfer Unit: Absolute maximum set by protocol, subnets
+ can always make it smaller.
+\end{itemize}
+\subsection*{Internet Protocol (IP)}
+\begin{itemize}
+\item Connectionless, uses datagrams.
+\item Delivers packets on a "best effort" basis with no guarantee of order.
+\item Grown in popularity as a directly run protocol.
+\item IPv4 uses 32-bit addresses. There were originally 4 classes, but that's
+ historic now.
+\item Uses a hierarchical domain name system.
+\item Classless InterDomain Routing (CIDR) is a modern way of making blocks
+ for the internet. I'm not entirely sure what it actually does?
+\item Prefix notation, write blocks as 123.456/16, or 123.456.789/24.
+\item IP Header contains a TIME TO LIVE (TTL) field which limits how many
+ routers it can go through.
+\item Address Resolution Protocol (ARP) - convert network address -> physical
+ address.
+\item Dynamic Host Configuration Protocol (DHCP) - runtime assignment of IP
+ addresses.
+\item IP Control Message Protocol (ICMP) - Passes control data between routers.
+ Sends error statistics, pings, congestion control, klok times, routings loops
+ etc.
+\item ping and traceroute are ICMP utilities.
+\item Fragmentation - algorithm for breaking up packets in cas MTU is smaller.
+\begin{enumerate}
+\item Divide data based on MTU.
+\item Copy original IP header to IP header of each fragment.
+\item Mark fragments specially.
+\item Reassembled at destination using header flags.
+\end{enumerate}
+\item IPv6 (You should use it, IPv4 users are short-sighted fools)
+\item Uses MTU discovery instead of IPv4 fragmentation
+\item Has mandatory security (explain)
+\item Slow adoption, even though IPv4 has run out of room.
+\item INTERNET OF ALL TEH THINGZ!
+\item IOT = embedded computers connected to internet (GENIUS!)
+\item IPv4 doesn't have enough addresses, security is concerning.
+\item Software defined networks is a research topic.
+\item Gateway: Router that serves a subnet.
+\end{itemize}
+\subsection*{Security}
+\begin{itemize}
+\item Layer 2 link encryption, nodes using shared keys sending ciphertext
+between them.
+\item Layer 3 end-to-end encryption, body encrypted header not. Communities can
+share keys apparently?
+\item IP Security Protocol (IPSEC). Layer 3 protocol.
+\item IPSEC has three primary mechanisms
+\begin{enumerate}
+\item IP Authentication Header for authentication/integrity.
+\item IP Encapsulating Security Payload (ESP) for confidentially using
+symmetrickey encryption.
+\item Manual or automated key distribution - Internet key management protocols
+(IKMP) being developed.
+\end{enumerate}
+\item AH and ESP have two modes:
+\begin{enumerate}
+\item Transport mode: host to host
+\item Tunneling mode: firewall to firewall
+\end{enumerate}
+\item Firewall is another Layer 3 thing. It either filters things based on
+application logic or based on packet headers.
+\item Routing v forwarding: Routing determines where to send things. Forwarding
+is the process of sending packets to where routing says it should go.
+\item Routing either done by shortest-path (in hops) or collecting data and
+trying to find an optimal solution.
+\item Routing Information Protocol (RIP) uses a distance vector and UDP,
+Unix builtin, messages exchange routing tables.
+\item Open Shortest Path First (OSPF) use link state and IP, load balancing,
+router exchange info with Link State Advertisement (LSA) messages.
+\item OSPF design considerations
+\begin{enumerate}
+\item "Open"
+\item Must support a variety of distance metrics.
+\item Needs to respond dynamically to changes.
+\item Should allow TOS (def?) routing
+\item Should do load balancing
+\item Security of routing updates
+\end{enumerate}
+\item OSPF supports three kinds of topologies (word choice?)
+\begin{enumerate}
+\item Point-to-point between two routers.
+\item Multi-access network with broadcasting.
+\item Multi-access networks without broadcasting.
+\end{enumerate}
+\item OSPF Protocols
+\begin{enumerate}
+\item Hello Protocol: Sends heartbeats.
+\item Exchange Protocol: To synchronize routing databases.
+\item Flooding Protocol: Distribute updates and ACK them.
+\end{enumerate}
+\item Border gateway Protocol
+\begin{enumerate}
+\item Internet gateways exchange routing info among admin domains.
+\item gateway "advertises" that it can reach certain IP networks and its
+distance to them.
+\item Distance metrics not standardized
+\item Exterior routing through autonomous systems (see below)
+\item Uses TCP
+\end{enumerate}
+\item Autonomous systems: A region of the Internet under the control of a
+single entity.
+\end{itemize}
+\section*{Slides 9 Notes}
+\subsection*{Queueing theory}
+\begin{itemize}
+\item Definition: the mathematical foundation for
+understanding/predicting the behavior of packet-switched networks.
+\item One Model is a Single Server M/M/1 $\lambda$ is mean arrival rate and
+$\mu$ is the mean service rate where $\lambda < \mu$.
+\item Next slide confuses me. (Look at again.)
+\item Exponential Distribution: PDF $\lambda e^{-\lambda t}$. CDF
+$e^{-\lambda t}$
+\item Formulas
+\begin{itemize}
+\item Utilization factor $\rho = \lambda/\mu$
+\item Number in system $N = \rho / (1-\rho)$
+\item Time in system (Little's formula) $T=N/\lambda$
+\item Waiting time in queue $W=T-1/\lambda$
+\item Number in queue $N_q = \lambda W$
+\end{itemize}
+\item Pollaczek-Khinchin Formula Total time in queueing node $T = \bar{x} +
+\frac{\lambda * \bar{x}^2}{2(1-\rho)}$, where $\bar{x}$ = average service time,
+$\lambda$ = average arrival rate, $\rho$ = utilization, and $x^2$ = second
+moment of service (?).
+\item WORK SOME EXAMPLES YOU LAZY FUCK!
+\end{itemize}
+\subsection*{Transport Protocols}
+\begin{itemize}
+\item Transport is the fourth layer of the seven layer model. It handles
+end-to-end error and flow control, sometimes congestion as well.
+\item Transport layers must provide reliable/consistent service in the face of:
+\begin{enumerate}
+\item Connectionless Networking
+\item Circuit failures
+\item Packet reordering
+\end{enumerate}
+\item Elements of transport protocols
+\begin{enumerate}
+\item Connection Management
+\item Segment and reassemble application data
+\item Recover from network failures
+\item Error control and flow control
+\item Multiplex multiple transport connections to one network connections.
+\item Splitting and recombining: map one transport connection to multiple
+network connections.
+\end{enumerate}
+\item There are two main internet transport protocols, User Datagram Protocol
+(UDP) and Transmission Control Protocol (TCP). UDP is unreliable, TCP is the
+opposite.
+\end{itemize}
+\subsubsection*{Stuff about TCP}
+\begin{itemize}
+\item Provides connection for connectionless IP.
+\item Reliable and ordered.
+\item Flow control via sliding windows
+\item Uses Ports: In Berkeley socket = IP address + port.
+\item Full-duplex transmission (Sends ACKs with responses)
+\item Unique ID = (Sending IP/port, Receiving IP/port)
+\item Delayed Duplicate Sequence Numbers: Very old packets from previous
+connections may show up as if to appear in sequence for new connections.
+How to prevent this? Either prevent sequence number reuse or purge old
+packets from the network.
+\item TCP uses a three-way handshake to setup connections and to release
+connections.
+\item TCP Startup, meet on pre-agreed port and then usually negotiate a
+switch to a different one.
+\item Uses slow-start to avoid congestion, start with minimum window size
+of 1 MTU/64KB and every round trip we double the window size (unless
+we see congestion). When we reach a threshold, we then start increasing
+one MTU at a time instead of doubling. If we experience congestion, cut
+the threshold in half and begin slow-start again.
+\item TCP keeps a couple timers around, one for retransmission, one for
+persistence, one for keep alive, and one for TIMED WAIT.
+\item Retransmission timer needs to be dynamically adjusted due to
+network differences. To do this we maintain an RTT variable to estimate the
+round trip time. Each time we receive a non-timed out segment in time M,
+we set $RTT \leftarrow \alpha RTT + (1+\alpha)M$, where $\alpha < 1$.
+We also track a deviation estimator $D$ and update it as $D \leftarrow
+\alpha D + (1 - \alpha)|RTT - M|$. We set the timeout to RTT + 4D.
+\item What if we retransmit a segment and then get an ACK for it? Using
+Karn's algorithm we don't update the RTT, but we double the timeout.
+\item What if we need to send data without a full segment? Use the "push"
+feature. This might be inefficient, so Nagle's algorithm accumulates data
+in a buffer while waiting for an ACK and then sends whatever it has when
+we get ACK'd.
+\item TCP kinda sucks for high-performance networks due to knee-jerk
+congestion control which cuts performance in half whenever it loses
+something.
+\item Network Address Translation: Use an IPv4 address to "front" for
+many hosts and provide them private IPs from reserved space.
+Then use TCP port multiplexing to identify who the thing is actually
+intended for. Doesn't work for peer-to-peer. Since these hosts don't
+have public IPs, it's slightly more secure since outsiders can't just
+randomly call them up and give them some viruses.
+\item TODO Work Examples
+\end{itemize}
+\section*{Slides 10 Notes}
+\subsection*{Multimedia networking}
+\begin{itemize}
+\item IP can be used for voice (VOIP), video, graphics etc.
+\item Multipurpose Internet Mail Extensions (MIME) does not require real time
+support, some others do.
+\item Lack of resource reservation can prevent IP from providing good
+Quality of Service
+\item Two approaches to ensure QoS: Integrated Services and Differentiated
+Services. Also ATM networks with Multiprotocol Label Switching (MPLS).
+\item Asynchronous Multimedia email
+\begin{itemize}
+\item Using MIME.
+\item Text, hyperlinks, audio, graphic image format (GIF), jpeg, and mpeg
+stuff.\end{itemize}
+\item JPEG = joint photographic experts group
+\item MPEG = motion pictures experts group
+\item CERN created the WORLD WIDE WEB (WWW)!!!
+\item HTTP = Hypertext Transfer Protocol
+\item HTML = Hypertext Markup Language
+\item Those two above do asynchronous multimedia.
+\item Streaming can be used for pseudo-synchronous multimedia. Download
+enough data that you can start playing it while the rest downloads without
+worrying about interruptions.
+\item Synchronous Multimedia is also possible with high-bandwidth connections.
+Internet Multicast is capable of delivering real-time multimedia to multimedia
+clients simultaneously. MBone also developed tools for multicast multimedia.
+The main use case for synchronous multimedia is Skype and online lectures.
+\item There are two important protocols for synchronous multimedia
+\begin{enumerate}
+\item Real-time transport protocol (RTP) - end-to-end networking for
+real-time multimedia.
+\item Session Initiation Protocol (SIP) - application-level protocol for
+creating, modifying, and terminating sessions (i.e. skype calls)
+\end{enumerate}
+\item VOIP is usually cheaper than long-distance calls. Corporate customers
+love it because they usually have excess internet and don't need to worry
+about QoS issues. Can be done all-internet or mix internet and phone lines.
+\end{itemize}
+\subsection*{Multicasting}
+\begin{itemize}
+\item My wizard has a feat that allows multicasting as a full action.
+\item Definition: sending a packet to a group of addresses in a network.
+\item IPmc lets you send packets to a group address.
+\item These "group" addresses are all in "class D" >= 224.0.0.0.
+\item LANs can do this inherently.
+\item WANs do a fancy tree.
+\item Routers usually have to duplicate packets to get them to everyone.
+Commercial routers can do this automatically.
+\item Multicast needs its own routing protocol. Unicast is weak and for
+cowards.
+\item IPmc uses a many-to-many model of packet delivery
+\begin{itemize}
+\item Equivalent to full duplex
+\item Anyone can send to anyone.
+\item Useful for collaboration.
+\item Appealing, but complex.
+\end{itemize}
+\item IPmc can also do Source Specific Multicast (SSM) which is one-to-many
+\begin{itemize}
+\item Equivalent to half-duplex
+\item Only one host can spam everyone.
+\item Useful for presentations.
+\end{itemize}
+\item IP Multicast Routing
+\begin{itemize}
+\item Internet Group Management Protocol (IGMP) runs on IP,
+like "ARP for Multicast".
+\item Distance Vector Multicast Routing Protocol (DVMRP): multicast
+version of distance vector.
+\item Multicast Open Shortest Path First (MOSPF): multicast version
+of link state.
+\item Multicast Border Gateway Protocol (MGBP): multicast version
+of border gateway for interdomain routing.
+\item (new) Protocol Independent Multicast (PIM) routing adds "relay points" formulticast-sparse portions of the internet. Also
+available in sparse (PIM-SM), dense (PIM-DM), and SSM (PIM-SSM) flavors.
+\item (proposed) Quality-of-Serivce Path First (QOSPF) would consider
+availability along multicast paths.
+\end{itemize}
+\end{itemize}
+\subsection*{QoS}
+\begin{itemize}
+\item Service parameters: data rate, delay, jitter, packet loss rate.
+\item Quality-of-Service: best-effort, predictive, guaranteed performance.
+\item QoS needs to be defined in context of capacity requirement.
+\item Current internet is entirely is entirely best effort.
+\item Integrated Services and Differentiated Services are trying to
+change this. Still waiting on adoption by ISPs.
+\item Internet Integrated Services: Group of proposed standards.
+Controlled Load is supposed to offer service as if in lightly-loaded
+best-effort situation. Guaranteed QoS guarantees a specific delay
+and jitter provided a guarantee of traffic's peak rate.
+\item Token Bucket: Improvement on "leaky bucket" rate control,
+results in "rate-controlled" transmission.
+\begin{enumerate}
+\item Bucket starts with $b$ permits.
+\item Permits arrive at rate per second $r$.
+\item Every packet sent decrements bucket count.
+\item No permit, no transmission.
+\end{enumerate}
+\item Bursty traffic: Applications may require periodic transmission
+of large chunks of data. This correlation can destroy statistical models.
+\item Bursty traffic is why TCP congestion is so important.
+\item RSVP Messages (RFC 2205) - setup protocol for QoS to implement
+IntServ Token Bucket.
+\item Differentiated Services - Attempt to work around overhead of RSVP,
+by making two classes of traffic one best-effort and large and one small and
+QoS-sensitive. QoS is processed first and better. This is part of the net
+neutrality controversy.
+\end{itemize}
+\subsection*{ATM Multicast}
+\begin{itemize}
+\item Reminder: ATM = Asynchronous Transfer Mode (what chapter is this from?
+I should probably review it.)
+\item ATM has built-in QoS
+\item Services Categories: Constant Bit Rate (CBR), Variable bit rate:
+real-time(RT-VBR), variable bit-rate: non real-time, (NRT-VBR), Available Bit
+Rate (ABR)
+Unspecified Bit Rate (UBR). Usage examples are VOIP, skype, email, web-surfing,
+and ftp.
+\item How to provide LAN service over ATM? Provide a central server and provide
+VCs between all hosts using a LAN emulation server. This is called LAN
+Emulation(LANE).
+\item IETF does it using a server called ATM-ARP.
+\item This isn't particularly common.
+\item MPLS (defined above) can get ATM and IP to work together to make
+good networks. Routers use ATM "pipes" for IP flows. These pipes have "labels"
+that can be used for ATM switching. This is a "traffic engineering" thing.
+\end{itemize}
+\subsection*{Multicasting Research}
+\begin{itemize}
+\item NO OFF-THE-SHELF SOLUTIONS!
+\item Distributed Virtual Simulation (DVS) (??)
+\item Selectively Reliable Multicast Protocol (SRMP) - Reliable Multicast for
+DVS. Combined RM of rarely-changing data with best-effort transmission of
+frequently changing data. Has it's own stack. IETF is currently looking on a
+TCP-friendly SRMP.
+\end{itemize}
+\subsection*{TCP Throughput Equation}
+\begin{itemize}
+\item $B = \frac{S}{RTT \times [\sqrt{\frac{2p}{3}} +
+(12\sqrt{\frac{3p}{8}})p(1+32p^2)]}$,
+where $S =$ Mean packet size, $p =$ packet loss event rate.
+\end{itemize}
+\section*{Security Slides}
+\begin{itemize}
+\item Basics of network security (review)
+\begin{itemize}
+\item Confidentiality (encryption/decryption)
+\item Integrity (message authenticatication codes / message hashes)
+\item Authentication (public/private keys with web of trust)
+\item Access Control
+\item Nonrepudiation (message hashes using private keys)
+\item Key Distribution (using key exchange algorithms)
+\end{itemize}
+\item Secure Hash Functions, need to be hard to make a message given a hash
+and to find a message with the same hash as a given message. These things
+commonly turn out to be weaker than originally thought.
+\item Three ways to try breaking an encryption scheme: Ciphertext only,
+known plaintext, chosen plaintext (where Malory can encrypt message at will).
+\item The hardness of breaking an encryption standard is proportional
+to how likely it is to be used for important things.
+\item Data Encryption Standard (DES) - Uses iterations to take a 64-bit
+plaintext and 56-bit key and encrypt it (WEAK). Modified versions include
+Advanced Encryption Standard (AES) and International Data Encryption
+Algorithm (IDEA).
+\item Public Key Cryptography uses seperate keys for encryption and decryption.
+It's more secure and lets you identify people.
+\item Public Key algorithms are based on problems which are much harder to
+invert
+\begin{itemize}
+\item RSA algorithm is based on factoring the product of two large primes.
+\item Diffie-Hellman is based on computing x given $y=a^{x}\%p$.
+\end{itemize}
+\item Public Key Infrastructure (PKI) - distributing web of trust basically, if
+the internet had integrated PKI spam could always be traced back to its source
+and we could then claim the skulls of spammers for Khorne.
+\item Secure SHell (SSH) - is used to create secure terminal sessions over TCP,
+it works well (depending on connectivity issues). Uses Diffie-Hellman key
+agreement.
+\item Secure Sockets Layer (SSL) - used to secure client-server sessions (https)
+only occasionally has game-breaking Heartbleed bugs.
+\item Message-Digest 5 (MD5) - fancy pants checksum
+\item Simple Network Management Protocol (SNMP) - protocol to make
+network management easy/consistent. Each managed object (that is network
+attached device) has an SNMP agent and a Management Information Base (MIB).
+MIB is basically a database of settings that can be edited. SNMP is mostly used
+by telecom employees to monitor the network and then react (in)appropriately
+as needed.
+\end{itemize}
+\section*{High-level protocols}
+\begin{itemize}
+\item Client-Server Model - server provides services and a number of clients
+connect to it to take advantage of them by sending messages back and forth.
+\item Some small things that use a client-server model are telnet, ssh, ftp, and
+sftp. Two of these are security vulnerabilities and should not be used.
+\item Simple Mail Transfer Protocol (SMTP) - transmit email as text,
+mailservers talk to each other using TCP. Can either use Post Office Protocol
+(POP3) or IMAP4 for clint/server. IMAP4 lets user scan headers for emails
+before downloadingeth them.
+\item X, list servs, and network news are other things that be.
+\item Network Time Protocol (NTP) is a moderately important thing. It's used
+to synchronize clocks on slave computers to a master's.
+\item Social media loves Client-Server stuff. Facebook, twitter, youtube,
+second life. These things drain your soul and poison the mind.
+\item Remote Procedure Calls (RPC) are a legacyish way of distributed
+communication that usually need reliable connections.
+\item Network File Systems are also cool. NFS is the Unixy way, Google and
+others have proprietary versions they made themselves.
+\end{itemize}
+\subsection*{World Wide Web protocols}
+\begin{itemize}
+\item Uniform Resource Locators (URLs) - they are what they is.
+\item HyperText Transfer Protocol (HTTP), also in secure!
+\item HyperText Markup Language (HTML)
+\item Common Gateway Interface (CGI) - Generating webpages on the fly basically
+nothing too interesting.
+\item PHP - Programming language for server side ooga-booga.
+\item Java Applets - Java for the client.
+\item HTML5 - turing-complete modern alternative to the two above.
+\item JavaScript - One more way to do client-side stuff.
+\item XML - lesser version of JSON (DO NOT USE!)
+\item Web Services - abuse a transaction-based web paradigm, also try to be
+stateless. This has five required functions: self-description, publishing the
+service descriptions, locating the service, establishing communications,
+requesting initialization data, and exchange data with other web services.
+\end{itemize}
+\subsection*{Peer-to-peer Applications}
+An increasingly interesting research avenue. Most likely going to be used for
+things like Skype and whiteboard apps.
+\section*{Formulas to know}
+\subsection*{Comms}
+\begin{itemize}
+\item Bandwidth is the range of frequencies $W = f_h - f_l$ that can be sent
+along an analog channel. Using it as jargon for digital capacity will be marked
+wrong in this class.
+\item K and M mean kilo and mega, in computers they are $2^{10}$ and $2^{20}$ in
+communications they mean $10^3$ and $10^6$.
+\item The Decibel is a measure of signal gain/loss it is equal to
+$10\log_{10}(P_{meas}/P_{ref})$.
+\item Bits per baud
+\item Bytes, bits, and samples/sec
+\item Shannon's law gives the theoretical max capacity (in bits per seconds)
+of a channel. It is calculated as $C=B\log_2(1+\frac{S}{N})$, where $C$ is
+capacity, $B$ is bandwidth, and $\frac{S}{N}$ is signal-to-noise ratio.
+\item For a message of $b$ bits on a connection of $m$ bits / second, the
+transmission time if $b/m$ seconds. If this message travels a distance $d$
+meters at a velocity of $v$ m/s it will arrive with a propagation delay of $d/v$
+seconds.
+\item The Nyquist rate of an analog channel is equal to twice the highest
+frequency in the signal. Analog signals need to be sampled at this rate in order
+to minimize noise. The traditional way to represent analog signals as digital is
+with N-bit pulse code modulation. N-bit PCM has a "noise of quantization"
+$(S/N)_{PCM} = 2^{2N}$.
+\item Common channels: switched voice (B channel) is 64 kbit/s, D channel is
+16 kbit/s, T1 is 1.544 Mbit/s, SONET OC-1 is 51.84 Mbits/s, and OC-X is OC-1
+* X.
+\item With an n-bit divisor, CRC can detect all but $1/2^{n-1}$ errors, all
+single-bit errors, all double-bit errors (with good divisor), all burst errors
+up to (n-1) bits and most larger ones.
+\end{itemize}
+\subsection*{Networking}
+\begin{itemize}
+\item Efficiency and utilization
+\item Timeout (S) - For TCP, $Timeout = RTT + 4D$, where $RTT$ and $D$ are
+recalculated every time we receive a packet in time $M$ with the formulas
+$RTT=\alpha RTT + (1-\alpha)M$ and $D=\alpha D+(1-\alpha)|RTT-M|$ with
+$\alpha \in (0,1)$. It's related to the TCP window because increases in the $RTT$
+trigger the slow-start procedure described a couple bullet points down to
+restart.
+\item Dijkstra routing - I've done this in 10 different classes by this point.
+Algorithm is to work through the nodes in order of which are cheapest to get to
+from the beginning, see if those open up faster routes to anywhere, and then
+move on to the next node. When you're done, you have the fastest routes from
+the source to everywhere.
+\item Bellman-Ford routing - $O(n^3)$ breadth-first alternative to Dijkstra.
+Given max number of hops $h$, we iterate over $x$ in $[1..h]$ setting $C[n][x]
+\leftarrow min([C[j][x-1] + D[n][j]$ for $j$ in $G])$.
+\item In a M/M/1 queue, with mean arrival rate $\lambda$ and mean service rate
+$\mu$, the utilization factor $\rho =\lambda/\mu$, the number in the system
+$N =\rho/(1-\rho)$, and the mean time in system (aka Little's Formula)
+$T=N/\lambda$.
+\item TCP window starts at 1 MTU (64 kb) and doubles as long as the RTT doesn't
+go up, if it does we cut the threshold size in half and restart. If we get to
+the threshold without experiencing congestion we start increasing the MTU by
+one at a time until we reach the receiver max.
+\end{itemize}
+\section*{Vocab with definitions}
+\begin{itemize}
+\item Message switching - entire message is sent node-to-node until it reaches
+the destination.
+\item Packet switching - message is broken down into packets which are sent
+independently and reassembled (or not) at the destination.
+\item Circuit switching - single connection is made and used for all time.
+\item Routing - Selecting a path for each packet to take through network.
+\item Virtual Circuit - circuit simulated on a connectionless system
+\item Virtual channel - see virtual circuit
+\item shortest-path routing - routing using the shortest path in number of links
+from source to destination.
+\item Optimal routing - routing based on gathering global data and calculating
+an optimal route from it (which is inherently inaccurate)
+\item source routing - source gives list of nodes to go through which can't
+be deviated from. (primitive)
+\item Static routing - routes predetermined and unchanging. (also primitive)
+\item Flooding - routing through no routing, just spam EVERYONE!
+\item IETF - Internet Engineering Task Force, not superheroes, just the group 
+that standardized TCP/IP and a couple related things.
+\item RFC - request for comment, how IETF asked for comments on a standard.
+\item IPS - internet protocol suite; TCP, IP, and some related things.
+\item Subnet - Physical network nodes can directly communicate over.
+\item Bridge - Connects nodes on same subnet.
+\item Router - Connects nodes to different subnets.
+\item MTU - Max transfer unit - largest packet/frame/etc. that layer can handle.
+\item TTL - Time to live - max number of routers through which datagram can be
+forwarded.
+\item ARP - Address Resolution Protocol - Used to map IP to physical addresses
+on LAN.
+\item DHCP - Dynamic Host Configuration Protocol - Way to have server assign IP
+addresses.
+\item ICMP - IP Control Message Protocol - passes data between routers.
+\item Fragmentation - Breaking a packet into smaller ones when the network can't
+handle how big it is.
+\item distance vector - uses hop count and UDP. Used by RIP routers.
+\item link state - multiple metrics, used by Open Shortest Path First (OSPF).
+\item BGP - Border Gateway Protocol - Lets ISPs trade routing info.
+\item AS - Autonomous Systems - A region of the Internet controlled by a single
+entity (i.e. an ISP). Have 1 bit identifier (ASN) and let internet scale.
+\item inverse DNS - takes addresses and checks if they are valid.
+\item NTP - Network Time Protocol
+\end{itemize}
+\textbf{ALL GLORY TO THE OMNISSIAH!}
+\end{document}

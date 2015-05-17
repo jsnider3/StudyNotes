@@ -19,12 +19,18 @@ class Tests(unittest.TestCase):
     bs = blackscholes.BlackScholes(100.0, 105.0, 1.0, 0.05, 0.2)
     assert(float_eq(bs.euro_call(), 8.021, .01))
     assert(float_eq(bs.euro_put(), 7.9, .001))
-    (d, g, v, t, r) = bs.call_partials()
+    (d, g, v, t, r) = bs.partials_call()
     assert(float_eq(d, 0.542, 0.001))
     assert(float_eq(g, 0.019, 0.001))
     assert(float_eq(v, 39.670, 0.001))
     assert(float_eq(t, -6.277, 0.001))
     assert(float_eq(r, 46.201, 0.001))
+    (d, g, v, t, r) = bs.partials_put()
+    assert(float_eq(d, -0.458, 0.001))
+    assert(float_eq(g, 0.019, 0.001))
+    assert(float_eq(v, 39.670, 0.001))
+    assert(float_eq(t, -1.283, 0.001))
+    assert(float_eq(r, -53.678, 0.001))
 
   def test_montecarlo(self):
     '''Example usage of monte_carlo, but will probabilistically fail.'''

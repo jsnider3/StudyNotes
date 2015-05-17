@@ -64,7 +64,17 @@ class BlackScholes(object):
                     + (self.r - self.sigma ** 2 / 2) * self.t))
     return d
 
-  def call_partials(self):
+  def N(self, x):
+    '''cdf of the standard normal 
+      distribution.'''
+    return sp.stats.norm.cdf(x)
+
+  def Np(self, x):
+    '''pdf of the standard normal 
+      distribution.'''
+    return sp.stats.norm.pdf(x)
+
+  def partials_call(self):
     '''
       Calculates the partial derivatives from the Black-Scholes
       for a call option.
@@ -79,12 +89,18 @@ class BlackScholes(object):
     Rho = self.k * self.t * np.exp(-self.r * self.t) * self.N(d[1])
     return (Delta, Gamma, Vega, Theta, Rho)
 
-  def N(self, x):
-    '''cdf of the standard normal 
-      distribution.'''
-    return sp.stats.norm.cdf(x)
+  def partials_put(self):
+    '''
+      Calculates the partial derivatives from the Black-Scholes
+      for a put option.
+      @return: (Delta, Gamma, Vega, Theta, Rho)
+    '''
+    d = self.factors()
+    Delta = self.N(d[0]) - 1
+    Gamma = self.Np(d[0]) / (self.s * self.sigma * np.sqrt(self.t))
+    Vega = self.s * self.Np(d[0]) * np.sqrt(self.t)
+    Theta = (-self.s * self.Np(d[0]) * self.sigma / (2 * np.sqrt(self.t)) +
+      self.r * self.k * math.exp(-self.r * self.t) * self.N(-d[1]))
+    Rho = -self.k * self.t * np.exp(-self.r * self.t) * self.N(-d[1])
+    return (Delta, Gamma, Vega, Theta, Rho)
 
-  def Np(self, x):
-    '''pdf of the standard normal 
-      distribution.'''
-    return sp.stats.norm.pdf(x)

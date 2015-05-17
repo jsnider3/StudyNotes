@@ -28,7 +28,7 @@ def float_eq(f,s, unc):
 
 def monte_carlo_euro(s, k, t, r, sigma):
   '''
-     Calculate the value of a European Call option
+     Calculate the value of a European call option
      using Monte Carlo methods. No dividends.
      @param s: initial stock price
      @param k: strike price

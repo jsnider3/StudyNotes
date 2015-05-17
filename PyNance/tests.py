@@ -16,12 +16,10 @@ class Tests(unittest.TestCase):
 
   def test_blackscholes(self):
     '''Test cases for Black-Scholes option pricing.'''
-    bs = blackscholes.BlackScholes()
-    assert(float_eq(bs.euro_call(100.0, 105.0, 1.0, 0.05, 0.2),
-      8.021, .01))
-    assert(float_eq(bs.euro_put(100.0, 105.0, 1.0, 0.05, 0.2),
-      7.9, .001))
-    (d, g, v, t, r) = bs.call_partials(100.0, 105.0, 1.0, 0.05, 0.2)
+    bs = blackscholes.BlackScholes(100.0, 105.0, 1.0, 0.05, 0.2)
+    assert(float_eq(bs.euro_call(), 8.021, .01))
+    assert(float_eq(bs.euro_put(), 7.9, .001))
+    (d, g, v, t, r) = bs.call_partials()
     assert(float_eq(d, 0.542, 0.001))
     assert(float_eq(g, 0.019, 0.001))
     assert(float_eq(v, 39.670, 0.001))

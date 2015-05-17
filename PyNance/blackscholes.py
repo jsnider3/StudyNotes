@@ -17,74 +17,66 @@ import scipy.stats
 class BlackScholes(object):
   '''Wraps methods in an object'''
 
-  def init(self):
-    '''Nothing to do.'''
-    pass
-
-  def euro_call(self, s, k, t, r, sigma):
-    '''
-       Calculate the value of a European Call option
-        using Black-Scholes. No dividends.
+  def __init__(self, s, k, t, r, sigma):
+    '''Initialize a model with the given parameters.
        @param s: initial stock price
        @param k: strike price
        @param t: time to maturity
        @param r: Constant, riskless short rate
        @param sigma: Constant volatility
+    '''
+    self.s = s
+    self.k = k
+    self.t = t
+    self.r = r
+    self.sigma = sigma
+
+  def euro_call(self):
+    '''
+       Calculate the value of a European Call option
+        using Black-Scholes. No dividends.
        @return: The value for an option with the given parameters.
     '''
-    d = self.factors(s, k, t, r, sigma)
-    return self.N(d[0]) * s - self.N(d[1]) * k * np.exp(-r * t)
+    d = self.factors()
+    return self.N(d[0]) * self.s - (self.N(d[1]) * self.k *
+                                      np.exp(-self.r * self.t))
 
-  def euro_put(self, s, k, t, r, sigma):
+  def euro_put(self):
     '''
       Calculate the value of a European put option
       using Black-Scholes. No dividends.
-      @param s: initial stock price
-      @param k: strike price
-      @param t: time to maturity
-      @param r: Constant, riskless short rate
-      @param sigma: Constant volatility
       @return: The value for an option with the given parameters.
     '''
-    d = self.factors(s, k, t, r, sigma)
-    return self.N(-d[1]) * k * np.exp(-r * t) - self.N(-d[0]) * s
+    d = self.factors()
+    return (self.N(-d[1]) * self.k * np.exp(-self.r * self.t)
+            - self.N(-d[0]) * self.s)
 
-  def factors(self, s, k, t, r, sigma):
+  def factors(self):
     '''
       Calcultes the d1 and d2 factors used in a large
       number of Black Scholes equations.
-      @param s: initial stock price
-      @param k: strike price
-      @param t: time to maturity
-      @param r: Constant, riskless short rate
-      @param sigma: Constant volatility
       @return: [d1, d2]
     '''
     d = []
-    d.append(1.0 / (sigma * np.sqrt(t)) * (math.log(s / k)
-                    + (r + sigma ** 2 / 2) * t))
-    d.append(1.0 / (sigma * np.sqrt(t)) * (math.log(s / k)
-                    + (r - sigma ** 2 / 2) * t))
+    d.append(1.0 / (self.sigma * np.sqrt(self.t)) * (math.log(self.s / self.k)
+                    + (self.r + self.sigma ** 2 / 2) * self.t))
+    d.append(1.0 / (self.sigma * np.sqrt(self.t)) * (math.log(self.s / self.k)
+                    + (self.r - self.sigma ** 2 / 2) * self.t))
     return d
 
-  def call_partials(self, s, k, t, r, sigma):
+  def call_partials(self):
     '''
       Calculates the partial derivatives from the Black-Scholes
       for a call option.
-      @param s: initial stock price
-      @param k: strike price
-      @param t: time to maturity
-      @param r: Constant, riskless short rate
-      @param sigma: Constant volatility
       @return: (Delta, Gamma, Vega, Theta, Rho)
     '''
-    d = self.factors(s, k, t, r, sigma)
+    d = self.factors()
     Delta = self.N(d[0])
-    Gamma = self.Np(d[0]) / (s * sigma * np.sqrt(t))
-    Vega = s * self.Np(d[0]) * np.sqrt(t)
-    Theta = (-s * self.Np(d[0]) * sigma / (2 * np.sqrt(t)) -
-      r * k * math.exp(-r * t) * self.N(d[1]))
-    Rho = k * t * np.exp(-r * t) * self.N(d[1])
+    Gamma = self.Np(d[0]) / (self.s * self.sigma * np.sqrt(self.t))
+    Vega = self.s * self.Np(d[0]) * np.sqrt(self.t)
+    Theta = (-self.s * self.Np(d[0]) * self.sigma / (2 * np.sqrt(self.t)) -
+      self.r * self.k * math.exp(-self.r * self.t) * self.N(d[1]))
+    Rho = self.k * self.t * np.exp(-self.r * self.t) * self.N(d[1])
     return (Delta, Gamma, Vega, Theta, Rho)
 
   def N(self, x):

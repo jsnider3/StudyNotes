@@ -34,7 +34,7 @@ class BlackScholes(object):
   def euro_call(self):
     '''
        Calculate the value of a European Call option
-        using Black-Scholes. No dividends.
+       using Black-Scholes. No dividends.
        @return: The value for an option with the given parameters.
     '''
     d = self.factors()

@@ -22,7 +22,11 @@ def float_eq(f,s, unc):
       @param f: First float.
       @param s: Second float.
       @param unc: The uncertainty.
+      @type f: float
+      @type s: float
+      @type unc: float
       @return: Whether f and s are within that range of each other.
+      @rtype: bool
   '''
   return f + unc > s and s + unc > f
 
@@ -36,25 +40,24 @@ def monte_carlo_euro(s, k, t, r, sigma):
      @param r: Constant, riskless short rate
      @param sigma: Constant volatility
      @return: A value for an option with the given parameters.
+     @rtype: float
   ''' 
   z = np.random.standard_normal(100000)
   st = s * np.exp((r - 0.5 * sigma ** 2) * t + sigma * np.sqrt(t) * z)
   ht = np.maximum(st - k, 0)
   return np.exp(-r * t) * sum(ht) / 100000
 
-def price_plot(stk):
-  '''Plot the closing price and volatility of a stock,
-     then hang until user input.
-     @param stk: The stock's ticker symbol e.g. GOOG.
-     @return: The dataframe used to make the plot.'''
+def rolling_vol(stk):
+  '''Look up the closing price and calculate 
+     volatility of a stock.
+     @param stk: The stock's ticker symbol e.g. "GOOG".
+     @type stk: str
+     @return: The dataframe with closing volatility.'''
   info = web.DataReader(stk, data_source='google',
                   start='3/14/2009', end='4/14/2014')
   info['Log_Ret'] = np.log(info['Close'] / info['Close'].shift(1))
   info['Volatility'] = pd.rolling_std(info['Log_Ret'],
                           window=252) * np.sqrt(252)
-  info[['Close', 'Volatility']].plot(subplots=True, color='blue',
-                                  figsize=(8, 6))
-  plt.show()
   return info
 
 def main():

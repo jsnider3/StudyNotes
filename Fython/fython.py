@@ -9,6 +9,7 @@
   @license: GNU Public License v3.0
 '''
 
+import datetime
 import math
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,6 +17,25 @@ import pandas as pd
 import pandas.io.data as web
 import scipy as sp
 import scipy.stats 
+import time
+
+def annualized_return(stk, begin, stop):
+  '''Look up the closing price and calculate 
+     volatility of a stock.
+     @param stk: The stock's ticker symbol e.g. "GOOG".
+     @type stk: str
+     @type start: start date
+     @type end: end date
+     @return: The annualized return of the stock in that time.'''
+  info = web.DataReader(stk, data_source='google',
+                  start=begin, end=stop)
+  starttime = datetime.datetime(*time.strptime(begin,"%m/%d/%Y")[:6])
+  endtime = datetime.datetime(*time.strptime(stop, "%m/%d/%Y")[:6])
+  delta = endtime - starttime
+  Y = delta.days / 365.25
+  S0 = info.head()['Open'][0]
+  ST = info.tail()['Open'][-1]
+  return (ST/S0) ** (1/Y) - 1
 
 def float_eq(f,s, unc):
   ''' Determine if two floats are equal at a given uncertainty.

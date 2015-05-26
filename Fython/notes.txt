@@ -1,0 +1,2 @@
+* pandas (0.16.1) has a weird error message if you call
+  pandas.io.data.DataReader with a start date greater than the end date.

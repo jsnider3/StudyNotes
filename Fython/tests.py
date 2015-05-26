@@ -10,8 +10,13 @@
 from  blackscholes import *
 import unittest
 from fython import *
+from datetime import date, timedelta
 
 class Tests(unittest.TestCase):
+
+  def test_annualized(self):
+    assert(float_eq(-.0285, 
+      annualized_return('GOOG', '05/25/2014', '05/25/2015'), .001))
 
   def test_blackscholes(self):
     '''Test cases for Black-Scholes option pricing.'''

@@ -67,6 +67,19 @@ def monte_carlo_euro(s, k, t, r, sigma):
   ht = np.maximum(st - k, 0)
   return np.exp(-r * t) * sum(ht) / 100000
 
+def random_walk_euro_call(s, k, t, r, sigma):
+  '''
+    Similar to monte_carlo_euro, but with a random walk.
+  '''
+  M = 50 
+  I = 250000
+  dt = t / M
+  paths = s * np.exp(np.cumsum((r - 0.5 * sigma ** 2) * dt +
+    sigma * math.sqrt(dt) * np.random.standard_normal((M + 1, I)), axis=0))
+  paths[0] = s
+  C0 = math.exp(-r * t) * sum(np.maximum(paths[-1] - k, 0)) / I
+  return C0
+
 def rolling_vol(stk):
   '''Look up the closing price and calculate 
      volatility of a stock.

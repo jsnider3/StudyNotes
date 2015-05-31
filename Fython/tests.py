@@ -39,6 +39,7 @@ class Tests(unittest.TestCase):
   def test_montecarlo(self):
     '''Example usage of monte_carlo, but will probabilistically fail.'''
     #assert(8.1 > monte_carlo_euro(100.0, 105.0, 1.0, 0.05, 0.2) > 7.9)
+    #assert(8.1 > random_walk_euro_call(100.0, 105.0, 1.0, 0.05, 0.2) > 7.9)
     pass
 
   def test_vol(self):

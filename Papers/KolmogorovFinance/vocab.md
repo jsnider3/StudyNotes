@@ -11,3 +11,6 @@
   paper.
 * Thue-Morse sequence - A sequence made by repeated concatenation of
   its bitwise complement, starts at 0.
+* Augmented Dickey-Fuller test -
+* REP - "regularity erasing procedure" - A somewhat imaginary algorithm by
+  the authors, that should be read as "an arbitrarily good compressor".

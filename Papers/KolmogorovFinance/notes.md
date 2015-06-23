@@ -20,4 +20,5 @@
 * They suggest using 13 bits to preserve the 4th digit. 16 bits is probably
   better for the machine. 
 
-* TODO What do they mean by `i.i.d.N(0, 1)` on page 13.
+* I'm 95% sure that the `i.i.d.N(0, 1)` on page 13 is the same function as
+  numpy.random.normal

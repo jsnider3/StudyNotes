@@ -93,6 +93,10 @@ def rolling_vol(stk):
                           window=252) * np.sqrt(252)
   return info
 
+  def technical_analysis():
+    sp500 = web.DataReader('^GSPC', data_source='yahoo',
+                    start='1/1/2000', end='4/14/2014')
+
 def main():
   ''' Main '''
   price_plot('GOOG')

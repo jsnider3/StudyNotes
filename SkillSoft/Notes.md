@@ -24,3 +24,6 @@ of these seem like reasonable choices, since running out of memory is
 an extremely severe error and it's reasonable to just die when that happens.
 
 * Suffix notation is another feature that seems absolutely useless.
+
+* unordered_map and unordered_set seem useful. They seem like the kind of
+thing Steve would like.

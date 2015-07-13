@@ -1,6 +1,6 @@
 *.class
 *.aux
 *.log
-*.pdf
 *.gz
 *.toc
+CS659/Slides/*.pdf

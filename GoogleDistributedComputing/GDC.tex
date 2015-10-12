@@ -1,0 +1,70 @@
+\documentclass{scrartcl}
+\usepackage{fullpage}
+\title{GDC MapReduce Notes}
+\author{Josh Snider}
+\begin{document}
+\maketitle
+\subsection*{FP Review}
+Data structures are not modified, new data structures are made instead.
+This means we don't need to lock data structures. It also means that since
+we don't have side effects, we make everything a separate thread and
+put them together at the end.
+
+Functional programming also allows you to use functions as arguments as the 
+name implies. Functional programming is also good for generic yet typesafe
+programming, but languages like OCaml can still screw this up.
+
+Standard functional programming functions:
+\begin{itemize}
+\item Map - Apply a function to each element of a list and return a list made my
+	concatenating the results together.
+\item Fold - Track the result of calling f on each element and an accumulator,
+	return the final accumulator. Can be either a left or right fold.
+\end{itemize}
+These are basically the Map and Reduce in MapReduce.
+\subsection*{MapReduce}
+Motivated by large scale data processing, parallelize across thousands of
+computers, and make it easy for programmers to use. MapReduce has built-in
+fault tolerance and network monitoring. The user basically has two functions
+to provide
+\begin{itemize}
+\item map (in\_key, in\_value) -$>$ (out\_key, intermediate\_value) list -
+	Input consists of records from various sources.
+\item reduce (out\_key, intermediate\_value list) -$>$ out\_value list
+\end{itemize}
+After the map phase happens, we combine all the intermediate values for
+a given key into one list and then start the reduce phase. It's good practice
+for reduce to only have out\_value. We use barrier synchronization, to prevent
+people from going to the reduce step while people are still mapping.
+
+\subsubsection*{Optimization}
+Each map function runs parallelly and the reduction for each key runs in parallel.
+This means we have a bottleneck waiting for mapping to finish before we start
+reduction. How do we optimize this?
+\begin{itemize}
+\item Slow-moving ``map'' tasks are run on multiple hosts and then we take the
+	first one to finish.
+\item Google considered making reducers lazy, but that has some design flaws
+	that made it not used.
+\item We can have ``combiners'' which run mini-reduce phases before the actual
+	reduce in order to save bandwidth. If our reduce is both associative and
+	commutative, then we can use it as our combine as well.
+\end{itemize}
+
+Written in C++, with Java and Python bindings. The dividing program tries
+to divide up map tasks so that mappers are on the same computer as the data.
+Tasks are chunked in 64MB which is the same size as the Google File System's
+chunks.
+
+\subsubsection*{Ensuring fault tolerance}
+\begin{itemize}
+\item We give up on tasks if certain key-value pairs reliably crash.
+\item Mappers that fail before reporting results are redone.
+\item Reducers don't claim to be done, until their results are reliably backed
+	up.
+\end{itemize}
+\subsubsection*{Impact}
+Has had great results at Google and is a shining jewel of functional programming.
+Greatly simplifies large-scale computations. Lets programmer focus on problem
+and let library handle messy details.
+\end{document}

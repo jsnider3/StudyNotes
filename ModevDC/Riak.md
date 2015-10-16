@@ -88,3 +88,9 @@ Basho Data Platform:
 
 For time-series, we want data locality so we have a combined
 key to make that happen.
+
+Why is Redis awesome? If you get an 80% hit rate, then your process is
+5X faster. They're thinking of closer integration with Redis. They usually
+use a time-to-live to expire things from the cache.
+
+Spark is data storage agnostic in a way that map-reduce is not.

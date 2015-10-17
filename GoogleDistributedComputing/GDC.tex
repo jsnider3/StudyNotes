@@ -69,4 +69,83 @@ Greatly simplifies large-scale computations. Lets programmer focus on problem
 and let library handle messy details.
 
 \subsection*{File Systems}
+\begin{itemize}
+\item A filesystem is a system to join data in a tree of files, by writing
+	them to disk. Sometimes, they can support remote files or local caching.
+\item Folders are the same as namespaces.
+\item A ``distributed filesystem'' is one that can reach files on other machines.
+\item Any decent ``distributed filesystem'' guarantees that many people can
+	access many files simultaneously. It needs to be performant at the same
+	time and maintain data integrity / consistency.
+\end{itemize}
+\subsection*{NFS}
+\begin{itemize}
+\item Made by Sun in the 80s. Pretty standard Unix FS. We mount remote drives
+	onto local host.
+\item Original was completely stateless. Higher-level protocols handle that stuff.
+\item NFS defines a virtual filesystem (like an interface, not an implementation).
+\item NFS locking is done with leases. Clients request locks. Servers tell them
+	if that succeeds or not and take back locks that aren't renewed.
+\item When we close a file, we push changes. When we open a file, we pull changes.
+\item An NFS volume is managed by a single server. This makes concurrency easier,
+	but puts stress on it.
+\item POSIX compliance makes it portable, but very generalized.
+\end{itemize}
+\subsection*{GFS}
+\begin{itemize}
+\item Google needed a way to redundantly store data on cheap and unreliable
+	systems. Also, wanted to optimize it for Googly purposes.
+\item Assumptions:
+	\begin{itemize}
+	\item Components suck.
+	\item Modest number of HUGE files.
+	\item Files are write-once. Mostly appending to data.
+	\item Want to read large serial chunks.
+	\end{itemize}
+\item Design Decisions:
+	\begin{itemize}
+	\item 64 MB fixed-size chunks.
+	\item Each thing replicated on 3+ chunk servers.
+	\item Master coordinates access and stores metadata.
+	\item No data caching (files are too big).
+	\item Interfaces customized for Google, but POSIX-esque.
+	\end{itemize}
+\item Master server is a single point of failure. We solve this by having
+	backups of the master called ``shadow masters''.
+\item What metadata does the master have?
+	\begin{itemize}
+	\item File and chunk namespaces.
+	\item Mapping from files to chunks.
+	\item Locations of chunk's replicas.
+	\item An operations log for metadata updates.
+	\end{itemize}
+\item Except for the operations log, the metadata is super small and can stay in
+	RAM. The operations log needs to be stored on disk for robustness reasons.
+\item We can use the operations log to restore the master to a good state if
+	it becomes corrupted.
+\item GFS Mutation = write or append. Our goal for mutations is to minimize
+	master involvement.
+\item We use a lease mechanism. The master picks a replica as primary and
+	gives it a lease for mutations, the primary defines a serial order for the
+	changes, and the replicas follow it.
+\item Atomic record append - GFS lets us append a record to a chunk atomically.
+	Message is at-least-once, so we may do it multiple times, and order may
+	differ between replicas.
+\item So, we have a relaxed consistency model, except for our master's metadata.
+	Google's fine with that, but it's something to keep in mind.
+\item What are the master's responsibilities?
+	\begin{itemize}
+	\item Metadata storage
+	\item Namespace management/locking.
+	\item Monitor system health.
+	\item Chunk creation, re-replication, and rebalancing.
+	\item Garbage collection - We delete things by renaming them to something
+		hidden, then we do the actual clean up when we're not busy.
+	\item Prompt people with out of date chunks to update them.
+	\end{itemize}
+\item This is a highly fault tolerant system, with high availability and
+	specified data integrity.
+\item In conclusion, sometimes simple solutions are good and you should
+	expect hard drives to break.
+\end{itemize}
 \end{document}

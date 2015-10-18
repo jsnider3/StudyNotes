@@ -1,3 +1,3 @@
-# ClassNotes
+# StudyNotes
 
-Notes taken during school.
+Notes taken for studying outside of school.

@@ -147,5 +147,25 @@ and let library handle messy details.
 	specified data integrity.
 \item In conclusion, sometimes simple solutions are good and you should
 	expect hard drives to break.
+\section*{Clustering Algorithms}
+\item Clustering is partitioning data into subsets so that the members of
+	each are close in some sense.
+\item Google News clusters by odds that two stories are the same story.
+	We can alsop cluster hospital records, scientific images, survey data etc.
+\item Some common distance metrics are Euclidean distance, Manhattan distance,
+	maximum norm, but you can always define your own.
+\item Clustering can either be 
+	\begin{itemize}
+	\item Hierarchical - building a tree (dendogram) of clusters either by
+		division or by agglomeration.
+	\item Partitioning - Divide set into all clusters simultaneously.
+	\end{itemize}
+\item K-means clustering is a form of partition clustering. This can be
+	expensive and hard to do with MapReduce.
+\item Canopy clustering is a preliminary step to clustering to make it easier
+	to parallelize. We divide the stuff into canopies that are close. This 
+	works best if our canopy distance is super cheap compared to our K-means
+	distance.
+\item The Elbow Criteria is a way to estimate the number of clusters in a thing.
 \end{itemize}
 \end{document}

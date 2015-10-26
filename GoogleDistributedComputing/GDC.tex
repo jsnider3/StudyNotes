@@ -167,5 +167,47 @@ and let library handle messy details.
 	works best if our canopy distance is super cheap compared to our K-means
 	distance.
 \item The Elbow Criteria is a way to estimate the number of clusters in a thing.
+\section*{Graph Algorithms}
+\item How can we do a BFS in MapReduce? Iterate passes through MapReduce. Map
+	some nodes, result include additional nodes which are fed into successive
+	MapReduce passes.
+\item Problem: Sending entire graph to mapper is expensive. Solution: Carefully
+	consider how we represent graphs.
+	\begin{itemize}
+	\item The most straightforward representation is for each node to have a list of
+		its neighbors. This doesn't make iteration easy and is hard to serialize.
+	\item Adjacency matrix (possibly as a sparse matrix).
+	\end{itemize}
+\item Finding the shortest path can be done easily on one machine with Dijkstra's
+	algorithm, but is highly serial. How can we parallelize this with MapReduce?
+	\begin{enumerate}
+	\item A map task receives $\{n : (D, points-to)\}$ $n$ is a node, $d$ away from
+		start, and points to the guys in $points-to$.
+	\item Map returns $(p, D+1)$ for $p$ in $points-to$.
+	\item Reduce takes this and finds the minimum.
+	\end{enumerate}
+	Each MapReduce moves one layer further.
+\item First, iteration is fast, but then we rapidly blow up. We eventually
+	terminate because we don't recalculate for a node unless we find
+	a faster way to it.
+\item Adding edge weights its trivial.
+\item Complexity is at most $n$ times as hard as Dijkstra which works out
+	well if we have $n$ machines.
+\subsection*{PageRank}
+\item If a user clicks random links and every so often goes to a random page,
+	what are the odds they will eventually be at a given page? This is used as
+	a measure of site importance.
+\item The MapReduce algorithm to compute this is similar to the shortest path
+	where we keep track of $PR_I$ after $I$ steps.
+\item PageRank doesn't necessarily converge, but gets within a few percent
+	accuracy after a few hours.
+\item [Phase 1:] Parse HTML - Map takes $(URL, page-content)$ and spits out
+	$(URL, (PR_{init}, list-of-urls))$. Reduce is $id$.
+\item [Phase 2:] PageRank Distributions - Compute PageRanks of a website's
+	children. (Number of mappers = number of nodes)
+\item [Phase 3:] Terminate?  If we've sufficiently converged, do so. Otherwise,
+	go back to phase 2.
+\item This isn't the actual algorithm used by Google, because it doesn't scale
+	to the very high end.
 \end{itemize}
 \end{document}

@@ -1,0 +1,183 @@
+CP100 - Google Cloud Platform Fundamentals: Command Reference (Python)
+
+=============================================================
+
+Using this command reference.
+
+=============================================================
+
+1. This reference is divided into sections - one section for each lab in the course. 
+
+2. Where required, replace items in brackets - < > - with the appropriate input. 
+
+For example, in the following command, you would replace <region> (including the brackets) 
+with your region name:
+
+gcloud config set compute/region <region> 
+
+would become
+
+gcloud config set compute/region us-central1
+
+3. Do NOT enable the word wrap feature in Windows Notepad or the text editor you use to 
+view this file. 
+
+============================================================== 
+
+
+
+
+==============================================================
+
+Lab 4: Create a Compute Engine Lab Machine
+
+==============================================================
+
+sudo apt-get -qq update
+sudo apt-get install -y -qq make git
+git clone https://github.com/GoogleCloudPlatformTraining/sdk-makefile setup && cd setup
+make && cd ..
+source /etc/profile.d/env_vars.sh
+gcloud config list
+gcloud auth login --no-launch-browser
+gcloud config list
+gcloud config set compute/region <region>
+gcloud config set compute/zone <zone>
+exit
+
+==============================================================
+
+
+
+
+==============================================================
+
+Lab 6: Getting Started with Compute Engine
+
+==============================================================
+
+docker run -d --name redis_db redis
+git clone https://github.com/GoogleCloudPlatformTraining/cp100-compute-engine-python.git
+docker build -t cp100/python-redis cp100-compute-engine-python
+docker run -p 80:80 --link redis_db:db cp100/python-redis
+
+==============================================================
+
+
+
+
+==============================================================
+
+Lab 7: Getting Started with Container Engine
+
+==============================================================
+
+git clone https://github.com/GoogleCloudPlatformTraining/cp100-container-engine-python.git
+gcloud config list
+gcloud config set container/cluster cp100
+gcloud container clusters get-credentials --zone <zone> cp100
+cd cp100-container-engine-python
+cat guestbook.yaml
+kubectl create -f guestbook.yaml
+kubectl get pods
+kubectl expose rc guestbook --port=80 --create-external-load-balancer=true
+kubectl get services guestbook
+
+==============================================================
+
+
+
+
+==============================================================
+
+Lab 8: Getting Started with App Engine
+
+==============================================================
+
+git clone https://github.com/GoogleCloudPlatformTraining/cp100-appengine-memcache-python.git
+cd cp100-appengine-memcache-python
+appcfg.py -A <Project ID> update . --noauth_local_webserver
+exit
+
+==============================================================
+
+
+
+
+==============================================================
+
+Lab 9: Getting Started with Cloud Datastore
+
+==============================================================
+
+git clone https://github.com/GoogleCloudPlatformTraining/cp100-appengine-datastore-python.git
+cd cp100-appengine-datastore-python
+appcfg.py -A <Project ID> update . --noauth_local_webserver
+exit
+
+==============================================================
+
+
+
+
+==============================================================
+
+Lab 10: Getting Started with Cloud Storage
+
+==============================================================
+
+git clone https://github.com/GoogleCloudPlatformTraining/cp100-appengine-cloudstorage-python.git
+cd cp100-appengine-cloudstorage-python
+nano guestbook.py
+appcfg.py -A <Project ID> update . --noauth_local_webserver
+exit
+
+==============================================================
+
+
+
+
+==============================================================
+
+Lab 11: Getting Started with Cloud SQL
+
+==============================================================
+
+docker run -i -t tutum/mysql mysql -u root -p -h <Cloud_SQL_Instance_IP_Address>
+CREATE DATABASE guestbook;
+CREATE TABLE guestbook.entries (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, entry VARCHAR(500));
+quit;
+git clone https://github.com/GoogleCloudPlatformTraining/cp100-cloud-sql-python.git
+docker build -t cp100/cloudsql-python cp100-cloud-sql-python
+docker run -e CLOUDSQL_IP=<x.x.x.x> -e CLOUDSQL_PWD=<password> -p 80:80 cp100/cloudsql-python
+docker run -i -t tutum/mysql mysql -u root -p -h <Cloud_SQL_Instance_IP_Address>
+SELECT * FROM guestbook.entries;
+quit;
+exit
+
+==============================================================
+
+
+
+
+==============================================================
+
+Lab 12: Getting Started with BigQuery
+
+==============================================================
+
+git clone https://github.com/GoogleCloudPlatformTraining/cp100-appengine-memcache-python.git
+cd cp100-appengine-memcache-python
+appcfg.py -A <Project ID> update . --noauth_local_webserver
+exit
+SELECT protoPayload.resource, protoPayload.latency 
+FROM FLATTEN([Logs.appengine_googleapis_com_request_log_<YYYYMMDD>],
+labels.value) 
+ORDER BY protoPayload.latency DESC
+LIMIT 10
+SELECT protoPayload.status, count(protoPayload.status) AS Count 
+FROM FLATTEN([Logs.appengine_googleapis_com_request_log_<YYYYMMDD>],
+labels.value)
+GROUP BY protoPayload.status
+
+==============================================================

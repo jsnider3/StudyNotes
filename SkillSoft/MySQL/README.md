@@ -21,3 +21,8 @@
 * Functions can be used to get values from anywhere, unlike SELECT.
 * What does group by do if you don't have any aggregate functions
   in the query?
+* Useful time functions include current_date()/curdate(),
+  current_time()/curtime(), now, date_format(date, fmt).
+* MySQL cross product is Select * FROM TAB_ONE, TAB_TWO.
+* The correct format for inner join is
+  Select * FROM TAB_ONE Inner Join TAB_TWO ON FIELD_1 = FIELD_2.

@@ -26,3 +26,15 @@
 * MySQL cross product is Select * FROM TAB_ONE, TAB_TWO.
 * The correct format for inner join is
   Select * FROM TAB_ONE Inner Join TAB_TWO ON FIELD_1 = FIELD_2.
+
+## Unit 3 - Manipulating Data
+* INSERT INTO table VALUES (field, field, field), we can explicitly
+  specify default to use the default value.
+* UPDATE table SET column = value WHERE ...
+* DELETE FROM table WHERE condition
+* CREATE TABLE name (
+  field ATTR,
+  field ATTR,
+  field ATTR
+  )
+* CREATE VIEW name AS SELECT_STMT.

@@ -3,6 +3,15 @@
 I'm interested in contributing to CPython. These are my notes on
 the codebase.
 
+## How to make and test
+
+* make -j2 && ./python -m test -j3
+
+## Mercurial Usage
+
+* How to find out the author of a line of code?
+** `hg annotate -u <filename>`
+
 ## Objects/rangeobject.c
 
 Why does range(4,4) < range(3,6), but not range(4,5) < range(3,6)?
@@ -25,5 +34,16 @@ object.h:682 leaves room for the possibility.
 
 ## TODOs
 
-There's a TOOD in Objects/byteobject.c to optimize a special case.
-That seems like something I could do.
+There's a TODO in Objects/byteobject.c to optimize a special case for
+a single character. That seems like something I could do.
+
+There is also an identical TODO in Objects/bytearrayobject.c.
+Both of these are in functions called replace_interleave which are
+basically the same except for using bytes vs bytearrays.
+
+The TODO in bytesobject.c was added by "benjamin" while the TODO in
+bytearrayobject.c was added by "nnorwitz".
+
+I made a change to do nothing if the count was 1 and test_bytes
+test_dbm failed. This is good since it means test cases cover this
+scenario and we thus have an easy way to know when we've fixed the problem.

@@ -5,6 +5,7 @@ the codebase.
 
 ## How to make and test
 
+* ./configure --with-pydebug
 * make -j2 && ./python -m test -j3
 
 ## How to debug
@@ -49,6 +50,8 @@ some optimizations for blocks smaller than 16.
 There's a TODO in Objects/byteobject.c to optimize a special case for
 a single character. That seems like something I could do.
 
+Those TODOs were originally put there in 2007.
+
 There is also an identical TODO in Objects/bytearrayobject.c.
 Both of these are in functions called replace_interleave which are
 basically the same except for using bytes vs bytearrays.
@@ -81,3 +84,14 @@ will probably be fixed by doing the same to bytearrayobject.c.
 test_dbm was fixed after making that change in bytearrayobject.c.
 
 Now to start writing an email to Core Mentoring.
+
+Email was sent. Zackary responded saying that I should go ahead and
+submit it with benchmarks. Age ain't nothing but a number.
+
+Benchmark comparisons:
+* Before (cold start):
+>>> timeit.timeit('(b"x" * 2000000).replace(b"",b".")', number=1000)
+7.619218342995737
+* After (cold start):
+>>> timeit.timeit('(b"x" * 2000000).replace(b"",b".")', number=1000)
+2.7605581780080684

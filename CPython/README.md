@@ -45,53 +45,9 @@ Py_MEMCPY is defined in Include/pyport.h. It's #defined as memcpy,
 except for when compiling with Visual Studio in which case it does
 some optimizations for blocks smaller than 16.
 
-## replace_interleave TODO
+## Patching
 
-There's a TODO in Objects/byteobject.c to optimize a special case for
-a single character. That seems like something I could do.
-
-Those TODOs were originally put there in 2007.
-
-There is also an identical TODO in Objects/bytearrayobject.c.
-Both of these are in functions called replace_interleave which are
-basically the same except for using bytes vs bytearrays.
-
-The TODO in bytesobject.c was added by "benjamin" while the TODO in
-bytearrayobject.c was added by "nnorwitz".
-
-I made a change to do nothing if the count was 1 and test_bytes
-test_dbm failed. This is good since it means test cases cover this
-scenario and we thus have an easy way to know when we've fixed the problem.
-
-What's confusing me now is the two lines bytesobject.c::2476-2477.
-        *result_s++ = *self_s++;
-        Py_MEMCPY(result_s, to_s, to_len);
-Aren't these redundant?
-
-replace_interleave implements the following: 
->>> b"Python".replace(b"", b".")
-  b'.P.y.t.h.o.n.'
-
-Doing nothing for count == 1 breaks (b"").replace(b"", b"."),
-but not the previous thing.
-
-I'm thinking the special case is to_len == 1, not count == 1.
-
-How can I tell? Well, because I can do the optimization with to_len
-only. Changing bytesobject.c accordingly fixed test_bytes. test_dbm
-will probably be fixed by doing the same to bytearrayobject.c.
-
-test_dbm was fixed after making that change in bytearrayobject.c.
-
-Now to start writing an email to Core Mentoring.
-
-Email was sent. Zackary responded saying that I should go ahead and
-submit it with benchmarks. Age ain't nothing but a number.
-
-Benchmark comparisons:
-* Before (cold start):
->>> timeit.timeit('(b"x" * 2000000).replace(b"",b".")', number=1000)
-7.619218342995737
-* After (cold start):
->>> timeit.timeit('(b"x" * 2000000).replace(b"",b".")', number=1000)
-2.7605581780080684
+Patches are made by piping the result of 'hg diff' into a file.
+When you have review comments on a patch xxx.patch, your next
+patch should contain all the changes, including those from xxx.patch,
+and be named xxx-2.patch.

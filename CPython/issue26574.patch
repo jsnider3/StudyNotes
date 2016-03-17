@@ -1,0 +1,91 @@
+diff -r 0d77a17567a4 Misc/ACKS
+--- a/Misc/ACKS	Mon Mar 07 14:52:46 2016 -0500
++++ b/Misc/ACKS	Wed Mar 16 20:28:07 2016 -0400
+@@ -1369,6 +1369,7 @@
+ Roy Smith
+ Ryan Smith-Roberts
+ Rafal Smotrzyk
++Josh Snider
+ Eric Snow
+ Dirk Soede
+ Nir Soffer
+diff -r 0d77a17567a4 Objects/bytearrayobject.c
+--- a/Objects/bytearrayobject.c	Mon Mar 07 14:52:46 2016 -0500
++++ b/Objects/bytearrayobject.c	Wed Mar 16 20:28:07 2016 -0400
+@@ -1705,17 +1705,27 @@
+     self_s = PyByteArray_AS_STRING(self);
+     result_s = PyByteArray_AS_STRING(result);
+ 
+-    /* TODO: special case single character, which doesn't need memcpy */
+-
+-    /* Lay the first one down (guaranteed this will occur) */
+-    Py_MEMCPY(result_s, to_s, to_len);
+-    result_s += to_len;
+-    count -= 1;
+-
+-    for (i=0; i<count; i++) {
+-        *result_s++ = *self_s++;
++    if (to_len > 1) {
++        /* Lay the first one down (guaranteed this will occur) */
+         Py_MEMCPY(result_s, to_s, to_len);
+         result_s += to_len;
++        count -= 1;
++
++        for (i = 0; i < count; i++) {
++            *result_s++ = *self_s++;
++            Py_MEMCPY(result_s, to_s, to_len);
++            result_s += to_len;
++        }
++    }
++    else {
++        result_s[0] = to_s[0];
++        result_s += to_len;
++        count -= 1;
++        for (i = 0; i < count; i++) {
++            *result_s++ = *self_s++;
++            result_s[0] = to_s[0];
++            result_s += to_len;
++        }
+     }
+ 
+     /* Copy the rest of the original string */
+diff -r 0d77a17567a4 Objects/bytesobject.c
+--- a/Objects/bytesobject.c	Mon Mar 07 14:52:46 2016 -0500
++++ b/Objects/bytesobject.c	Wed Mar 16 20:28:07 2016 -0400
+@@ -2464,17 +2464,27 @@
+     self_s = PyBytes_AS_STRING(self);
+     result_s = PyBytes_AS_STRING(result);
+ 
+-    /* TODO: special case single character, which doesn't need memcpy */
+-
+-    /* Lay the first one down (guaranteed this will occur) */
+-    Py_MEMCPY(result_s, to_s, to_len);
+-    result_s += to_len;
+-    count -= 1;
+-
+-    for (i=0; i<count; i++) {
+-        *result_s++ = *self_s++;
++    if (to_len > 1) {
++        /* Lay the first one down (guaranteed this will occur) */
+         Py_MEMCPY(result_s, to_s, to_len);
+         result_s += to_len;
++        count -= 1;
++
++        for (i = 0; i < count; i++) {
++            *result_s++ = *self_s++;
++            Py_MEMCPY(result_s, to_s, to_len);
++            result_s += to_len;
++        }
++    }
++    else {
++        result_s[0] = to_s[0];
++        result_s += to_len;
++        count -= 1;
++        for (i = 0; i < count; i++) {
++            *result_s++ = *self_s++;
++            result_s[0] = to_s[0];
++            result_s += to_len;
++        }
+     }
+ 
+     /* Copy the rest of the original string */

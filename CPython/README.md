@@ -45,6 +45,34 @@ Py_MEMCPY is defined in Include/pyport.h. It's #defined as memcpy,
 except for when compiling with Visual Studio in which case it does
 some optimizations for blocks smaller than 16.
 
+## PyObject_RichCompareBool
+
+Takes two objects and a boolean operator. Returns -1 for error, 0 for
+!(first op second), and 1 for first op second.
+
+## Py_RETURN_NONE
+
+You'll see this a lot. It's just a macro which takes the "None" object,
+increments its reference count, and returns it. Basically, it's the
+C-Code that makes Python functions return None by default.
+
+You may feel that this should be similar to `return NULL;`, but that
+signifies an error.
+
+## Modules
+
+The Modules directory contains the standard library modules.
+All of these are named with module in their name.
+I'm not sure what the other files in this directory do.
+
+## heapq.heappushpop
+
+This is supposed to be more efficient than doing heappush then heappop.
+What does it do to make that happen? One thing it does is check if the new
+thing would replace the top of the heap. In that case it does nothing.
+It also only has to redo the heapiness once, instead of twice for the
+succession.
+
 ## Patching
 
 Patches are made by piping the result of 'hg diff' into a file.

@@ -1,12 +1,21 @@
 # CPython
 
 I'm interested in contributing to CPython. These are my notes on
-the codebase.
+the codebase and project.
 
 ## How to make and test
 
 * ./configure --with-pydebug
 * make -j2 && ./python -m test -j3
+
+## Easy issues without patch
+
+On the left of bugs.python.org, there are two links
+called "Easy Issues" and "Issues with patch". Those links are:
+* http://bugs.python.org/issue?status=1&@sort=-activity&@columns=id,activity,title,creator,status&@dispname=Issues%20with%20patch&@startwith=0&@group=priority&keywords=2&@action=search&@filter=&@pagesize=50
+* http://bugs.python.org/issue?status=1&@sort=-activity&@columns=id,activity,title,creator,status&@dispname=Easy%20issues&@startwith=0&@group=priority&keywords=6&@action=search&@filter=&@pagesize=50
+
+Is there a way to get the easy issues without a patch?
 
 ## How to debug
 

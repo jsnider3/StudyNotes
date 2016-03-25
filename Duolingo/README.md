@@ -12,6 +12,11 @@
 * el pan -> the bread
 * español -> Spanish
 * inglés -> English
+* la carta -> the letter
+* el libro -> the book
+* el vino -> the wine
+* el diario -> the newspaper
+* la persona -> the person
 
 ## Phrases
 * Hola -> Hello
@@ -30,11 +35,15 @@
 * beber -> to drink
 * hablar -> to speak
 * perdonar -> to forgive (same as pardon)
+* escriber -> to write
+* leer -> to read
 
 ### Verb conjugation
 * -o: First person singular present tense.
+* -emos: First person plural present tense.
 * -es: Second person present tense.
-* -e: Third person present tense.
+* -e: Third person singular present tense.
+* -en: Third person plural present tense.
 
 ## Pronouns
 * Yo is I.
@@ -42,3 +51,5 @@
 * Élla is she.
 * Tu is informal you.
 * Usted is formal you.
+* Ustedes is formal you plural.
+* Nosotros / Nosotras are we.

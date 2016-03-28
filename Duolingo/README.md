@@ -56,7 +56,7 @@
 * Ustedes is formal you plural.
 * Nosotros / Nosotras are we.
 
-## Food
+## La Comida (Food)
 
 ### Nouns
 * el pescado -> the fish
@@ -74,6 +74,13 @@
 * la naranja -> the orange
 * el té -> the tea
 * la fruta -> the fruit
+* el limón -> the lemon
+* la salsa -> the sauce
+* el desayuno -> the breakfast
+* la fresa -> the strawberry
+* vegetariano -> vegetarian
+* la azúcar -> the sugar
+* el emparedado -> the sandwich
 
 ### Verbs
 * beber -> to drink

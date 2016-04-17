@@ -17,4 +17,14 @@ It has 1 file written in C++, but it's only like 10 lines.
 It has 4289 files written in Go.
 
 What can I conclude from that? Probably a lot, but I need more time
-to assimilate that fact.
+to assimilate that fact. 
+
+It means that code generation (and probably parsing) is done in Go.
+Bootstrapping for the win. Specifically, that kind of stuff can be
+found in src/cmd/compile. 
+
+## Name Mixup
+
+In a hilarious sequence of events, I received an email 2016/4/10 asking
+me to code review a change. It looked good to me, but it was probably
+intended for a different Josh Snider and I let them know.

@@ -46,3 +46,30 @@ talking about how the rapid increase in per capita fossil fuel usage in
 India and China was associated with a corresponding increase in per-capita
 gdp and life expectancy. 
 
+He demolishes the peak oil argument. This helps to show the age of the
+book, since the idea that oil would run out is pretty dead now. The modern
+replacement is people who believe that fossil fuel consumption is near a
+peak and will decline under pressure from solar.
+
+On page 19, when he starts arguing that fossil fuels can be used to impove
+air/water quality by running filtration systems, he shows a graph of
+pollutant emissions in the US declining under time. This doesn't really
+help his argument since the EPA has heavily regulated emissions in the US
+in order to make the graph look like that.
+
+Next he shows a graph that despite a massive increase in fossil fuel usage
+and atmospheric carbon, deaths from climate have declined 98% eighty years
+ago. Looking at the graph it looks like most of those gains occured from
+1900 to 1960 and there hasn't been much improvement since. If these gains
+were really from using fossil fuels that graph would look differently.
+It would probably be more reasonable to attribute that either to better
+construction or to better weather prediction.
+
+Then he has an anti-intellectual screed about listening to experts. I've
+seen similar arguments before, but it can be phrased in a much more
+charismatic way.
+
+The author finishes his first chapter by advocating for a human-centric
+version of utilitarianism and giving an overview of what he will talk about
+in the next chapters. His argument for utilitarianism isn't very strong, but
+I already agree with it so that's not much of an issue for me.

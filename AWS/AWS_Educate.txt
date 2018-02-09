@@ -1,0 +1,52 @@
+# AWS Educate
+
+Had some trouble logging in since I automatically log into my AWS account and got confused
+because I didn't realize my Educate account was under my masonlive email.
+
+Within AWS Educate, you can select career pathways. Who maintains those?
+
+## Module Five Application Services
+
+Starts with a presentation from Rich Houlihan from Amazon's DB team. Focusing on DynamoDB.
+
+Generally, a database is a repository of information. In computing, it's a persistent store
+for data.
+
+Timeline of database technology consists of data pressure increasing and then being resolved
+with new technology.
+Database timelines:
+* Brains - Lossy, hard to transfer
+* Ledgers -
+* Unit Records - Punch Cards, from the 1880s Census.
+* Data drums - Linear access
+* File systems - Random access, hard drives mostly
+* RDMS - Try to prevent sprawling file systems.
+* NoSQL - Currently, compute is expensive, storage is cheap. So we want a distriubted DB.
+
+Currently, we have lots of data.
+
+SQL                                 | noSQL
+------------------------------------|--------------------------
+Optimized for storage               | Optimized for compute
+Normalized/relational               | Denormalized/hierarchical
+Ad hoc queries                      | Instantiated views (You can make certain data easier to access)
+Scale vertically (buy bigger boxes) | Scale horizontally (Shard data across more computers)
+Good for offline analytics          | Built for online transaction processing at scale
+
+## Iron Triangle of Data
+* CAP theorem 
+** Consistency - All clients always have the same view.
+** Availability - All clients can always read and write.
+** Parition Tolerance - The system works well despite physical network partitioins
+
+Pick two, this is formally proven.
+
+CA = MSSQL, Oracle, DB2, PostGres, MySQL, Vertica, Aster Data, Greenplum = Relational Databases
+CP = Big Table, MongoDB, DynamoDB, Redis = Most non-relational databases
+AP = Cassandra, Riak, Voldemort, Tokyo = Data replicated across nodes, updates replicates and resolve.
+
+CA uses ACID transactions -> Atomicity, Consistency, Isolation, Durability
+CP, AP use BASE. Basically Available, Soft state, Eventually consistent.
+
+AP systems have to merge different changes when partitions come and go.
+CP deals with partition tolerance by not allowing anymore writes.

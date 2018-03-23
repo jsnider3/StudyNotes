@@ -21,7 +21,7 @@ def manhattan_distance(start, end):
 	return (abs(x2 - x1) + abs(y1 - y2))
 
 def move_to_clean(bot, spot):
-	#print(bot, spot)
+	''' Move the bot towards the spot. '''
 	br, bc = bot
 	sr, sc = spot
 	if br > sr:
@@ -32,7 +32,7 @@ def move_to_clean(bot, spot):
 		print("RIGHT")
 	elif bc > sc:
 		print("LEFT")
-	else:#		if bot == spot:
+	else:
 		print("CLEAN")
 
 def next_move(posr, posc, board):

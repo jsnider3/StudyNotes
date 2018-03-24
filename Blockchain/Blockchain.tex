@@ -16,7 +16,7 @@
 These are my notes from reading the \textit{Blockchain Applications A Hands-On Approach} book by Arshdeep Bahga and Vijay Madisetti. A major goal of reading this book, is to write a blog post based on it, either as a review of the book or as a summary of topics it discusses.
 
 \subsection{Book Contents}
-The book starts with an overview of the blockchain and some application templates that can be done with it. It then goes to talk about Ethereum, including how to set up a development environment for it. It then goes to talk about services that can be built on the blockchain such as smart contracts, decentralized applications, mining, whisper, and swarm, before wrapping up with an overview of some more advanced topics involving the blockchain.
+The book starts with an overview of the blockchain and some application templates that can be done with it. It then goes to talk about Ethereum, including how to set up a development environment for it. It then goes to talk about services that can be built on the blockchain such as smart contracts, decentralized applications, mining, whisper, and swarm, before wrapping up with an overview of some more advanced topics involving the blockchain. The book requires minimal understanding of the blockchain on the part of the reader, but assumes a competency with programming. There's a companion website at blockchain-book.com that has downloadable copies of the source code used in the book.
 
 \subsection{About the Authors}
 
@@ -42,6 +42,44 @@ So, what are the core features of the block chain?
 \item \textbf{Privacy} - While all of the transactions are recorded publically, the private key for each party is kept secret and there's no link between the public key and the identity of the transactors.
 \item \textbf{Scalable and Available} - The blockchain is replicated amongst nodes to ensure, that even as they leave and join the network the blockchain is preserved.
 \end{enumerate}
+
+\section{Example Smart Contract}
+
+%1.2
+Let's consider an escrow contract between two people. The buyer deposits money in an escrow account, the seller then gives the buyer the item, and the escrow account releases the payment to the seller. This can be done in Solidity as a smart contract quite easily. I'm not going to rehash the example completely, but the key points are that contract accounts are different from user accounts, that distributed apps can be used to make nice interfaces to contracts, and that interactions with the contract are validated by miners on the blockchain.
+
+\section{A Blockchain Stack}
+
+%1.3
+Blockchain is good at maintaining all the transactions in a network, but it's not particularly good at storing large volumes of data or peer-to-peer messaging. That is Ethereum works as a decentralized computing network, but we need something else for decentralized storage, and decentralized messaging. The book recommends Swarm and Whisper respectively.
+
+\subsection{Decentralized Computing - Ethereum}
+%1.3.1
+
+Ethereum uses a virtual machine for its execution environment. This environment is called the Ethereum Virtual Machine (EVM), having each node in the network run the same calculation is not efficient, but is necessary to maintain consensus. Ethereum has two forms of accounts, one called Externally Owned Accounts for normal users and contract accounts whose behavior is controlled by associated contract code. You might be worried that letting people compute on the blockchain would bog it down with endless calculations, fortunately there is a solution. Senders are charged a gas fee which increases the more effort their transaction takes. Running on a virtual machine means that the programming language used can be anything as long as it can be compiled to the EVM bytecode.
+
+\subsection{Decentralized Storage - Swarm}
+%1.3.2
+Decentralized storage and content distribution network, works as a redundant store of Dapp code. Being peer-to-peer means it lacks a single point-of-failure and makes it resistant to DDoS
+
+\subsection{Decentralized Messaging - Whisper}
+%1.3.3
+Transient messages between Dapps, which works by subscribing to topics.
+
+\section{Blockchain Applications}
+
+%1.5
+Everyone loves technology, but only useful technology becomes as popular as blockchain. What are some of the fields that can use blockchain?
+\begin{itemize}
+\item FinTech
+\item IoT
+\item Industrial and Manufacturing
+\item Assets and Inventory
+\item Energy
+\item Supply Chain
+\item Records and Identity
+\item Healthcare
+\end{itemize}
 
 \section{Conclusion}
 Write your conclusion here.

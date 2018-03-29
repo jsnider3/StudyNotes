@@ -1,0 +1,37 @@
+# Agenda
+6:30 FOod
+6:55 Intros
+7:00 ACRUMEN w/Dave Aronson
+7:10 "TC, OctopusDeploy, and Azure"
+
+# Dave Aronson - ACRUMEN - Key Aspects of Software Quality
+
+Appropriate, Correct, Robusrt, Usable, Maintainable, Efficient, N stands for Nothing
+
+Appropriate is most important attribute.
+Correct means proven by tests.
+
+# Sean Killeen - "TeamCity, OctopusDeploy, and Azure"
+
+Sean is one of Excella's .NET experts.
+
+Going to do a live demo of his CICD pipeline in a blue/green scenario.
+TeamCity is a Java-based build management and continuous integration server from JetBrains.
+OctopusDeploy is an automated deployment tool.
+
+He says it's better for the integration and deployment to be separated, because different
+products might do deployment and integration better.
+
+TeamCity builds projects and can host package.
+
+What is blue/green deployment? The idea is that there can be two servers one blue one green
+and the traffic can be rerouted between them after you finish the production smoke tests.
+
+Octopus lets you have separate channels, like beta and GA streams.
+
+LIVE DEMO IS NAO!
+
+# April Meetup
+
+Will be April 25th, here.
+Mike McGarr from Netflix will talk about DevOps culture and scaling at large companies.

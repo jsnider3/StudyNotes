@@ -1,4 +1,7 @@
 '''
+	Solution for https://code.google.com/codejam/contest/5304486/dashboard
+	Created as part of Code Jam - Study Jam.
+	@date: 3/29/2018
 	@author: Josh Snider
 '''
 

@@ -82,7 +82,32 @@ Everyone loves technology, but only useful technology becomes as popular as bloc
 \item Healthcare
 \end{itemize}
 
-\section{Conclusion}
-Write your conclusion here.
+A lot of the uses talked about in the book seem like hype to me, either where a centralized-approach would work due to the ready available of a central organization, a need for robustness not strong enough to require a cryptographically-secure ledger, or being better suited to a more mundane Internet of Things approach. This is a weakness of the book that my blog post should address, but I'll try to find some examples of blockchain in action where it seems
+like a good fit. Although if we assume that everyone involved is already an Ethereum user(?), the amount of applications where a smart contract based app is appropriate increases massively.
+
+\section{Blockchain Application Templates}
+%2
+Previous chapter introduced the main components of a blockchain stack, a decentralized computing platform (Ethereum), a decentralized messaging platform (Whisper), and a decentralized storage platform (Swarm), with smart contracts and decentralized apps (Dapps) rounding out the stack.
+
+Dapps run on an individual Ethereum node, while Whisper and Swarm work with clients on each node, but communicate outside of the blockchain network.
+
+The design process for a blockchain app is to list the people or concepts involved and analyze their relationships. This is used to create a smart contract,
+then if it is necessary for usability we create a Dapp using HTML and Javascript.
+
+\subsection{Analyzing a Crowdfunding Campaign}
+%2.2
+What do we want from a crowdfunding campaign app? We want a campaigner to be able to accept donations from anyone and then if the amount of donations meets a target by a deadline, transfer the donations to the campaigner's EOA. This works well as a smart contract, the smart contract is initialized by the campaign organizer with a deadline and goal, backers fund the campaign, and at the end the organizer checks if the funds have been reached, which either triggers a refund or gives the organizer the money. The book has an implementation of this in chapter six.
+
+This is actually a good non-hype example of a blockchain app, mainly because the alternative is Kickstarter which charges an annoying amount of fees.
+
+\subsection{Application Templates}
+%2.3
+\begin{itemize}
+\item Many-to-one - Like the crowdfunding example, there's a contract owner and every user interacts with them in the same way, for example ticket sellers, crowdfunders, etc.
+\item Many-to-one - similar to the above but the variables in the smart contract are used to control an IoT device.
+\item Many-to-many - The standard peer-to-peer system. Can be used for buyers/sellers, uploaders/downloaders, etc.
+\item One-to-one - Financial transactions, they can be set up to automatically transact with the users' accounts.
+\end{itemize}
+
 
 \end{document}

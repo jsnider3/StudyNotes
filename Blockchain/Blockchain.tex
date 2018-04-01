@@ -105,7 +105,7 @@ This is actually a good non-hype example of a blockchain app, mainly because the
 \begin{itemize}
 \item Many-to-one - Like the crowdfunding example, there's a contract owner and every user interacts with them in the same way, for example ticket sellers, crowdfunders, etc.
 \item Many-to-one - similar to the above but the variables in the smart contract are used to control an IoT device.
-\item Many-to-many - The standard peer-to-peer system. Can be used for buyers/sellers, uploaders/downloaders, etc.
+\item Many-to-many - The standard peer-to-peer system. Can be used for buyers and sellers, uploaders and downloaders, etc.
 \item One-to-one - Financial transactions, they can be set up to automatically transact with the users' accounts.
 \end{itemize}
 
@@ -113,4 +113,41 @@ This is actually a good non-hype example of a blockchain app, mainly because the
 %3
 Now we get to the fun part! Setting up a development environment! The book expects you to be using Ubuntu, but that requirement doesn't appear to be
 mentioned until the installation instructions begin. Despite spending two years at Microsoft, I'm a true believer in the glory of Ubuntu, but more heads-up would have been nice.
+
+\section{Ethereum Accounts}
+%4
+This has been mentioned before both by me and in the book, but Ethereum distinguishes two types of accounts; Externally Owned Accounts (EOAs) which are owned and controlled by the users and Contract Accounts whose behavior is specified by the bytecode that they were created with and which is executed by the block verification process.
+
+\subsection{Working with EOAs}
+%4.3
+Externally Owned Accounts are secured with public/private keypairs where the private key is further secured by being encrypted with a password. Currently, Ethereum uses AES-128-CTR as its encryption algorithm. Creating new EOAs can be done programmatically with geth, but the Mist Ethereum wallet also lets you create new accounts. Most wallets and Ethereum interfaces likely let you do that as well.
+
+The book gives an overview of user account management, which is unnecessary to repeat here.
+
+\subsection{Working with Contract Accounts}
+%4.4
+
+\section{Smart Contracts}
+%5
+
+\section{Dapps}
+%6
+
+\section{Mining}
+%7
+
+\section{Whisper}
+%8
+
+\section{Swarm}
+%9
+
+\section{Advanced Topics}
+%10
+
+\section{Solidity Tutorial}
+%Appendix A
+The book has an appendix that contains a Solidity tutorial. It's only five pages, but I think that's an appropriate amount. Solidity is a strongly and statically typed programming language. The basics of programming in it should come naturally to anyone with experience in Java or C. Fortunately, Solidity is open-source so
+anyone wanting a deep-dive into the particulars of the language can find the documentation at https://solidity.readthedocs.io/en/v0.4.21/ or the GitHub page at https://github.com/ethereum/solidity.
+
 \end{document}

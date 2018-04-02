@@ -19,6 +19,10 @@ These are my notes from reading the \textit{Blockchain Applications A Hands-On A
 \subsection{Book Contents}
 The book starts with an overview of the blockchain and some application templates that can be done with it. It then goes to talk about Ethereum, including how to set up a development environment for it. It then goes to talk about services that can be built on the blockchain such as smart contracts, decentralized applications, mining, whisper, and swarm, before wrapping up with an overview of some more advanced topics involving the blockchain. The book requires minimal understanding of the blockchain on the part of the reader, but assumes a competency with programming. There's a companion website at blockchain-book.com that has downloadable copies of the source code used in the book.
 
+One thing I would have liked to change about the book is to add ``homework" to it. It's
+pretty close to being able to pass as a college textbook, if it had gone deeper into certain subjects and then had review questions and
+project ideas at the back of the chapters I could definitely see this being the assigned book for a college class.
+
 \subsection{About the Authors}
 
 Both of the authors are academics, Vijay's a professor and Arshdeep's a researcher. This book is actually part of a \textit{Hands-On Approach} series which has already covered cloud computing and big data.
@@ -114,6 +118,13 @@ This is actually a good non-hype example of a blockchain app, mainly because the
 Now we get to the fun part! Setting up a development environment! The book expects you to be using Ubuntu, but that requirement doesn't appear to be
 mentioned until the installation instructions begin. Despite spending two years at Microsoft, I'm a true believer in the glory of Ubuntu, but more heads-up would have been nice.
 
+I've copied most of the installation code to the install.sh file in this directory, but this chapter is about more than just apt-getting Ethereum. It's also about how to create a private blockchain for testing purposes, a few tools you can use to interact with Ethereum programmatically, some test tools, and a few tools that are useful for creating Dapps.
+
+It also recommends storing your data in a /home/ubuntu/ethchain directory, which is a strange recommendation since that's where user accounts go. Your address will also be stored as part of the filename in your keystore directory. If you get an error that says
+"Failed to unlock developer account: could not decrypt key with given passphrase" you should ...
+
+%%TODO
+
 \section{Ethereum Accounts}
 %4
 This has been mentioned before both by me and in the book, but Ethereum distinguishes two types of accounts; Externally Owned Accounts (EOAs) which are owned and controlled by the users and Contract Accounts whose behavior is specified by the bytecode that they were created with and which is executed by the block verification process.
@@ -144,6 +155,39 @@ The book gives an overview of user account management, which is unnecessary to r
 
 \section{Advanced Topics}
 %10
+
+\subsection{Double-Spending Problem}
+%10.1
+It's impossible to spend the same cash twice because once you spend it you no longer physically have it. With bank accounts, it's impossible to spend the same money twice because a central authority (your bank) is keeping track and will stop you. With
+cryptocurrency, where the money takes the form of bits and bytes and there's no central authority, how do we prevent double-spending? We prevent that with two things 1) publically announcing all transactions and 2) having a system to agree on the order
+of transactions and their sequence. This can be provided by the immutable public ledger where miners work to validate transactions.
+
+\subsection{Byzantine Fault Tolerance}
+%10.2
+
+\subsection{Proof-of-work vs. Proof-of-stake}
+%10.3
+
+\subsection{Consistency, Availability, and Partition Tolerance}
+%10.4
+
+\subsection{Turing Completeness}
+%10.5
+
+\subsection{GHOST}
+%10.6
+
+\subsection{Sybil Attack}
+%10.7
+
+\subsection{Mining Pools and Centralization}
+%10.8
+
+\subsection{Smart Contract Vulnerabilities}
+%10.9
+
+\subsection{Blockchain Scalability}
+%10.10
 
 \section{Solidity Tutorial}
 %Appendix A

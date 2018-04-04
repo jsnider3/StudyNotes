@@ -164,21 +164,33 @@ of transactions and their sequence. This can be provided by the immutable public
 
 \subsection{Byzantine Fault Tolerance}
 %10.2
+The Byzantine Generals' Problem is a classic problem by Lamport and company. The basic idea is that a number of generals are trying
+to coordinate when to attack a city. With reliable communication and honest generals, this is pretty straightforward. With
+unreliable communication and possibly-honest generals, it becomes the kind of problem people write PhD theses on.
+
+The authors claim that the proof-of-work system incorporated into the blockchain is a sufficient solution to the Byzantine Generals Problem. The authors don't elaborate on this assertion which I feel is a major flaw in this section.
 
 \subsection{Proof-of-work vs. Proof-of-stake}
 %10.3
 
 \subsection{Consistency, Availability, and Partition Tolerance}
 %10.4
+If we have a datastore, there are three things we might want it to have. Consistency, where every reader and writer accesses
+the same thing, availability, where people can always connect to it, and partition tolerance, where the system works even when spread across multiple nodes that are unable to communicate with each other. Unfortunately, there's a theorem about datastores which states that out of consistency, availability, and partition tolerance, a system can only have two. Traditional SQL chooses consistency and availability which is also called the ACID principles. NoSQL chooses availability and partition tolerance which is also called the BASE principles. The blockchain as a rule chooses availability and partition tolerance, with consistency being achieved eventually as everyone learns about the newest blocks. The possibility of running a NoSQL database on the blockchain that this implies will not be discussed.
 
 \subsection{Turing Completeness}
 %10.5
 
-\subsection{GHOST}
+\subsection{Greedy Heavist-Observed Sub-Tree (GHOST)}
 %10.6
 
 \subsection{Sybil Attack}
 %10.7
+The essence of a Sybil attack is creating large numbers of fake identities in order to create a disproportiante level of influence
+in a network. Sybil attacks are not exclusive to smart contracts on the blockchain, they are endemic in all reputation systems, from
+sock puppets on internet forums, to real-world rumor campaigns, to polls. The book mentions three ways to defeat Sybil attacks.
+First is to have a list of authorized users (in this case addresses). Second is to require an entry fee to interact with the application.
+Third is to build a reputation system on top of the blockchain and require a certain level of reputation to interact with the program.
 
 \subsection{Mining Pools and Centralization}
 %10.8

@@ -17,7 +17,7 @@
 These are my notes from reading the \textit{Blockchain Applications A Hands-On Approach} book by Arshdeep Bahga and Vijay Madisetti. A major goal of reading this book, is to write a blog post based on it, either as a review of the book or as a summary of topics it discusses.
 
 \subsection{Book Contents}
-The book starts with an overview of the blockchain and some application templates that can be done with it. It then goes to talk about Ethereum, including how to set up a development environment for it. It then goes to talk about services that can be built on the blockchain such as smart contracts, decentralized applications, mining, whisper, and swarm, before wrapping up with an overview of some more advanced topics involving the blockchain. The book requires minimal understanding of the blockchain on the part of the reader, but assumes a competency with programming. There's a companion website at blockchain-book.com that has downloadable copies of the source code used in the book.
+The book starts with an overview of the blockchain and some application templates that can be done with it. It then goes to talk about Ethereum, including how to set up a development environment for it. It then goes to talk about services that can be built on the blockchain such as smart contracts, decentralized applications, mining, whisper, and swarm, before wrapping up with an overview of some more advanced topics involving the blockchain. The book requires minimal understanding of the blockchain on the part of the reader, but assumes a competency with programming. There's a companion website at blockchain-book.com and the source code can be found at http://www.hands-on-books-series.com/assets/Bahga-Madisetti-Blockchain-Book-Code.zip.
 
 One thing I would have liked to change about the book is to add ``homework" to it. It's
 pretty close to being able to pass as a college textbook, if it had gone deeper into certain subjects and then had review questions and
@@ -120,9 +120,17 @@ mentioned until the installation instructions begin. Despite spending two years 
 
 I've copied most of the installation code to the install.sh file in this directory, but this chapter is about more than just apt-getting Ethereum. It's also about how to create a private blockchain for testing purposes, a few tools you can use to interact with Ethereum programmatically, some test tools, and a few tools that are useful for creating Dapps.
 
-It also recommends storing your data in a /home/ubuntu/ethchain directory, which is a strange recommendation since that's where user accounts go. Your address will also be stored as part of the filename in your keystore directory. If you get an error that says
-"Failed to unlock developer account: could not decrypt key with given passphrase" you should ...
+\subsection{Geth}
+%3.1.1
+It also recommends storing your data in a /home/ubuntu/ethchain directory, which is a strange recommendation since that's where user accounts go. I think the author is actually using an account called ubuntu, which means you should replace /home/ubuntu with your HOME directory instead. Your address will also be stored as part of the filename in your keystore directory.
 
+If you get an error that says "Failed to unlock developer account: could not decrypt key with given passphrase" you can remove the -dev from the command line.  (Currently, I'm not sure if that's the correct way.) If you get an error that says "Failed to write genesis block: genesis has no chain configuration", you need to add a config value to your genesis.json. There's an example of that
+in the docs at https://github.com/ethereum/go-ethereum.
+
+%%FIXME
+
+\subsection{Python (pyethapp)}
+%3.1.2
 %%TODO
 
 \section{Ethereum Accounts}

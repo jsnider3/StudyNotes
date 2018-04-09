@@ -131,7 +131,12 @@ in the docs at https://github.com/ethereum/go-ethereum.
 
 \subsection{Python (pyethapp)}
 %3.1.2
-%%TODO
+The apt-get dependencies for pyethapp were composed entirely of things I already had installed. Given that this book is intended
+for people with equivalent experience to juniors in college this might be a common situation, assuming you already were using Ubuntu. %Aside from one dependency timing out once or twice, the dependencies for pyethapp were also easy to get.
+
+Aftere pip installing pyethapp, I got an import error with `from ethereum import blocks' as per https://ethereum.stackexchange.com/questions/19104/pyethapp-importerror-cannot-import-name-blocks. Trying to install pyethapp from the GitHub page got me `ImportError: cannot import name keccak` from `devp2p/crypto.py`.
+
+%%TODO / FIXME
 
 \section{Ethereum Accounts}
 %4

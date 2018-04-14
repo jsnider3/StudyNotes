@@ -131,7 +131,33 @@ in the docs at https://github.com/ethereum/go-ethereum.
 
 \subsection{Python (pyethapp)}
 %3.1.2
-%%TODO
+The apt-get dependencies for pyethapp were composed entirely of things I already had installed. Given that this book is intended
+for people with equivalent experience to juniors in college this might be a common situation, assuming you already were using Ubuntu. %Aside from one dependency timing out once or twice, the dependencies for pyethapp were also easy to get.
+
+Aftere pip installing pyethapp, I got an import error with `from ethereum import blocks' as per https://ethereum.stackexchange.com/questions/19104/pyethapp-importerror-cannot-import-name-blocks. Trying to install pyethapp from the GitHub page got me `ImportError: cannot import name keccak` from `devp2p/crypto.py`.
+
+%%TODO / FIXME
+
+\subsection{Solidity}
+%3.2.1
+
+Solidity is a contract-oriented language with features similar to JavaScript. It supports contracts by having many variables relating to the blockchain always available in the global namespace including units for time and amounts of Ether. Most of the information about Solidity in this book can be found in either Appendix A, here is just telling you how to install it as a development tool. Although, geth and pyethapp should have their own Solidity compilers.
+
+\subsection{TestRPC}
+%3.3
+
+\subsection{Mist Ethereum Wallet}
+%3.4
+Unfortunately unavailable in the Ubuntu Software Center, Mist is a cryptocurrency wallet that can be downloaded from it's GitHub page. The book gives no indication that other Ethereum wallets exist and does not say why you download this one instead of the others, this is definitely a flaw in the book from my point of view.
+
+\subsection{MetaMask}
+%3.5
+
+\subsection{Web3 API}
+%3.6
+
+\subsection{Truffle}
+%3.7
 
 \section{Ethereum Accounts}
 %4
@@ -145,6 +171,10 @@ The book gives an overview of user account management, which is unnecessary to r
 
 \subsection{Working with Contract Accounts}
 %4.4
+First thing to do with contracts is to deploy them. This can be done programmatically in Solidity, but can also be done through a built-in
+tab in Mist Ethereum wallet, which the book recommends.
+
+Once we've deployed a contract we can try to interact with them. This can either be done through the Mist Wallet as shown in the book or programmatically through a \textit{geth} console.
 
 \section{Smart Contracts}
 %5

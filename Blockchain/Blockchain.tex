@@ -230,8 +230,17 @@ Good news! The Ethereum blockchain is Turing-complete, just like every other sys
 code before it can make the next block. Fortunately, Ethereum uses the same answer for both problems, charging people a `gas' fee,
 which will quickly bankrupt anyone trying to experiment with the halting problem on the Ethereum network.
 
-\subsection{Greedy Heavist-Observed Sub-Tree (GHOST)}
+\subsection{Greedy Heaviest-Observed Sub-Tree (GHOST)}
 %10.6
+One of the important differences between the Bitcoin and Ethereum blockchain is how long it takes before a new block is made.
+For Bitcoin it takes 10 minutes, since that's more secure. For Ethereum, it's around 17 seconds, since that lets people receive
+confirmations faster. However, it means that it's more likely for multiple people to have produced blocks that have not yet propagated through the system. This has two main downsides. First, all of the effort that goes into stale blocks is wasted and does nothing to
+protect the integrity of the blockchain. Second, it encourages people to form teams which can become a security risk if they become
+big enough.
+
+A solution for both of these issues is called Greedy Heaviest-Observed Sub-Tree, where these stale blocks contribute to the score
+used to determine which chain of blocks is \textit{the} chain of blocks. These stale blocks used to calculate the score are called
+``uncles''. There existance helps solve the first problem and rewarding people for finding them helps solve the second problem.
 
 \subsection{Sybil Attack}
 %10.7
@@ -243,16 +252,22 @@ Third is to build a reputation system on top of the blockchain and require a cer
 
 \subsection{Mining Pools and Centralization}
 %10.8
+Without a central authority, blockchains need to rely on a consensus to determine what did and did not happen. Protocols and cryptography can make this consensus resistant to bad actors, but become significantly less effective if a group of miners can control
+a majority of the network's computing power. Given the way Bitcoin is set up this can be done with a small amount of people willing
+to invest a disproportionate amount of money into powerful computers such as application-specific integrated circuit (ASICs). One way to discourage this is to use algorithms that are resistant to ASICs.
 
-\subsection{Smart Contract Vulnerabilities}
+\subsection{Smart Contracts Vulnerabilities}
 %10.9
+This isn't necessarily an issue with the blockchain or different from normal software vulnerabilities, but given that smart contracts have their own money and behave independently, they're attractive targets for cyber-criminals. The main weakness cyber-criminals could exploit is ``re-entrancy'' where a contract allows itself to be called again before it gets a proper response from someone else. This can in fact be really expensive.
 
 \subsection{Blockchain Scalability}
 %10.10
+We would scale the blockchain to compete with Visa and ACH if we could, but can we? Latency in the blockchain is a security feature, where if we reduced it to make things faster it would be easier for centralized groups to dominate. The size of the blockchain is in the
+tens of GB's, but certain options can be enabled to shrink that. There's been some talk about sharding Ethereum to make it easier to scale, a discussion that can be seen at \url{https://github.com/ethereum/wiki/wiki/Sharding-FAQ}.
 
 \section{Solidity Tutorial}
 %Appendix A
 The book has an appendix that contains a Solidity tutorial. It's only five pages, but I think that's an appropriate amount. Solidity is a strongly and statically typed programming language. The basics of programming in it should come naturally to anyone with experience in Java or C. Fortunately, Solidity is open-source so
-anyone wanting a deep-dive into the particulars of the language can find the documentation at https://solidity.readthedocs.io/en/v0.4.21/ or the GitHub page at https://github.com/ethereum/solidity.
+anyone wanting a deep-dive into the particulars of the language can find the documentation at \url{https://solidity.readthedocs.io/en/v0.4.21/} or the GitHub page at \url{https://github.com/ethereum/solidity}.
 
 \end{document}

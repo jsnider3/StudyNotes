@@ -125,6 +125,7 @@ Everyone knows this is important.
 Governance, hidden costs.
 
 ### GitHub in 2018
+By Jamie Jones
 NO PROMISES!
 
 Periodic Table of DevOps Tools
@@ -166,13 +167,33 @@ Pull Request enhancements (Require multiple reviewers)
 GitHub Learning Lab (12:30 Eastern time today!)
 
 ### US Digital Service
+Login.gov Data Engineering and Analytics by Jordan Bramble
+
+What is USDS?
+
+What is Login.gov? Attempt to create single account across government,
+	to save money, to update experiences, and to do it without failing.
+	This is using a new, better team. Using a tour-of-duty model.
+
+How we handle data at scale? They currently have 4 million users.
+	They use AWS Lambda to avoid provisioning servers.
+	
+How to get involved? Go to usds.gov/join
 
 ### Northrop Grumman
+Guidance on GitHub by Rickey Zachary
+
+Status Quo is not where we need to be. GitHub is something we can
+use to switch tribal knowledge to systemic knowledge. His use of it
+seems like using GitHub as a competitor for OneNote, but I think his
+idea is to have examples of things like Maven and Jenkins with guidance.
+
+This guidance and examples lets people start faster.
 
 ### AWS Public Sector
 
 ### Booz Allen Hamilton
-	
+
 ## Part 2: Explore
 
 This part of the event started at 6:00 PM.

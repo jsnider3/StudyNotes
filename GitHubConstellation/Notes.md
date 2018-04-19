@@ -191,9 +191,42 @@ idea is to have examples of things like Maven and Jenkins with guidance.
 This guidance and examples lets people start faster.
 
 ### AWS Public Sector
+GitHub & AWS: Security Automation by Dan Kasun
+
+FEDRAMP stuff is hard and slow. How can we fix the problem where people make
+solutions super fast and then hit a wall at compliance?
+
+An AWS Region is a set of availability zones which are sets of datacenters.
+
+Many people use Excel for tracking security compliance.
+
+Dan wants developers to think of things that comply with things. One way to
+do that is to have an entirely compliant process.
+
+The Result: AWS Trust Boundary In a Box
+
+SAO Commounity is reasonably big. They have workshops on secure-by-design.
+One soonish in Ballston.
 
 ### Booz Allen Hamilton
+Enterprise Governance in Sotware Delivery by Owen Beste
+
+Is it possible to be both fast and secure in delivery?
+
+So many tools, where do you even start with Greenfield Development?
+
+BAH now has 1200 GitHub users.
+
+What if accessing all the tools could be just as secure?
+
+They then stood up enterprise versions of each of those tools, instead of
+getting their own licenses.
+
+That made it secure, now what about fast?
+
+They added a self-service portal to make it fast.
 
 ## Part 2: Explore
 
-This part of the event started at 6:00 PM.
+This part of the event started at 6:00 PM. I decided to work on personal projects
+instead of attending.

@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx}
 \usepackage{fullpage}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -17,7 +18,7 @@
 These are my notes from reading the \textit{Blockchain Applications A Hands-On Approach} book by Arshdeep Bahga and Vijay Madisetti. A major goal of reading this book, is to write a blog post based on it, either as a review of the book or as a summary of topics it discusses.
 
 \subsection{Book Contents}
-The book starts with an overview of the blockchain and some application templates that can be done with it. It then goes to talk about Ethereum, including how to set up a development environment for it. It then goes to talk about services that can be built on the blockchain such as smart contracts, decentralized applications, mining, whisper, and swarm, before wrapping up with an overview of some more advanced topics involving the blockchain. The book requires minimal understanding of the blockchain on the part of the reader, but assumes a competency with programming. There's a companion website at blockchain-book.com and the source code can be found at http://www.hands-on-books-series.com/assets/Bahga-Madisetti-Blockchain-Book-Code.zip.
+The book starts with an overview of the blockchain and some application templates that can be done with it. It then goes to talk about Ethereum, including how to set up a development environment for it. It then goes to talk about services that can be built on the blockchain such as smart contracts, decentralized applications, mining, whisper, and swarm, before wrapping up with an overview of some more advanced topics involving the blockchain. The book requires minimal understanding of the blockchain on the part of the reader, but assumes a competency with programming. There's a companion website at blockchain-book.com and the source code can be found at \url{http://www.hands-on-books-series.com/assets/Bahga-Madisetti-Blockchain-Book-Code.zip}.
 
 One thing I would have liked to change about the book is to add ``homework" to it. It's
 pretty close to being able to pass as a college textbook, if it had gone deeper into certain subjects and then had review questions and
@@ -65,7 +66,7 @@ Ethereum uses a virtual machine for its execution environment. This environment 
 
 \subsection{Decentralized Storage - Swarm}
 %1.3.2
-Decentralized storage and content distribution network, works as a redundant store of Dapp code. Being peer-to-peer means it lacks a single point-of-failure and makes it resistant to DDoS
+Decentralized storage and content distribution network, works as a redundant store of Dapp code. Being peer-to-peer means it lacks a single point-of-failure and makes it resistant to DDoS.
 
 \subsection{Decentralized Messaging - Whisper}
 %1.3.3
@@ -125,7 +126,7 @@ I've copied most of the installation code to the install.sh file in this directo
 It also recommends storing your data in a /home/ubuntu/ethchain directory, which is a strange recommendation since that's where user accounts go. I think the author is actually using an account called ubuntu, which means you should replace /home/ubuntu with your HOME directory instead. Your address will also be stored as part of the filename in your keystore directory.
 
 If you get an error that says "Failed to unlock developer account: could not decrypt key with given passphrase" you can remove the -dev from the command line.  (Currently, I'm not sure if that's the correct way.) If you get an error that says "Failed to write genesis block: genesis has no chain configuration", you need to add a config value to your genesis.json. There's an example of that
-in the docs at https://github.com/ethereum/go-ethereum.
+in the docs at \url{https://github.com/ethereum/go-ethereum}.
 
 %%FIXME
 
@@ -134,7 +135,7 @@ in the docs at https://github.com/ethereum/go-ethereum.
 The apt-get dependencies for pyethapp were composed entirely of things I already had installed. Given that this book is intended
 for people with equivalent experience to juniors in college this might be a common situation, assuming you already were using Ubuntu. %Aside from one dependency timing out once or twice, the dependencies for pyethapp were also easy to get.
 
-Aftere pip installing pyethapp, I got an import error with `from ethereum import blocks' as per https://ethereum.stackexchange.com/questions/19104/pyethapp-importerror-cannot-import-name-blocks. Trying to install pyethapp from the GitHub page got me `ImportError: cannot import name keccak` from `devp2p/crypto.py`.
+Aftere pip installing pyethapp, I got an import error with `from ethereum import blocks' as per \url{https://ethereum.stackexchange.com/questions/19104/pyethapp-importerror-cannot-import-name-blocks}. Trying to install pyethapp from the GitHub page got me `ImportError: cannot import name keccak` from `devp2p/crypto.py`.
 
 %%TODO / FIXME
 
@@ -193,6 +194,8 @@ Once we've deployed a contract we can try to interact with them. This can either
 
 \section{Advanced Topics}
 %10
+This could have been my favorite chapter in the book, but it would need to be fleshed out much more for me to truly love it. It
+differs from the more application-oriented chapters that take up the middle of the book to discuss more theoretical matters.
 
 \subsection{Double-Spending Problem}
 %10.1
@@ -210,6 +213,11 @@ The authors claim that the proof-of-work system incorporated into the blockchain
 
 \subsection{Proof-of-work vs. Proof-of-stake}
 %10.3
+One of the main features of proof-of-work is its difficulty. Mining a Bitcoin block takes time even when using expensive hardware
+at full throttle. The thing is that difficulty is expensive, both in electricity and hardware. Proof-of-stake is an alternative that is
+much easier to do. Proof of stake randomly picks a validator to build the next block and the other validators vote either for or
+against it. Voting with the majority gives you money, voting against loses you money. Ethereum plans to transition to proof-of-stake
+in the future, but there's no firm timeline for that. Casper is the most likely implementation. There's a FAQ on the Ethereum GitHub about this at \url{https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ}.
 
 \subsection{Consistency, Availability, and Partition Tolerance}
 %10.4
@@ -218,9 +226,21 @@ the same thing, availability, where people can always connect to it, and partiti
 
 \subsection{Turing Completeness}
 %10.5
+Good news! The Ethereum blockchain is Turing-complete, just like every other system that lets you store values, do loops, and do conditionals. This means that it can do any computable function. However, two concerns that need to be addressed are the fact that the people who run the smart contracts aren't the people who made them and that Ethereum needs to actually finish executing some
+code before it can make the next block. Fortunately, Ethereum uses the same answer for both problems, charging people a `gas' fee,
+which will quickly bankrupt anyone trying to experiment with the halting problem on the Ethereum network.
 
-\subsection{Greedy Heavist-Observed Sub-Tree (GHOST)}
+\subsection{Greedy Heaviest-Observed Sub-Tree (GHOST)}
 %10.6
+One of the important differences between the Bitcoin and Ethereum blockchain is how long it takes before a new block is made.
+For Bitcoin it takes 10 minutes, since that's more secure. For Ethereum, it's around 17 seconds, since that lets people receive
+confirmations faster. However, it means that it's more likely for multiple people to have produced blocks that have not yet propagated through the system. This has two main downsides. First, all of the effort that goes into stale blocks is wasted and does nothing to
+protect the integrity of the blockchain. Second, it encourages people to form teams which can become a security risk if they become
+big enough.
+
+A solution for both of these issues is called Greedy Heaviest-Observed Sub-Tree, where these stale blocks contribute to the score
+used to determine which chain of blocks is \textit{the} chain of blocks. These stale blocks used to calculate the score are called
+``uncles''. There existance helps solve the first problem and rewarding people for finding them helps solve the second problem.
 
 \subsection{Sybil Attack}
 %10.7
@@ -232,16 +252,22 @@ Third is to build a reputation system on top of the blockchain and require a cer
 
 \subsection{Mining Pools and Centralization}
 %10.8
+Without a central authority, blockchains need to rely on a consensus to determine what did and did not happen. Protocols and cryptography can make this consensus resistant to bad actors, but become significantly less effective if a group of miners can control
+a majority of the network's computing power. Given the way Bitcoin is set up this can be done with a small amount of people willing
+to invest a disproportionate amount of money into powerful computers such as application-specific integrated circuit (ASICs). One way to discourage this is to use algorithms that are resistant to ASICs.
 
-\subsection{Smart Contract Vulnerabilities}
+\subsection{Smart Contracts Vulnerabilities}
 %10.9
+This isn't necessarily an issue with the blockchain or different from normal software vulnerabilities, but given that smart contracts have their own money and behave independently, they're attractive targets for cyber-criminals. The main weakness cyber-criminals could exploit is ``re-entrancy'' where a contract allows itself to be called again before it gets a proper response from someone else. This can in fact be really expensive.
 
 \subsection{Blockchain Scalability}
 %10.10
+We would scale the blockchain to compete with Visa and ACH if we could, but can we? Latency in the blockchain is a security feature, where if we reduced it to make things faster it would be easier for centralized groups to dominate. The size of the blockchain is in the
+tens of GB's, but certain options can be enabled to shrink that. There's been some talk about sharding Ethereum to make it easier to scale, a discussion that can be seen at \url{https://github.com/ethereum/wiki/wiki/Sharding-FAQ}.
 
 \section{Solidity Tutorial}
 %Appendix A
 The book has an appendix that contains a Solidity tutorial. It's only five pages, but I think that's an appropriate amount. Solidity is a strongly and statically typed programming language. The basics of programming in it should come naturally to anyone with experience in Java or C. Fortunately, Solidity is open-source so
-anyone wanting a deep-dive into the particulars of the language can find the documentation at https://solidity.readthedocs.io/en/v0.4.21/ or the GitHub page at https://github.com/ethereum/solidity.
+anyone wanting a deep-dive into the particulars of the language can find the documentation at \url{https://solidity.readthedocs.io/en/v0.4.21/} or the GitHub page at \url{https://github.com/ethereum/solidity}.
 
 \end{document}

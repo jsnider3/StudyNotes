@@ -26,11 +26,11 @@ up for the event.
 2:00 Networking
 
 ### Sponsors
-waffle.io
-cloudbees
-circleci
+waffle.io - Project overviews.
+cloudbees - Jenkins but for the enterprise.
+circleci - Continuous integration service.
 amazon web services
-Modus Create
+Modus Create - Mobile-web development group / consultancy.
 
 ### Code.gov
 Presentation by Joseph Castle, GSA.

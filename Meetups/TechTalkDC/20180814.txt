@@ -1,0 +1,75 @@
+﻿# Lightning Talks with Tech Talk DC
+
+Hosted by WeWork
+Upcoming Meetup August 29th - Chicken Soup for the Automated Soul
+
+## You've been a bad programmer, now GOTO your room
+John Jones
+
+Old Technology - Windows' Batch Files
+
+Part 1 of 3 - Most Batch Files are a mess. Very long and poorly structured
+Part 2 of 3 - Learn to Modularize. Use Composable Batch Files.
+Part 3 of 3 - Customize CBFs by Leveraging Environment Variables
+
+## Future of work
+@nitesh_indiez
+
+50% of awake time is for work, which is unfortunate given how much work sucks.
+
+#futureofwork is supposed to be a new lifestyle, not just remote, but location independent.
+
+Used by: zapier, GitLab, WordPress, wework, Andela, WeWorkRemotely
+
+How can startups leverage #futureofwork?
+* Hiring: 
+* Management: Agile/Scrum/Standups, only results count, heavy use of tools, leverage timezones
+* Culture: 
+
+### Rishabh and Abhishek
+Founders of an NGO called Navgurukul, who wanted to make a program to teach coding to slum dwellers.
+They left Google to do this.
+
+## Giving Back with Open Source
+John Jones (A different one) from the Case Foundation
+Twitter: @casefoundation & @johnjones4
+GitHub casefoundation & johnjones4
+Email: johnj@casefoundation.org
+
+Case Foundation was created in 1997 by Jean and Steve Case (the AOL people).
+
+Case Foundation's current projects are impact investing, inclusive entrepreneurship, and millenial engagement research.
+
+### Case Foundation Projects
+Available at github.com/casefoundation
+#FacesOfFounders - Share profile pictures of entrepreneurs in order to encourage minority participation.
+Analytics Dashboard
+Review-O-Matic
+
+## What is an AR Sandbox?
+Sharon Dempsey(?)
+
+They filled a box with sand and then used Windows-based Magic Sand software by Thom Wolf and Rasmus Paulsen.
+
+github.com/thomwolf/Magic-Sand
+
+The basic app lets you make topographic maps that change as you play with the sand and which have simulated water features.
+
+## Get the ETL out of Here
+Trinh Lieu, Senior Manager, Developer Community
+
+Not All Databases are Created Equal
+
+Mainframe -> Relational -> NoSQL
+
+### Data Migration Projects
+
+We've probably all seen this before -- moving data into a new repository can be a new challenge.
+
+Then, IT goes back to try to build a model to support business management.
+
+Relational Databases with ETL sacrifice agility, timeliness, and cost
+
+ETL: Extract, transform, load.
+
+New, modern approach with MarkLogic: Load, Curate, Access

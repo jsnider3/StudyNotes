@@ -1,0 +1,13 @@
+# MySQL Documetn Store w/Java
+At BTI360 office.
+Scott Stroz is an Oracle Guy
+He loves golf.
+NoSQL vs Relational
+Insomnia is a programming tool he uses for examples.
+MySQL document store has plugins for X-Plugin, Shell, Node.js, .Net, C++, Java, Python, and PHP
+
+The demo was a CRUD app with thousands of rounds of golf.
+This demo has a Github repo.
+.find() and .bind() are sql things.
+
+The presenter can be reached at scott.stroz@oracle.com or twitter.com/boyzoid

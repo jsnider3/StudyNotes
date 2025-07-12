@@ -4,135 +4,55 @@ import random
 import os
 import sys
 import argparse
+import json
+from typing import List, Tuple, Dict, Optional
+from datetime import datetime
 
-# Data for AWS Certified AI Practitioner AIF-C01 Flashcards, organized by domain with weights
-flashcards_by_domain = [
-    {
-        "name": "Domain 1: Fundamentals of AI and ML",
-        "weight": 20,
-        "cards": {
-            "In machine learning, what is 'regression'?": "A type of supervised learning used to predict a continuous numerical value (e.g., predicting a house price).",
-            "What are the three main types of machine learning?": "Supervised learning, unsupervised learning, and reinforcement learning.",
-            "What is 'feature selection' in machine learning?": "The process of selecting the most relevant features from a dataset to improve model performance and reduce training time.",
-            "What is the difference between 'evaluation' and 'inference' in machine learning?": "Evaluation is the process of measuring the performance of a trained model, typically on a validation or test dataset. Inference is the process of using a trained model to make predictions on new, unseen data.",
-            "What is sampling bias?": "A type of bias that occurs when the data used to train a model is not representative of the population it will be used to make predictions on.",
-            "What is reinforcement learning?": "A type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize a cumulative reward.",
-            "What is the difference between supervised and self-supervised learning?": "In supervised learning, the model learns from labeled data. In self-supervised learning, the model learns from unlabeled data by creating its own labels from the data itself (e.g., predicting the next word in a sentence).",
-            "What are some techniques to correct for imbalanced datasets?": "Techniques include oversampling the minority class (e.g., SMOTE), undersampling the majority class, or using more advanced methods like generating synthetic data.",
-            "What are the typical steps in the data science process?": "The process usually includes business understanding, data acquisition and understanding, data preparation, modeling, evaluation, and deployment.",
-            "Which type of machine learning typically uses labeled data, and which uses unlabeled data?": "Supervised learning uses labeled data. Unsupervised learning and self-supervised learning use unlabeled data.",
-            "What is a Decision Tree in machine learning?": "A supervised learning algorithm that uses a tree-like model of decisions and their possible consequences. It is used for both classification and regression tasks.",
-            "What is a confusion matrix?": "A table used to evaluate the performance of a classification algorithm. It shows the number of true positives, true negatives, false positives, and false negatives.",
-            "What are some common hyperparameters in machine learning?": "Epochs (number of passes through the entire training dataset), batch size (number of training examples utilized in one iteration), and learning rate (step size at each iteration while moving toward a minimum of a loss function).",
-            "What is Transfer Learning?": "A machine learning method where a model developed for a task is reused as the starting point for a model on a second task."
-        }
-    },
-    {
-        "name": "Domain 2: Fundamentals of Generative AI",
-        "weight": 24,
-        "cards": {
-            "What is a 'token' in the context of a large language model (LLM)?": "A unit of text, such as a word or part of a word, that the model processes.",
-            "What is a primary use case for generative AI?": "Generating novel content, such as images, text, and music.",
-            "What is 'prompt engineering'?": "The practice of carefully crafting inputs (prompts) to a generative AI model to guide its output toward the desired result.",
-            "What is a 'hallucination' in the context of generative AI?": "When a generative AI model produces incorrect, nonsensical, or fabricated information as if it were factual.",
-            "Which AWS service is specifically designed for building and scaling generative AI applications with foundation models?": "Amazon Bedrock. It provides a way to access and use foundation models from various providers through a single API.",
-            "What is the difference between Top-p, Temperature, and Top-K sampling in generative AI?": "Temperature controls randomness (higher is more random). Top-K limits the vocabulary to the K most likely tokens. Top-p (nucleus sampling) selects from the smallest set of tokens whose cumulative probability exceeds a threshold 'p'.",
-            "What are negative prompting and few-shot prompting?": "Negative prompting is a technique where you specify what you *don't* want to see in the output. Few-shot prompting provides a few examples of the desired input/output format to the model to guide its response.",
-            "What is a Large Language Model (LLM)?": "A type of AI model that has been trained on a massive amount of text data to understand and generate human-like language.",
-            "What is Retrieval-Augmented Generation (RAG)?": "A technique that enhances the accuracy and reliability of generative AI models by fetching relevant information from an external knowledge base and grounding the model's responses in that information.",
-            "What is Generative AI?": "A class of AI models and algorithms capable of creating new content such as text, images, and audio based on patterns learned from existing data.",
-            "What is the BLEU score?": "BLEU (Bilingual Evaluation Understudy) is a metric for evaluating the quality of machine-translated text against a set of high-quality reference translations.",
-            "What is a Transformer model and what is its key mechanism?": "A neural network architecture for sequential data, like language. Its key mechanism is self-attention, which allows it to weigh the importance of different words in a sentence when processing it.",
-            "What is BERT (Bidirectional Encoder Representations from Transformers)?": "A language representation model that is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers.",
-            "What is Domain Adaptation Fine-Tuning?": "A fine-tuning technique where a pre-trained model is further trained on data from a specific domain to improve its performance on tasks within that domain.",
-            "What is Continued Pre-Training?": "The process of taking a pre-trained foundation model and continuing its training on a large, domain-specific dataset to adapt it to a particular subject area."
-        }
-    },
-    {
-        "name": "Domain 3: Applications of Foundation Models",
-        "weight": 28,
-        "cards": {
-            "What is Amazon SageMaker?": "A fully managed service that enables developers and data scientists to quickly and easily build, train, and deploy machine learning (ML) models at any scale.",
-            "What is Amazon Rekognition?": "A service that makes it easy to add image and video analysis to your applications using proven, highly scalable, deep learning technology that requires no machine learning expertise to use.",
-            "What are some common use cases for Amazon Rekognition?": "Face-based user identity verification, searchable media libraries, and celebrity recognition.",
-            "What is Amazon Comprehend?": "A natural language processing (NLP) service that uses machine learning to find insights and relationships in text. No machine learning experience required.",
-            "What is Amazon Polly?": "A service that turns text into lifelike speech, allowing you to create applications that talk, and build entirely new categories of speech-enabled products.",
-            "What is Amazon Transcribe?": "An automatic speech recognition (ASR) service that makes it easy for developers to add speech-to-text capability to their applications.",
-            "What is Amazon Lex?": "A service for building conversational interfaces into any application using voice and text. Lex provides the advanced deep learning functionalities of automatic speech recognition (ASR) for converting speech to text, and natural language understanding (NLU) to recognize the intent of the text.",
-            "What is Amazon Forecast?": "A fully managed service that uses machine learning to deliver highly accurate forecasts. (Note: As of late 2023, this service is no longer available to new customers).",
-            "What is Amazon Personalize?": "A machine learning service that makes it easy for developers to create individualized recommendations for customers using their applications.",
-            "What is Amazon Textract?": "A service that automatically extracts text and data from scanned documents. Textract goes beyond simple optical character recognition (OCR) to also identify the contents of fields in forms and information stored in tables.",
-            "What is the purpose of the SageMaker Feature Store?": "To store, share, and manage features for machine learning models, promoting reusability and consistency across teams.",
-            "How can you accelerate deep learning model training in SageMaker?": "By using a distributed training strategy (like data parallelism or model parallelism) to spread the workload across multiple instances, and by leveraging powerful GPU instances.",
-            "What is Asynchronous Inference in the context of AWS ML services?": "A method of processing inference requests where the client does not wait for an immediate response, suitable for large payloads or long-running inference tasks.",
-            "What is Amazon Bedrock?": "A fully managed service that makes foundation models from Amazon and leading AI startups available through an API.",
-            "What are Agents for Amazon Bedrock?": "A feature that allows developers to create fully managed agents that can perform complex business tasks by making API calls to company systems.",
-            "What is Amazon Translate?": "A neural machine translation service that delivers fast, high-quality, affordable, and customizable language translation.",
-            "What is Amazon SageMaker Jumpstart?": "A machine learning hub with foundation models, built-in algorithms, and prebuilt ML solutions that you can deploy with just a few clicks.",
-            "What is the Amazon SageMaker Model Dashboard?": "A feature that provides a unified view of all your models, allowing you to monitor their performance, and compare them over time.",
-            "What is Amazon SageMaker Ground Truth?": "A data labeling service that helps you build highly accurate training datasets for machine learning quickly.",
-            "What is Amazon Kendra?": "An intelligent enterprise search service that helps you search across different content repositories with a unified search experience.",
-            "What is Amazon Q?": "A generative AI–powered assistant for accelerating software development and leveraging companies' internal data.",
-            "What is MLflow?": "An open-source platform for managing the end-to-end machine learning lifecycle. It includes tools for tracking experiments, packaging code into reproducible runs, and sharing and deploying models.",
-            "What is AWS Trainium?": "A custom machine learning (ML) chip from AWS that is specifically designed for high-performance deep learning training.",
-            "What is AWS Inferentia?": "A custom machine learning (ML) chip from AWS designed to deliver high-performance inference at a low cost.",
-            "What is Provisioned Throughput in the context of AWS AI services?": "A model deployment option where you pay for a fixed amount of processing capacity, ensuring consistent performance for your inference requests.",
-            "What is the default vector store for Amazon Bedrock?": "Amazon OpenSearch Serverless."
-        }
-    },
-    {
-        "name": "Domain 4: Guidelines for Responsible AI",
-        "weight": 14,
-        "cards": {
-            "What is a core principle of Responsible AI that emphasizes the importance of understanding how a model arrives at its predictions?": "Explainability. It is crucial for building trust, debugging models, and ensuring fairness.",
-            "Which AWS service is specifically designed to help detect potential bias in your data and explain how a model makes predictions?": "Amazon SageMaker Clarify.",
-            "In the context of Responsible AI, what does 'fairness' mean?": "It means that an AI system should not create or reinforce unfair bias, ensuring that a model's predictions do not disproportionately harm or benefit different demographic groups.",
-            "What is the purpose of 'Guardrails for Amazon Bedrock'?": "To implement safeguards for generative AI applications. It allows you to create policies to filter harmful content, deny undesirable topics, and redact sensitive information.",
-            "What are AWS AI Service Cards?": "They are documents that provide transparency into the intended use cases, limitations, and responsible AI design considerations for various AWS AI services.",
-            "What is the difference between Shapley values and Partial Dependence Plots (PDP)?": "Shapley values explain individual predictions by quantifying each feature's contribution. PDPs provide a global explanation by showing the marginal effect of a feature on the model's predictions across the entire dataset."
-        }
-    },
-    {
-        "name": "Domain 5: Security, Compliance, and Governance for AI Solutions",
-        "weight": 14,
-        "cards": {
-            "Which AWS service is fundamental for managing user access and permissions to your AI systems and resources?": "AWS Identity and Access Management (IAM). It allows you to define roles and policies to control who can access what.",
-            "In the AWS Shared Responsibility Model, what is the customer's responsibility when using an AI service like Amazon SageMaker?": "The customer is responsible for security 'in' the cloud. This includes managing data (encryption, access), configuring security groups and network ACLs, and managing user permissions.",
-            "What is the primary function of Amazon Macie in the context of AI security?": "To discover, classify, and protect sensitive data. It uses machine learning to automatically identify and alert you to sensitive data (like PII) in your S3 buckets.",
-            "What is the purpose of a SageMaker Model Card?": "To provide a centralized and standardized way to document a model's information, such as its intended use cases, design, performance metrics, and fairness assessments, which aids in transparency and governance.",
-            "How does AWS PrivateLink enhance the security of AI solutions?": "It provides private, secure connectivity between your VPC, AWS services, and on-premises applications, ensuring that traffic does not traverse the public internet.",
-            "What are Guardrails for Amazon Bedrock?": "A feature that allows you to implement safeguards for your generative AI applications, based on your use cases and responsible AI policies.",
-            "What is the relationship between AWS Regions and Availability Zones (AZs)?": "An AWS Region is a physical location in the world with multiple Availability Zones. Each AZ is one or more discrete data centers with redundant power, networking, and connectivity, housed in separate facilities.",
-            "What is AWS Trusted Advisor?": "An online tool that provides you real-time guidance to help you provision your resources following AWS best practices on cost optimization, security, fault tolerance, service limits, and performance improvement.",
-            "What is the AWS Shared Responsibility Model?": "A model that defines the security responsibilities of AWS and the customer. AWS is responsible for the security *of* the cloud, while the customer is responsible for security *in* the cloud.",
-            "What is on-demand pricing in AWS?": "A pay-as-you-go pricing model where you pay for the compute capacity you use, with no long-term commitments or upfront payments."
-        }
-    }
-]
+# Constants
+CLEAR_COMMAND = 'cls' if os.name == 'nt' else 'clear'
+DOMAINS_FILE = 'flashcards_data.json'
+LOG_FILE = 'answer_log.jsonl'
 
-def get_domain_name_from_number(domain_number):
+def load_flashcards_data() -> List[Dict]:
+    """Load flashcard data from the JSON file."""
+    try:
+        with open(DOMAINS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"Error: The data file '{DOMAINS_FILE}' was not found.")
+        sys.exit(1)
+    except json.JSONDecodeError:
+        print(f"Error: Could not decode the JSON from '{DOMAINS_FILE}'. Please check its format.")
+        sys.exit(1)
+
+def get_domain_name_from_number(domain_number: int, domains: List[Dict]) -> Optional[str]:
     """Finds the full domain name string from its number."""
-    if 1 <= domain_number <= len(flashcards_by_domain):
-        return flashcards_by_domain[domain_number - 1]["name"]
+    if 1 <= domain_number <= len(domains):
+        return domains[domain_number - 1]["name"]
     return None
 
-def get_flashcards(domain_number=None):
+def get_flashcards(domains: List[Dict], domain_number: Optional[int] = None, limit: Optional[int] = None, review_wrong: bool = False) -> List[Tuple[str, str]]:
     """
     Returns a list of (question, answer) tuples.
-    If a domain_number is specified, it returns all flashcards for that domain.
-    If no domain_number is specified, it returns a weighted random list of all flashcards.
+    - If review_wrong is True, it returns only questions the user previously got wrong.
+    - If a domain_number is specified, it returns flashcards for that domain.
+    - If no domain_number is specified, it returns a weighted random list of all flashcards.
+    - If a limit is set, it returns that number of questions.
     """
+    if review_wrong:
+        return get_wrongly_answered_questions(limit)
+
     if domain_number:
-        if 1 <= domain_number <= len(flashcards_by_domain):
-            cards = flashcards_by_domain[domain_number - 1].get("cards", {})
-            return list(cards.items())
+        if 1 <= domain_number <= len(domains):
+            cards = domains[domain_number - 1].get("cards", {})
+            questions_list = list(cards.items())
+            random.shuffle(questions_list)
         else:
             return []
     else:
-        # Create a weighted list of all questions
         all_questions = []
         weights = []
-        for domain_data in flashcards_by_domain:
+        for domain_data in domains:
             weight = domain_data.get("weight", 1)
             for question, answer in domain_data.get("cards", {}).items():
                 all_questions.append((question, answer))
@@ -140,81 +60,132 @@ def get_flashcards(domain_number=None):
         
         if not all_questions:
             return []
-            
-        # Return a list of questions sampled according to the weights
-        return random.choices(all_questions, weights=weights, k=len(all_questions))
+        
+        num_to_sample = limit if limit and limit < len(all_questions) else len(all_questions)
+        questions_list = random.choices(all_questions, weights=weights, k=num_to_sample)
 
+    return questions_list[:limit] if limit else questions_list
+
+def log_answer(question: str, correct_answer: str, user_answer: str, assessment: str):
+    """Logs the user's answer to the log file."""
+    log_record = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "question": question,
+        "correct_answer": correct_answer,
+        "user_answer": user_answer,
+        "assessment": assessment
+    }
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(json.dumps(log_record) + '\n')
+
+def get_wrongly_answered_questions(limit: Optional[int] = None) -> List[Tuple[str, str]]:
+    """Processes the log file to get questions the user has marked as 'wrong'."""
+    try:
+        with open(LOG_FILE, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        return []
+
+    # Use a dictionary to track the last assessment for each question
+    last_assessments = {}
+    for line in lines:
+        record = json.loads(line)
+        last_assessments[record['question']] = {
+            "assessment": record['assessment'],
+            "answer": record['correct_answer']
+        }
+
+    # Filter for questions last marked as 'wrong'
+    wrong_questions = [
+        (q, d['answer']) for q, d in last_assessments.items() if d['assessment'] == 'wrong'
+    ]
+    
+    random.shuffle(wrong_questions)
+    return wrong_questions[:limit] if limit else wrong_questions
 
 def clear_screen():
     """Clears the terminal screen if in interactive mode."""
     if sys.stdout.isatty():
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system(CLEAR_COMMAND)
 
-def interactive_mode(domain_number=None):
-    """Runs the flashcard app in interactive mode."""
+def interactive_mode(domains: List[Dict], domain_number: Optional[int] = None, limit: Optional[int] = None, review_wrong: bool = False):
+    """Runs the flashcard app in interactive mode with scoring."""
     clear_screen()
     
-    domain_name = get_domain_name_from_number(domain_number) if domain_number else "All Domains"
-    if domain_number and not domain_name:
-        print(f"Error: Domain {domain_number} not found.")
-        return
-        
-    print(f"=== AWS AI Certification Flashcard App ({domain_name}) ===")
-    print("Press Enter to reveal the answer. Type 'q' to quit.")
-    print("-" * 60)
+    session_type = "Review Weakest Questions" if review_wrong else "All Domains"
+    domain_name = get_domain_name_from_number(domain_number, domains) if domain_number else session_type
     
-    questions_list = get_flashcards(domain_number)
+    questions_list = get_flashcards(domains, domain_number, limit, review_wrong)
     
     if not questions_list:
-        print(f"Error: No flashcards available for the selected domain!")
+        print("Error: No flashcards available for the selected criteria!")
+        if review_wrong:
+            print("You haven't marked any questions as wrong yet, or the log file is empty. Keep studying!")
         return
 
     total = len(questions_list)
+    correct_answers = 0
+    
+    print(f"=== AWS AI Certification Flashcard App ({domain_name}) ===")
+    print(f"Studying {total} questions. Type 'q' to quit.")
+    print("-" * 60)
     
     try:
         for i, (question, answer) in enumerate(questions_list, 1):
             print(f"Question {i}/{total}: {question}")
-            input("\nPress Enter to see the answer...")
+            user_answer = input("\nYour answer (press Enter to reveal): ")
             
-            print(f"\nAnswer: {answer}")
-            print("-" * 60)
+            print(f"\nCorrect Answer: {answer}")
             
-            user_input = input("Next (Enter) | Quit (q): ").strip().lower()
-            if user_input == 'q':
+            while True:
+                feedback = input("\nWere you correct? (y/n/q): ").strip().lower()
+                if feedback in ['y', 'n', 'q']:
+                    break
+                print("Invalid input. Please enter 'y', 'n', or 'q'.")
+
+            if feedback == 'y':
+                correct_answers += 1
+                log_answer(question, answer, user_answer, "correct")
+            elif feedback == 'n':
+                log_answer(question, answer, user_answer, "wrong")
+            elif feedback == 'q':
                 break
             
             clear_screen()
         
         print("\n=== Study Session Complete ===")
-        restart = input("Restart session? (y/n): ").strip().lower()
+        score = (correct_answers / total) * 100 if total > 0 else 0
+        print(f"You answered {correct_answers} out of {total} questions correctly ({score:.2f}%).")
+        
+        restart = input("\nRestart session? (y/n): ").strip().lower()
         if restart == 'y':
-            interactive_mode(domain_number)
+            interactive_mode(domains, domain_number, limit, review_wrong)
         else:
-            print("Good luck with your certification!")
+            print("\nGood luck with your certification!")
             
     except KeyboardInterrupt:
         print("\n\nSession interrupted. Keep up the good work!")
 
-def non_interactive_mode(shuffle=False, domain_number=None):
+def non_interactive_mode(domains: List[Dict], shuffle: bool = False, domain_number: Optional[int] = None, limit: Optional[int] = None):
     """Runs the flashcard app in non-interactive mode."""
-    domain_name = get_domain_name_from_number(domain_number) if domain_number else "All Domains"
+    domain_name = get_domain_name_from_number(domain_number, domains) if domain_number else "All Domains"
     if domain_number and not domain_name:
         print(f"Error: Domain {domain_number} not found.")
         return
 
-    print(f"=== AWS AI Certification Flashcards ({domain_name}) ===")
-    if shuffle:
-        print("(Questions shuffled)")
-    print("-" * 60)
-    
-    questions_list = get_flashcards(domain_number)
+    questions_list = get_flashcards(domains, domain_number, limit)
     
     if not questions_list:
-        print(f"Error: No flashcards available for the selected domain!")
+        print("Error: No flashcards available for the selected criteria!")
         return
         
     if shuffle:
         random.shuffle(questions_list)
+    
+    print(f"=== AWS AI Certification Flashcards ({domain_name}) ===")
+    if shuffle:
+        print("(Questions shuffled)")
+    print("-" * 60)
     
     for question, answer in questions_list:
         print(f"Q: {question}")
@@ -223,37 +194,40 @@ def non_interactive_mode(shuffle=False, domain_number=None):
 
 def main():
     """Main function to run the flashcard app."""
+    domains = load_flashcards_data()
+    
     parser = argparse.ArgumentParser(
         description='AWS AI Certification Flashcard Tool',
         formatter_class=argparse.RawTextHelpFormatter
     )
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-i', '--interactive', action='store_true', help='Run in interactive mode')
-    group.add_argument('-n', '--non-interactive', action='store_true', help='Run in non-interactive mode')
-    parser.add_argument('--shuffle', action='store_true', help='Shuffle questions in non-interactive mode')
+    
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument('-i', '--interactive', action='store_true', help='Run in interactive mode with scoring.')
+    mode_group.add_argument('-n', '--non-interactive', action='store_true', help='Run in non-interactive (print) mode.')
+    mode_group.add_argument('--review-wrong', action='store_true', help='Review questions you previously answered incorrectly.')
+
+    parser.add_argument('--shuffle', action='store_true', help='Shuffle questions in non-interactive mode.')
+    parser.add_argument('-l', '--limit', type=int, help='Limit the number of questions in the session.')
     
     domain_help_text = "Select a specific domain to study:\n"
-    for i, domain_data in enumerate(flashcards_by_domain, 1):
+    for i, domain_data in enumerate(domains, 1):
         name = domain_data['name']
         weight = domain_data['weight']
         domain_help_text += f"  {i}: {name} ({weight}%%)\n"
         
-    parser.add_argument('--domain', type=int, choices=range(1, len(flashcards_by_domain) + 1), help=domain_help_text)
+    parser.add_argument('--domain', type=int, choices=range(1, len(domains) + 1), help=domain_help_text)
     args = parser.parse_args()
 
     try:
-        if args.interactive:
-            interactive_mode(domain_number=args.domain)
-        elif args.non_interactive:
-            non_interactive_mode(shuffle=args.shuffle, domain_number=args.domain)
-        else:
-            if sys.stdout.isatty():
-                interactive_mode(domain_number=args.domain)
-            else:
-                non_interactive_mode(shuffle=args.shuffle, domain_number=args.domain)
-    except KeyboardInterrupt:
-        print("\nStudy session interrupted. Good luck with your certification!")
+        is_interactive = args.interactive or args.review_wrong or (not args.non_interactive and sys.stdout.isatty())
 
+        if is_interactive:
+            interactive_mode(domains, domain_number=args.domain, limit=args.limit, review_wrong=args.review_wrong)
+        else:
+            non_interactive_mode(domains, shuffle=args.shuffle, domain_number=args.domain, limit=args.limit)
+            
+    except KeyboardInterrupt:
+        print("\n\nStudy session interrupted. Good luck with your certification!")
 
 if __name__ == "__main__":
     main()

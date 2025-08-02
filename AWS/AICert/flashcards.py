@@ -51,18 +51,15 @@ def get_flashcards(domains: List[Dict], domain_number: Optional[int] = None, lim
             return []
     else:
         all_questions = []
-        weights = []
         for domain_data in domains:
-            weight = domain_data.get("weight", 1)
             for question, answer in domain_data.get("cards", {}).items():
                 all_questions.append((question, answer))
-                weights.append(weight)
         
         if not all_questions:
             return []
         
-        num_to_sample = limit if limit and limit < len(all_questions) else len(all_questions)
-        questions_list = random.choices(all_questions, weights=weights, k=num_to_sample)
+        random.shuffle(all_questions)
+        questions_list = all_questions
 
     return questions_list[:limit] if limit else questions_list
 
@@ -138,16 +135,18 @@ def interactive_mode(domains: List[Dict], domain_number: Optional[int] = None, l
             print(f"\nCorrect Answer: {answer}")
             
             while True:
-                feedback = input("\nWere you correct? (y/n/q): ").strip().lower()
-                if feedback in ['y', 'n', 'q']:
+                feedback = input("\nWere you correct? ((y)es/(n)o/(s)kip/(q)uit): ").strip().lower()
+                if feedback in ['y', 'n', 's', 'q']:
                     break
-                print("Invalid input. Please enter 'y', 'n', or 'q'.")
+                print("Invalid input. Please enter 'y', 'n', 's', or 'q'.")
 
             if feedback == 'y':
                 correct_answers += 1
                 log_answer(question, answer, user_answer, "correct")
             elif feedback == 'n':
                 log_answer(question, answer, user_answer, "wrong")
+            elif feedback == 's':
+                pass  # Neutral answer, do not log
             elif feedback == 'q':
                 break
             
